@@ -1,5 +1,5 @@
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
 
 export default function LandingPageLayout({
   children,
@@ -8,9 +8,9 @@ export default function LandingPageLayout({
 }>) {
   return (
     <section>
-      <Navbar/>
-        {children}
-      <Footer/>
+      <Navbar />
+      {children}
+      <Footer />
     </section>
-  )
+  );
 }

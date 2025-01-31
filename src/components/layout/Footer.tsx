@@ -1,5 +1,3 @@
 export default function Footer() {
-  return (
-    <footer>Footer</footer>
-  )
+  return <footer className="h-screen">Footer</footer>;
 }
