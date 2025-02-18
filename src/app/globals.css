@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+/* disable static page icon */
+[data-next-route-indicator] {
+  display: none !important;
+}
+
+input:-webkit-autofill {
+  background-color: transparent;
+  box-shadow: 0 0 0px 1000px transparent inset;
+  -webkit-text-fill-color: inherit;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: white;
+  -webkit-text-fill-color: white;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+input:-webkit-autofill {
+  background-color: transparent;
+  color: white;
+}
+
 .embla {
   max-width: 1280px;
   margin: auto;
@@ -34,4 +57,128 @@
   user-select: none;
 }
 
+.product-grid{
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.unstoppable {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('../assets/images/boxer.jpg');  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.community-bg-image{
+  background-image: url('../assets/images/woman-carrying-weights.jpg');  
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.phone-input .PhoneInputCountry {
+  display: none;
+}
+
+.PhoneInput {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  padding-left: 10px;
+  color: white;
+}
+
+.phone-input .PhoneInputInput {
+  outline: none;
+  width: 100% !important;
+  flex-shrink: 0;
+  background-color: transparent;
+  height: 100%;
+  padding-right: 16px;
+  font-weight: 400 !important;
+}
+
+.transparent .PhoneInputInput::placeholder{
+  color: white !important;
+}
+
+.dark .PhoneInputInput::placeholder{
+  color: #717171 !important;
+}
+
+.light .PhoneInputInput::placeholder{
+  color: #4B525A !important;
+}
+
+[data-state='checked'] svg {
+  display: none !important;
+}
+
+.SelectContent {
+  width: var(--radix-select-trigger-width);
+}
+
+.select-trigger {
+  gap: 10px;
+}
+
+.select-trigger > span {
+  text-align: left;
+  width: 100%;
+}
+
+.select-item > span {
+  width: 100%;
+}
+
+textarea {
+  resize: vertical;
+  height: 120px;
+  max-height: 120px;
+  min-height: 50px;
+  border-radius: 14px;
+  padding: 1rem;
+  outline: none;
+  transition: all .18s ease-in;
+}
+
+textarea::placeholder {
+  color: #717171;
+}
+
+.dark textarea {
+  background-color: red !important;
+}
+
+@media(max-width: 1024px) {
+  .product-grid{
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media(max-width: 700px) {
+  .product-grid{
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media(max-width: 350px) {
+  .product-grid{
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+
+@media(max-width: 1200px) {
+  .notch{
+    top: -2.4%;
+  }
+}
+
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
 

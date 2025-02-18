@@ -5,39 +5,50 @@ import { motion } from 'framer-motion';
 
 import BullishLogo from '@/assets/svg/logo.svg';
 
-import MobileNav from './MobileNav';
 
 import useToggle from '@/hooks/useToggle';
 
 import UiIcon from '../ui/UiIcon';
 import SearchPanel from './SearchPanel';
+import { usePathname } from 'next/navigation';
+
+import MobileNav from './MobileNav';
+import PartnerWithUs from './PartnerWithUs';
 
 // --
 
 export default function Navbar() {
+  const currentRoute = usePathname();
+
   const isSearchPanelVisible = useToggle();
   const isMobileNavVisible = useToggle();
+  const isPartnerWithUsVisible = useToggle();
+
+  function isActive(href: string) {
+    return currentRoute === href
+  }
 
   const routes = [
     {
       label: 'All Products',
-      path: 'all-products',
+      path: '/all-products',
     },
     {
       label: 'Running Community',
-      path: 'running-community',
+      path: '/running-community',
     },
     {
       label: 'Partner With Us',
-      path: 'partner-with-us',
+      func: () => isPartnerWithUsVisible.on()
     },
     {
       label: 'About Us',
-      path: 'about-us',
+      path: '/about-us',
     },
   ];
 
   const AnimatedLabel = (label: string) => {
+    
     return (
       <motion.div
         initial="initial"
@@ -53,6 +64,7 @@ export default function Navbar() {
             ease: 'easeInOut',
             duration: 0.2,
           }}
+          // className={`${isActive && 'text-primary-500'}`}
         >
           {label}
         </motion.div>
@@ -88,8 +100,17 @@ export default function Navbar() {
         </div>
         <ul className="hidden text-white md:flex gap-3 items-center text-sm font-montserrat font-bold">
           {routes.map((route, index) => (
-            <li className="relative flex items-center gap-3" key={route.path}>
-              <Link href={route.path}>{AnimatedLabel(route.label)}</Link>
+            <li
+              onClick={() => route?.func?.()}
+              className="relative flex items-center gap-3"
+              key={index}
+            >
+              <Link
+                href={route.path ? route.path : currentRoute}
+                className={`${isActive(route.path || '') && 'text-primary-500'}`}
+              >
+                {AnimatedLabel(route.label)}
+              </Link>
               {index < routes.length - 1 && (
                 <div className="w-1 h-1 rounded-full bg-white"></div>
               )}
@@ -118,6 +139,10 @@ export default function Navbar() {
         routes={routes}
         isNavOpen={isMobileNavVisible.value}
         closeNav={closeNav}
+      />
+      <PartnerWithUs
+        isOpen={isPartnerWithUsVisible.value}
+        onClose={() => isPartnerWithUsVisible.off()}
       />
     </nav>
   );

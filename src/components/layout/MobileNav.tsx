@@ -1,20 +1,30 @@
+'use client'
+
 import Link from 'next/link';
 
 import BullishLogo from '@/assets/svg/logo-dark.svg';
 
 import UiButton from '../ui/UiButton';
 import UiIcon from '../ui/UiIcon';
+import { usePathname } from 'next/navigation';
 
 interface Props {
   routes: {
-    path: string;
+    path?: string;
     label: string;
+    func?: VoidFunction
   }[];
   isNavOpen: boolean;
   closeNav: VoidFunction;
 }
 
 export default function MobileNav({ routes, isNavOpen, closeNav }: Props) {
+  const currentRoute = usePathname();
+    
+  function isActive(href: string) {
+    return currentRoute === href
+  };
+
   return (
     <nav
       className={`fixed z-40 md:hidden top-0 left-0 flex flex-col justify-between bg-primary-500 w-full h-screen px-4 pb-8 transition-transform ease-in-out duration-300 ${
@@ -32,12 +42,13 @@ export default function MobileNav({ routes, isNavOpen, closeNav }: Props) {
           </button>
         </div>
         <ul className="text-secondary-500 md:flex gap-3 items-center text-sm font-montserrat ">
-          {routes.map((route) => (
+          {routes.map((route, index) => (
             <li
-              className="relative flex items-center gap-3 border-b border-secondary-500 py-4 text-sm font-semibold"
-              key={route.path}
+              onClick={() => route?.func?.()}
+              className={`relative flex items-center gap-3 border-b border-secondary-500 py-4 text-sm  ${isActive(route.path || '') ? 'font-black' : 'font-semibold'}`}
+              key={index}
             >
-              <Link href={route.path}>{route.label}</Link>
+              <Link href={route.path || currentRoute}>{route.label}</Link>
             </li>
           ))}
         </ul>

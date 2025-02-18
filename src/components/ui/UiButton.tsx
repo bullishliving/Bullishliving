@@ -6,9 +6,10 @@ const sizeClasses = {
 };
 
 const variantClasses = {
-  primary: 'bg-primary-500 text-secondary-500',
+  primary:
+    'bg-primary-500 hover:bg-primary-600 text-secondary-500 stroke-secondary-500',
   secondary: 'bg-secondary-500  text-primary-500',
-  white: 'bg-white text-secondary-500',
+  white: 'bg-white text-secondary-500 stroke-secondary-500',
 };
 
 export type BtnVariants = keyof typeof variantClasses;
@@ -43,7 +44,7 @@ export default function UiButton({
 }: Props) {
   return (
     <button
-      className={`outline-none whitespace-nowrap w-full flex gap-2 items-center justify-center font-bold font-montserrat ${
+      className={`outline-none whitespace-nowrap w-full text-sm flex gap-2 items-center justify-center font-bold font-montserrat transition-colors duration-150 ease-in rounded ${
         block && 'w-full'
       } ${variantClasses[variant]} ${sizeClasses[size]} ${
         roundedClasses[rounded]

@@ -1,19 +1,19 @@
 'use client'
 
 import React from 'react';
-// import { EmblaOptionsType } from 'embla-carousel';
+import Image, { StaticImageData } from 'next/image';
+import useEmblaCarousel from 'embla-carousel-react';
+
+import UiIcon from '../ui/UiIcon';
+import Notch from '../Notch';
+import NotchMobile from '../NotchMobile';
+
 import { DotButton, useDotButton } from './SliderDots';
 import {
   PrevButton,
   NextButton,
   usePrevNextButtons,
 } from './SliderArrowButtons';
-
-import useEmblaCarousel from 'embla-carousel-react';
-
-import UiIcon from '../ui/UiIcon';
-import Notch from '../Notch';
-import Image, { StaticImageData } from 'next/image';
 
 type PropType = {
   slides: { name: string; price: number; img: StaticImageData }[];
@@ -36,10 +36,11 @@ const Slider: React.FC<PropType> = (props) => {
   return (
     <div className="relative text-secondary-500">
       <div className="relative">
-        <div className="h-screen max-h-[658px] w-full rounded-3xl overflow-hidden bg-black">
+        <div className="xs:max-h-[373px] sm:max-h-[480px] md:h-screen md:max-h-[658px] w-full rounded-md sm:rounded-3xl overflow-hidden bg-black">
           <Notch />
+          <NotchMobile/>
           <button className="z-20 absolute top-4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group flex items-center gap-3 group">
-            <p className="text-secondary-500 text-sm font-bold">Buy Now</p>
+            <p className="text-secondary-500 text-sm font-bold font-montserrat">Buy Now</p>
             <div className="stroke-primary-500 flex justify-center items-center bg-secondary-500 rounded-full w-6 h-6 transition-transform duration-300 ease-in-out group-hover:rotate-[45deg]">
               <UiIcon icon="ArrowDiagonal" size="24" />
             </div>
@@ -83,13 +84,13 @@ const Slider: React.FC<PropType> = (props) => {
             <DotButton
               key={index}
               onClick={() => onDotButtonClick(index)}
-              className={'embla__dot w-2 h-2 rounded-full border border-black'.concat(
+              className={'embla__dot w-2 h-2 rounded-full border transition-colors ease-in duration-200 border-black'.concat(
                 index === selectedIndex ? ' bg-black' : ''
               )}
             />
           ))}
         </div>
-        <div className="md:hidden flex justify-between items-center border border-red-600 w-full mt-[11px]">
+        <div className="md:hidden flex justify-between items-center w-full mt-[11px]">
           <PrevButton
             onClick={onPrevButtonClick}
             disabled={prevBtnDisabled}
