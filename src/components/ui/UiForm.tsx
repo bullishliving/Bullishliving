@@ -45,7 +45,7 @@ export default function UiForm({
       onSubmit={onSubmit}
     >
       {({ errors, handleSubmit, isSubmitting }) => (
-        <form onSubmit={handleSubmit} data-testid="ui-form">
+        <form onSubmit={handleSubmit}>
           {children({
             errors,
             hasErrors: !!errors.length,

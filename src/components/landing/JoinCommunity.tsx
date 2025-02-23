@@ -1,7 +1,15 @@
 'use client'
+import Link from "next/link";
 import { motion } from 'framer-motion';
 
+import { Api } from '@/api/supabaseService';
+
 import useObjectState from "@/hooks/useObjectState";
+
+import CommunityMember from '@/types/CommunityMember';
+
+import useToggle from "@/hooks/useToggle";
+import JoinCommunitySchema from "@/utils/schemas/JoinCommunitySchema";
 import { socials } from "@/utils/constant";
 
 import AnimatedTitle from "../animations/AnimatedTitle";
@@ -11,15 +19,17 @@ import UiForm from "../ui/UiForm";
 import UiInput from "../ui/UiInput";
 import UiButton from "../ui/UiButton";
 import UiIcon, { Icons } from "../ui/UiIcon";
-import Link from "next/link";
+import showToast from "../ui/UiToast";
 
 
-export default function Community() {
+export default function JoinCommunity() {
   const formData = useObjectState({
     name: '',
     email: '',
     phone: '',
   });
+
+  const loading = useToggle();
 
   const containerVariants = {
     animate: {
@@ -43,6 +53,20 @@ export default function Community() {
     },
   };
 
+  async function onSubmit() {    
+    try {
+      loading.on()
+      await Api.addCommunityMember(formData.value as CommunityMember);
+      showToast('You’ve successfully joined the community! 🎉', 'success');
+    } catch (error) {
+      console.log(error);
+        showToast('oops, an error occured', 'error');
+        throw new Error(`An error occured when adding memeber ${error}`)
+    } finally {
+      loading.off()
+    }
+  }
+
   return (
     <section className="bg-primary-500 px-4 py-16 md:py-24 md:px-6 2xl:px-8">
       <div className="max-w-[1280px] mx-auto">
@@ -65,14 +89,19 @@ export default function Community() {
             <h3 className="text-white font-obitron font-black text-xl mb-6">
               Run Together. Grow Stronger
             </h3>
-            <UiForm formData={formData} onSubmit={() => {}}>
-              {({}) => (
+            <UiForm
+              formData={formData.value}
+              onSubmit={onSubmit}
+              schema={JoinCommunitySchema}
+            >
+              {({ errors }) => (
                 <div className="grid gap-6">
                   <UiInput
                     name="name"
                     onChange={formData.set}
                     value={formData.value.name}
                     placeholder="Enter Fullname"
+                    error={errors.name}
                     variant="transparent"
                   />
                   <UiInput
@@ -80,6 +109,7 @@ export default function Community() {
                     onChange={formData.set}
                     value={formData.value.email}
                     placeholder="Enter your email address"
+                    error={errors.email}
                     variant="transparent"
                   />
                   <UiInput
@@ -88,9 +118,10 @@ export default function Community() {
                     onChange={formData.set}
                     value={formData.value.phone}
                     placeholder="Enter your email address"
+                    error={errors.phone}
                     variant="transparent"
                   />
-                  <UiButton variant="white">
+                  <UiButton variant="white" loading={loading.value}>
                     Subscribe
                     <UiIcon icon="ArrowDiagonal" size="24" />
                   </UiButton>

@@ -151,6 +151,36 @@ textarea::placeholder {
   background-color: red !important;
 }
 
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(20px);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.2s ease-in-out forwards;
+}
+
+.animate-fadeOut {
+  animation: fadeOut 0.2s ease-in-out forwards;
+}
+
 @media(max-width: 1024px) {
   .product-grid{
     grid-template-columns: repeat(3, 1fr);

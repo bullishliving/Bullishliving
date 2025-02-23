@@ -21,7 +21,7 @@ export default function UiField({
         {isOptional && <span className="text-gray-600">(optional)</span>}
       </label>
       {children}
-      <div data-testid="error-text" className=" text-danger-500 text-xs">
+      <div data-testid="error-text" className=" text-red-500 text-xs">
         {error}
       </div>
       <div className="text-xs text-gray-900">{hint}</div>

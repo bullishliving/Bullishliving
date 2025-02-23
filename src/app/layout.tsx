@@ -1,5 +1,6 @@
 import { Orbitron } from 'next/font/google';
 import { Montserrat } from 'next/font/google';
+import ToastProvider from '@/components/ToastProvider';
 
 import type { Metadata } from 'next';
 import './globals.css';
@@ -31,6 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${montserrat.variable} ${orbitron.variable}`}>
+        <ToastProvider/>
         {children}
       </body>
     </html>

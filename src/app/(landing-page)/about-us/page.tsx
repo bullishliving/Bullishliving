@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 import GuySkating from '@/assets/images/guy-skating.png';
 
-import Community from "@/components/landing/Community";
+import Community from "@/components/landing/JoinCommunity";
 import Unstoppable from "@/components/landing/Unstoppable";
 
 export default function AboutUs() {
