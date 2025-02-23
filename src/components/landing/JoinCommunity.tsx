@@ -120,7 +120,7 @@ export default function JoinCommunity() {
                     error={errors.phone}
                     variant="transparent"
                   />
-                  <UiButton variant="white" loading={true}>
+                  <UiButton variant="white" loading={loading.value}>
                     Subscribe
                     <UiIcon icon="ArrowDiagonal" size="24" />
                   </UiButton>
