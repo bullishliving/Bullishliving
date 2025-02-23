@@ -27,12 +27,12 @@ export default function UiForm({
       errors = error.inner.reduce(
         (
           acc: Record<string, string>,
-          { path, message }: { path: string; message: string },
+          { path, message }: { path: string; message: string }
         ) => {
           acc[path] = message;
           return acc;
         },
-        {},
+        {}
       );
     }
     return errors;

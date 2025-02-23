@@ -1,4 +1,4 @@
 export enum SupabaseTables {
   COMMUNITY = 'community',
-  PARTNERS = 'partners'
+  PARTNERS = 'partners',
 }

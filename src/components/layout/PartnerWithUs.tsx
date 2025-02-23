@@ -1,13 +1,11 @@
-'use client'
+'use client';
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-
 import { Api } from '@/api/supabaseService';
 
 import Logo from '@/assets/svg/logo.svg';
-
 
 import useObjectState from '@/hooks/useObjectState';
 import useToggle from '@/hooks/useToggle';
@@ -39,7 +37,7 @@ export default function PartnerWithUs({ isOpen, onClose }: Props) {
     phone: '',
     role: '',
     socials: [...socials],
-    why_collaborate: ''
+    why_collaborate: '',
   });
 
   const loading = useToggle();
@@ -53,50 +51,50 @@ export default function PartnerWithUs({ isOpen, onClose }: Props) {
     },
     exit: {
       opacity: 0,
-      y: -5, 
+      y: -5,
       transition: { duration: 0.1, ease: 'easeOut' },
     },
   };
 
   function handleSocialsChange(index: number, value: string) {
-    const updatedSocials = [...socials]
-    updatedSocials[index] = value
+    const updatedSocials = [...socials];
+    updatedSocials[index] = value;
     setSocials(updatedSocials);
     formData.set({ name: 'socials', value: updatedSocials });
   }
 
   function addSocial() {
     const updatedSocials = [...socials, ''];
-    setSocials(updatedSocials)
+    setSocials(updatedSocials);
   }
 
   function removeSocial(index: number) {
     const updatedSocials = [...socials];
     updatedSocials.splice(index, 1);
     console.log(updatedSocials);
-    
-    setSocials(updatedSocials)
+
+    setSocials(updatedSocials);
   }
 
   function resetState() {
-    formData.reset()
-    setSocials([''])
+    formData.reset();
+    setSocials(['']);
   }
 
   async function onSubmit() {
     try {
-      loading.on()
-      await Api.addPartner(formData.value)
+      loading.on();
+      await Api.addPartner(formData.value);
       showToast('Application successful! 🎉', 'success');
       resetState();
     } catch (error) {
       showToast('oops, an error occured', 'error');
-      throw new Error(`An error occured when adding memeber ${error}`)
+      throw new Error(`An error occured when adding memeber ${error}`);
     } finally {
-      loading.off()
+      loading.off();
     }
   }
-  
+
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : 'unset';
   }, [isOpen]);
@@ -166,7 +164,7 @@ export default function PartnerWithUs({ isOpen, onClose }: Props) {
                         <div className="grid gap-2">
                           {socials.map((__, index) => (
                             <motion.div
-                              key={index} 
+                              key={index}
                               initial="hidden"
                               animate="visible"
                               exit="exit"

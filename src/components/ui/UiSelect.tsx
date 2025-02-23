@@ -44,7 +44,6 @@ export default function UiSelect({
   error,
   onChange,
 }: Props) {
-
   const [optionsAreVisible, setOptionsAreVisible] = useState(false);
 
   const displayText = useMemo(() => {
@@ -64,9 +63,7 @@ export default function UiSelect({
   }, [error]);
 
   const placeholderStyle = useMemo(() => {
-    return variant === 'dark'
-      ? 'text-grey-600'
-        : 'text-grey-700';
+    return variant === 'dark' ? 'text-grey-600' : 'text-grey-700';
   }, [variant]);
 
   function selectOption(value: string | boolean) {

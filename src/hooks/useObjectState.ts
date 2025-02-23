@@ -2,7 +2,7 @@ import { useState } from 'react';
 import OnChangeParams from '../types/OnChangeParams';
 
 export default function useObjectState<T = Record<string, string>>(
-  data = {} as T,
+  data = {} as T
 ) {
   const [value, setValue] = useState(data);
 

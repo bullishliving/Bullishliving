@@ -57,18 +57,20 @@ input:-webkit-autofill {
   user-select: none;
 }
 
-.product-grid{
+.product-grid {
   grid-template-columns: repeat(4, 1fr);
 }
 
 .unstoppable {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('../assets/images/boxer.jpg');  background-repeat: no-repeat;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
+    url('../assets/images/boxer.jpg');
+  background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
 
-.community-bg-image{
-  background-image: url('../assets/images/woman-carrying-weights.jpg');  
+.community-bg-image {
+  background-image: url('../assets/images/woman-carrying-weights.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -99,16 +101,16 @@ input:-webkit-autofill {
   font-weight: 400 !important;
 }
 
-.transparent .PhoneInputInput::placeholder{
+.transparent .PhoneInputInput::placeholder {
   color: white !important;
 }
 
-.dark .PhoneInputInput::placeholder{
+.dark .PhoneInputInput::placeholder {
   color: #717171 !important;
 }
 
-.light .PhoneInputInput::placeholder{
-  color: #4B525A !important;
+.light .PhoneInputInput::placeholder {
+  color: #4b525a !important;
 }
 
 [data-state='checked'] svg {
@@ -140,7 +142,7 @@ textarea {
   border-radius: 14px;
   padding: 1rem;
   outline: none;
-  transition: all .18s ease-in;
+  transition: all 0.18s ease-in;
 }
 
 textarea::placeholder {
@@ -181,34 +183,31 @@ textarea::placeholder {
   animation: fadeOut 0.2s ease-in-out forwards;
 }
 
-@media(max-width: 1024px) {
-  .product-grid{
+@media (max-width: 1024px) {
+  .product-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
-@media(max-width: 700px) {
-  .product-grid{
+@media (max-width: 700px) {
+  .product-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media(max-width: 350px) {
-  .product-grid{
+@media (max-width: 350px) {
+  .product-grid {
     grid-template-columns: repeat(1, 1fr);
   }
 }
 
-
-@media(max-width: 1200px) {
-  .notch{
+@media (max-width: 1200px) {
+  .notch {
     top: -2.4%;
   }
 }
-
 
 @layer base {
   :root {
     --radius: 0.5rem;
   }
 }
-

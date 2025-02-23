@@ -7,7 +7,9 @@ export default function Footer() {
         <div className="w-10 h-[27px]">
           <Logo />
         </div>
-        <p className="mt-6 text-white font-montserrat text-sm">© 2024, BullishLiving Essentials</p>
+        <p className="mt-6 text-white font-montserrat text-sm">
+          © 2024, BullishLiving Essentials
+        </p>
       </div>
     </footer>
   );

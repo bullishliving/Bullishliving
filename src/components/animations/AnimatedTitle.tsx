@@ -1,15 +1,19 @@
-
 import { motion } from 'framer-motion';
 import { useMemo } from 'react';
 
 interface Props {
   text: string;
   textStyle?: string;
-  containerStyles?: string
-  straight?: boolean
+  containerStyles?: string;
+  straight?: boolean;
 }
 
-export default function AnimatedTitle({ text, textStyle, containerStyles, straight }: Props) {
+export default function AnimatedTitle({
+  text,
+  textStyle,
+  containerStyles,
+  straight,
+}: Props) {
   const splitText = useMemo(() => {
     const textVatiants = {
       initial: {

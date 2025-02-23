@@ -6,7 +6,11 @@ interface Props {
   children: React.ReactNode;
 }
 
-export default function FadeIn({ children, delay = 0.6 , duration= 0.4}: Props) {
+export default function FadeIn({
+  children,
+  delay = 0.6,
+  duration = 0.4,
+}: Props) {
   return (
     <motion.div
       initial={{ opacity: 0 }}

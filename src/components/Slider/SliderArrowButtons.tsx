@@ -56,20 +56,17 @@ export const usePrevNextButtons = (
 type PropType = ComponentPropsWithRef<'button'>;
 
 export const PrevButton: React.FC<PropType> = (props) => {
-  const {...restProps } = props;
+  const { ...restProps } = props;
 
   return (
-    <button
-      type="button"
-      {...restProps}
-    >
-      <UiIcon icon='ArrowLeft' size='40'/>
+    <button type="button" {...restProps}>
+      <UiIcon icon="ArrowLeft" size="40" />
     </button>
   );
 };
 
 export const NextButton: React.FC<PropType> = (props) => {
-  const {...restProps } = props;
+  const { ...restProps } = props;
 
   return (
     <button
