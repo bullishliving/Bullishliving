@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React from 'react';
 import Image, { StaticImageData } from 'next/image';
@@ -21,7 +21,7 @@ type PropType = {
 
 const Slider: React.FC<PropType> = (props) => {
   const { slides } = props;
-  const [emblaRef, emblaApi] = useEmblaCarousel({loop: true});
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
     useDotButton(emblaApi);
@@ -38,9 +38,11 @@ const Slider: React.FC<PropType> = (props) => {
       <div className="relative">
         <div className="xs:max-h-[373px] sm:max-h-[480px] md:h-screen md:max-h-[658px] w-full rounded-md sm:rounded-3xl overflow-hidden bg-black">
           <Notch />
-          <NotchMobile/>
+          <NotchMobile />
           <button className="z-20 absolute top-4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group flex items-center gap-3 group">
-            <p className="text-secondary-500 text-sm font-bold font-montserrat">Buy Now</p>
+            <p className="text-secondary-500 text-sm font-bold font-montserrat">
+              Buy Now
+            </p>
             <div className="stroke-primary-500 flex justify-center items-center bg-secondary-500 rounded-full w-6 h-6 transition-transform duration-300 ease-in-out group-hover:rotate-[45deg]">
               <UiIcon icon="ArrowDiagonal" size="24" />
             </div>

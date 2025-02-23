@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import UiButton from '../ui/UiButton';
 import UiIcon from '../ui/UiIcon';

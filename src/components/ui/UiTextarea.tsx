@@ -24,7 +24,7 @@ interface Props {
 export default function UiTextarea({
   value,
   label,
-  variant= 'light',
+  variant = 'light',
   name,
   placeholder,
   disabled,

@@ -36,7 +36,7 @@ export default function UiInput({
   placeholder,
   disabled,
   error,
-  variant= 'light',
+  variant = 'light',
   onChange,
   prefixNode,
   suffixNode,
@@ -65,7 +65,7 @@ export default function UiInput({
       : variant === 'light'
         ? 'placeholder:text-grey-700'
         : 'placeholder:text-white';
-  }, [variant])
+  }, [variant]);
 
   const phoneCodeStyle = useMemo(() => {
     return variant === 'dark'
@@ -73,10 +73,10 @@ export default function UiInput({
       : variant === 'light'
         ? 'text-grey-700 border-grey-300'
         : 'text-white border-[#bab8b8a5]';
-  }, [variant])
+  }, [variant]);
 
   const validationStyle = useMemo(() => {
-    return error && 'border-danger-200' ;
+    return error && 'border-danger-200';
   }, [error]);
 
   return (
@@ -92,9 +92,7 @@ export default function UiInput({
 
         {type === 'phone' ? (
           <div className="flex items-center w-full">
-            <span className={`pr-2 border-r ${phoneCodeStyle}`}>
-              +234
-            </span>
+            <span className={`pr-2 border-r ${phoneCodeStyle}`}>+234</span>
             <PhoneInput
               country="NG"
               defaultCountry="NG"

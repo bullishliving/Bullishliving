@@ -2,13 +2,13 @@ import Image from 'next/image';
 
 import BullishSinglet from '@/assets/images/bullish-singlet.png';
 
-import Product from "@/types/Product";
+import Product from '@/types/Product';
 
 interface Props {
-  product: Product
+  product: Product;
 }
 
-export default function ProductCard({ product }:Props) {
+export default function ProductCard({ product }: Props) {
   return (
     <div className="max-w-[302px]">
       <div className="h-[165px] xs:h-[256px] lg:h-[363px] mb-3">

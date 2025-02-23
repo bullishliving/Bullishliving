@@ -1,26 +1,25 @@
-'use client'
-import Link from "next/link";
+'use client';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 import { Api } from '@/api/supabaseService';
 
-import useObjectState from "@/hooks/useObjectState";
+import useObjectState from '@/hooks/useObjectState';
 
 import CommunityMember from '@/types/CommunityMember';
 
-import useToggle from "@/hooks/useToggle";
-import JoinCommunitySchema from "@/utils/schemas/JoinCommunitySchema";
-import { socials } from "@/utils/constant";
+import useToggle from '@/hooks/useToggle';
+import JoinCommunitySchema from '@/utils/schemas/JoinCommunitySchema';
+import { socials } from '@/utils/constant';
 
-import AnimatedTitle from "../animations/AnimatedTitle";
-import FadeIn from "../animations/FadeIn";
+import AnimatedTitle from '../animations/AnimatedTitle';
+import FadeIn from '../animations/FadeIn';
 
-import UiForm from "../ui/UiForm";
-import UiInput from "../ui/UiInput";
-import UiButton from "../ui/UiButton";
-import UiIcon, { Icons } from "../ui/UiIcon";
-import showToast from "../ui/UiToast";
-
+import UiForm from '../ui/UiForm';
+import UiInput from '../ui/UiInput';
+import UiButton from '../ui/UiButton';
+import UiIcon, { Icons } from '../ui/UiIcon';
+import showToast from '../ui/UiToast';
 
 export default function JoinCommunity() {
   const formData = useObjectState({
@@ -53,17 +52,17 @@ export default function JoinCommunity() {
     },
   };
 
-  async function onSubmit() {    
+  async function onSubmit() {
     try {
-      loading.on()
+      loading.on();
       await Api.addCommunityMember(formData.value as CommunityMember);
       showToast('You’ve successfully joined the community! 🎉', 'success');
     } catch (error) {
       console.log(error);
-        showToast('oops, an error occured', 'error');
-        throw new Error(`An error occured when adding memeber ${error}`)
+      showToast('oops, an error occured', 'error');
+      throw new Error(`An error occured when adding memeber ${error}`);
     } finally {
-      loading.off()
+      loading.off();
     }
   }
 
@@ -121,7 +120,7 @@ export default function JoinCommunity() {
                     error={errors.phone}
                     variant="transparent"
                   />
-                  <UiButton variant="white" loading={loading.value}>
+                  <UiButton variant="white" loading={true}>
                     Subscribe
                     <UiIcon icon="ArrowDiagonal" size="24" />
                   </UiButton>

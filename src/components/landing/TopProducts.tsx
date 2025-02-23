@@ -8,7 +8,7 @@ import Slider from '../slider/Slider';
 
 export default function TopProducts() {
   return (
-    <section className="bg-primary-500 px-4 py-16 md:py-24 md:px-6 2xl:px-8"> 
+    <section className="bg-primary-500 px-4 py-16 md:py-24 md:px-6 2xl:px-8">
       <div className="max-w-[1280px] mx-auto">
         <div className="flex flex-col md:flex-row gap-2 items-center md:justify-between mb-10">
           <h3 className="font-obitron text-center md:text-left font-black text-[34px] leading-[44px] md:text-[40px] md:leading-[52px] text-secondary-500">

@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 
 import BullishLogo from '@/assets/svg/logo.svg';
 
-
 import useToggle from '@/hooks/useToggle';
 
 import UiIcon from '../ui/UiIcon';
@@ -25,7 +24,7 @@ export default function Navbar() {
   const isPartnerWithUsVisible = useToggle();
 
   function isActive(href: string) {
-    return currentRoute === href
+    return currentRoute === href;
   }
 
   const routes = [
@@ -39,7 +38,7 @@ export default function Navbar() {
     },
     {
       label: 'Partner With Us',
-      func: () => isPartnerWithUsVisible.on()
+      func: () => isPartnerWithUsVisible.on(),
     },
     {
       label: 'About Us',
@@ -48,7 +47,6 @@ export default function Navbar() {
   ];
 
   const AnimatedLabel = (label: string) => {
-    
     return (
       <motion.div
         initial="initial"

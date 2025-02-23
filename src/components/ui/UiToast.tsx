@@ -1,6 +1,6 @@
-import { toast, Toast } from "react-hot-toast";
-import { X, CheckCircle, AlertCircle, Info } from "lucide-react";
-import clsx from "clsx";
+import { toast, Toast } from 'react-hot-toast';
+import { X, CheckCircle, AlertCircle, Info } from 'lucide-react';
+import clsx from 'clsx';
 
 const toastStyles = {
   success: 'bg-[#fff9e6] text-primary-500 border-primary-600',
@@ -23,7 +23,7 @@ const CustomToast = ({
 }: {
   t: Toast;
   message: string;
-  type: "success" | "error" | "warning" | "info";
+  type: 'success' | 'error' | 'warning' | 'info';
 }) => {
   return (
     <div
@@ -44,10 +44,10 @@ const CustomToast = ({
 
 export default function showToast(
   message: string,
-  type: "success" | "error" | "warning" | "info" = "success"
+  type: 'success' | 'error' | 'warning' | 'info' = 'success'
 ) {
   toast.custom((t) => <CustomToast t={t} message={message} type={type} />, {
-    position: "top-right",
+    position: 'top-right',
     duration: 4000, // Keeps it consistent with built-in toast durations
   });
 }

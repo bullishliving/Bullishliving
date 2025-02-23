@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import Link from 'next/link';
 
@@ -12,7 +12,7 @@ interface Props {
   routes: {
     path?: string;
     label: string;
-    func?: VoidFunction
+    func?: VoidFunction;
   }[];
   isNavOpen: boolean;
   closeNav: VoidFunction;
@@ -20,10 +20,10 @@ interface Props {
 
 export default function MobileNav({ routes, isNavOpen, closeNav }: Props) {
   const currentRoute = usePathname();
-    
+
   function isActive(href: string) {
-    return currentRoute === href
-  };
+    return currentRoute === href;
+  }
 
   return (
     <nav

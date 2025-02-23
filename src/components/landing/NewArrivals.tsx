@@ -1,5 +1,5 @@
-import UiIcon from "../ui/UiIcon";
-import NewArrivalsList from "../products/NewArrivalsList";
+import UiIcon from '../ui/UiIcon';
+import NewArrivalsList from '../products/NewArrivalsList';
 
 export default function NewArrivals() {
   return (

@@ -2,8 +2,8 @@ import Image from 'next/image';
 
 import GuySkating from '@/assets/images/guy-skating.png';
 
-import Community from "@/components/landing/JoinCommunity";
-import Unstoppable from "@/components/landing/Unstoppable";
+import Community from '@/components/landing/JoinCommunity';
+import Unstoppable from '@/components/landing/Unstoppable';
 
 export default function AboutUs() {
   const aboutSections = [
@@ -91,7 +91,7 @@ export default function AboutUs() {
   ];
 
   function isEvenSection(index: number) {
-    return index % 2 === 0
+    return index % 2 === 0;
   }
   return (
     <div>

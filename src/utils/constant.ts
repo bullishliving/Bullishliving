@@ -1,4 +1,4 @@
-import { Option } from "@/components/ui/UiSelect";
+import { Option } from '@/components/ui/UiSelect';
 
 export const socials = ['Instagram', 'Snapchat', 'TikTok', 'Email'];
 
@@ -23,4 +23,4 @@ export const roleOptions: Option[] = [
     value: 'others',
     func: () => {},
   },
-  ];
+];

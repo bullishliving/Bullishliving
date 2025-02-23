@@ -1,39 +1,39 @@
-import Product from "@/types/Product";
+import Product from '@/types/Product';
 
 export const products: Product[] = [
   {
-    name: "Athletic Leggings",
+    name: 'Athletic Leggings',
     price: 39000,
-    image: "https://example.com/images/leggings.jpg" 
+    image: 'https://example.com/images/leggings.jpg',
   },
   {
-    name: "Sports Bra",
+    name: 'Sports Bra',
     price: 24900,
-    image: "https://example.com/images/sports-bra.jpg"
+    image: 'https://example.com/images/sports-bra.jpg',
   },
   {
-    name: "Running Shoes",
+    name: 'Running Shoes',
     price: 89000,
-    image: "https://example.com/images/running-shoes.jpg"
+    image: 'https://example.com/images/running-shoes.jpg',
   },
   {
-    name: "Training Shorts",
+    name: 'Training Shorts',
     price: 29000,
-    image: "https://example.com/images/shorts.jpg"
+    image: 'https://example.com/images/shorts.jpg',
   },
   {
-    name: "Yoga Mat",
+    name: 'Yoga Mat',
     price: 19900,
-    image: "https://example.com/images/yoga-mat.jpg"
+    image: 'https://example.com/images/yoga-mat.jpg',
   },
   {
-    name: "Workout Gloves",
+    name: 'Workout Gloves',
     price: 14900,
-    image: "https://example.com/images/workout-gloves.jpg"
+    image: 'https://example.com/images/workout-gloves.jpg',
   },
   {
-    name: "Resistance Bands",
+    name: 'Resistance Bands',
     price: 12900,
-    image: "https://example.com/images/resistance-bands.jpg"
+    image: 'https://example.com/images/resistance-bands.jpg',
   },
 ];

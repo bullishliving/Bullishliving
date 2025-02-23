@@ -1,4 +1,5 @@
 import { MouseEventHandler } from 'react';
+import UiLoader from './UiLoader';
 
 const sizeClasses = {
   lg: 'h-[46px]',
@@ -54,7 +55,7 @@ export default function UiButton({
       data-testid="ui-button"
       onClick={onClick}
     >
-      {loading ? 'loading...' : children}
+      {loading ? <UiLoader size="sm" /> : children}
     </button>
   );
 }
