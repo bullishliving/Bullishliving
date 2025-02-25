@@ -125,7 +125,7 @@ export default function Page() {
           </div>
           <div className="flex justify-end">
             <div className="md:max-w-[157px] flex-1">
-              <UiButton>
+              <UiButton onClick={() => isPartnerWithUsVisible.on()}>
                 Apply Now
                 <UiIcon icon="ArrowDiagonal" size="24" />
               </UiButton>

@@ -102,7 +102,7 @@ export default function PartnerWithUs({ isOpen, onClose }: Props) {
   return (
     <>
       {isOpen && (
-        <div className="fixed z-50  w-full h-full top-0 left-0 bg-secondary-500 text-white overflow-y-auto pb-8 px-4 md:px-6">
+        <div className="fixed z-50  w-full h-full top-0 left-0 bg-secondary-500 text-white overflow-y-auto pb-8  md:px-6">
           <header className="flex justify-between items-center py-4 px-4 md:px-6 md:py-8 2xl:p-8 max-w-[1280px] mx-auto">
             <div className="w-10 h-[27px] md:w-14 md:h-[38px] fill-primary-500 stroke-primary-500">
               <Logo />
@@ -111,7 +111,7 @@ export default function PartnerWithUs({ isOpen, onClose }: Props) {
               <UiIcon icon="Close" size="32" />
             </button>
           </header>
-          <main className="max-w-[845px] mx-auto">
+          <main className="max-w-[845px] mx-auto px-4">
             <h2 className="font-obitron font-black text-white text-2xl mb-4">
               Partner with Us
             </h2>
