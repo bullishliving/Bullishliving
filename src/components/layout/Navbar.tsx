@@ -30,7 +30,7 @@ export default function Navbar() {
     },
     {
       label: 'Partner With Us',
-      path: ''
+      path: '/partnership-details',
     },
     {
       label: 'About Us',
