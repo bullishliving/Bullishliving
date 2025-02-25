@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { EmblaCarouselType } from 'embla-carousel';
 
-import UiIcon from '../ui/UiIcon';
+import UiIcon from './ui/UiIcon';
 
 type UsePrevNextButtonsType = {
   prevBtnDisabled: boolean;
