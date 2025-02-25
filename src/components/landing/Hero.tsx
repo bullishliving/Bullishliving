@@ -38,8 +38,8 @@ export default function Hero() {
         <div className="relative flex flex-col md:flex-row gap-2 md:items-end -mt-8 sm:-mt-9 md:-mt-[3.7rem] z-10">
           <h2 className="relative block text-primary-500 text-[40px] leading-[48px] sm:text-6xl md:text-6xl xl:text-[100px] font-obitron font-black md:leading-[72px] xl:leading-[100px]">
             <AnimatedTitle
-              text="Where fitness meets fashion"
-              textStyle="mr-4 sm:mr-5 md:mr-8 lg:mr-10 inline-block overflow-hidden"
+              text="Designed to stay active"
+              textStyle="mr-4 sm:mr-5 md:mr-8 lg:mr-10 inline-block pb-2"
             />
           </h2>
           <FadeIn>

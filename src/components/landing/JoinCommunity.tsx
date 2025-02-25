@@ -20,6 +20,7 @@ import UiInput from '../ui/UiInput';
 import UiButton from '../ui/UiButton';
 import UiIcon, { Icons } from '../ui/UiIcon';
 import showToast from '../ui/UiToast';
+import OrSeperator from '../OrSeperator';
 
 export default function JoinCommunity() {
   const formData = useObjectState({
@@ -77,13 +78,13 @@ export default function JoinCommunity() {
           />
         </h2>
         <FadeIn>
-          <p className="font-montserrat text-secondary-500  max-w-[738px] mx-auto text-center text-sm md:text-base">
+          <p className="font-montserrat  text-secondary-500  max-w-[738px] mx-auto text-center text-sm md:text-base">
             {' '}
             Whether you’re a seasoned runner or just starting out, join a
             vibrant community that inspires, supports, and moves with purpose
           </p>
         </FadeIn>
-        <div className="community-bg-image flex justify-center items-center rounded-2xl h-[537px] px-4 mt-10">
+        <div className="community-bg-image flex justify-center items-center rounded-2xl md:h-[537px] px-4 py-[30px] mt-10">
           <div className="w-full max-w-[459px] px-6 py-8 md:p-10 bg-[#FFFFFF0D] backdrop-blur-[20px] border border-[#bab8b871] rounded-2xl">
             <h3 className="text-white font-obitron font-black text-xl mb-6">
               Run Together. Grow Stronger
@@ -127,6 +128,27 @@ export default function JoinCommunity() {
                 </div>
               )}
             </UiForm>
+            <div className="mt-6">
+              {' '}
+              <OrSeperator />
+            </div>
+            <div className="mt-6 flex flex-col sm:flex-row gap-4 sm:gap-8">
+              <p className="text-white text-sm font-montserrat">
+                Join bullish run community on{' '}
+                <a
+                  href=""
+                  className="font-bold text-orange-500 hover:text-orange-600"
+                >
+                  STRAVA
+                </a>{' '}
+                to win while running
+              </p>
+              <div className="min-w-[129px]">
+                <UiButton variant="orange">
+                  Join now <UiIcon icon="ArrowDiagonal" size="24" />
+                </UiButton>
+              </div>
+            </div>
           </div>
         </div>
         <motion.div
