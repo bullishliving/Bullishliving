@@ -4,9 +4,9 @@ import React from 'react';
 import Image, { StaticImageData } from 'next/image';
 import useEmblaCarousel from 'embla-carousel-react';
 
-import UiIcon from '../ui/UiIcon';
-import Notch from '../Notch';
-import NotchMobile from '../NotchMobile';
+import UiIcon from './ui/UiIcon';
+import Notch from './Notch';
+import NotchMobile from './NotchMobile';
 
 import { DotButton, useDotButton } from './SliderDots';  
 import {
