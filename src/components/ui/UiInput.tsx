@@ -105,7 +105,7 @@ export default function UiInput({
           </div>
         ) : (
           <input
-            className={`flex-1 outline-none text-white placeholder:text-sm placeholder:font-normal text-xs font-semibold h-full bg-transparent ${prefixNode ? 'pl-0' : ''}  ${placeholderStyle}`}
+            className={`flex-1 outline-none text-white placeholder:text-sm placeholder:font-normal text-base font-semibold h-full bg-transparent ${prefixNode ? 'pl-0' : ''}  ${placeholderStyle}`}
             placeholder={placeholder}
             type={inputType}
             value={value || ''}

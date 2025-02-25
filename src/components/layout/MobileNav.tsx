@@ -44,7 +44,10 @@ export default function MobileNav({ routes, isNavOpen, closeNav }: Props) {
         <ul className="text-secondary-500 md:flex gap-3 items-center text-sm font-montserrat ">
           {routes.map((route, index) => (
             <li
-              onClick={() => route?.func?.()}
+              onClick={() => {
+                route?.func?.();
+                closeNav()
+              }}
               className={`relative flex items-center gap-3 border-b border-secondary-500 py-4 text-sm  ${isActive(route.path || '') ? 'font-black' : 'font-semibold'}`}
               key={index}
             >

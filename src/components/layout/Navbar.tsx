@@ -26,7 +26,7 @@ export default function Navbar() {
     },
     {
       label: 'Running Community',
-      path: '#community',
+      path: '/#community',
     },
     {
       label: 'Partner With Us',
