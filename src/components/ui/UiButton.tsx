@@ -11,6 +11,7 @@ const variantClasses = {
     'bg-primary-500 hover:bg-primary-600 text-secondary-500 stroke-secondary-500',
   secondary: 'bg-secondary-500  text-primary-500',
   white: 'bg-white text-secondary-500 stroke-secondary-500',
+  orange: 'bg-orange-500 hover:bg-orange-600 text-white stroke-white',
 };
 
 export type BtnVariants = keyof typeof variantClasses;
@@ -23,7 +24,6 @@ const roundedClasses = {
 interface Props {
   children: React.ReactNode;
   variant?: BtnVariants;
-  block?: boolean;
   disabled?: boolean;
   loading?: boolean;
   rounded?: keyof typeof roundedClasses;
@@ -40,14 +40,11 @@ export default function UiButton({
   size = 'md',
   rounded = 'sm',
   type = 'submit',
-  block,
   onClick,
 }: Props) {
   return (
     <button
-      className={`outline-none whitespace-nowrap w-full text-sm flex gap-2 items-center justify-center font-bold font-montserrat transition-colors duration-150 ease-in rounded ${
-        block && 'w-full'
-      } ${variantClasses[variant]} ${sizeClasses[size]} ${
+      className={`outline-none whitespace-nowrap w-full text-sm flex gap-2 items-center justify-center font-bold font-montserrat transition-colors duration-150 ease-in rounded  ${variantClasses[variant]} ${sizeClasses[size]} ${
         roundedClasses[rounded]
       } ${disabled && 'cursor-not-allowed opacity-75'}`}
       disabled={disabled}

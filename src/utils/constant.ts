@@ -6,21 +6,17 @@ export const roleOptions: Option[] = [
   {
     label: 'Trainer',
     value: 'trainer',
-    func: () => {},
   },
   {
     label: 'Athlete',
     value: 'athlete',
-    func: () => {},
   },
   {
     label: 'Content Ceator',
     value: 'contentCeator',
-    func: () => {},
   },
   {
     label: 'Others',
     value: 'others',
-    func: () => {},
   },
 ];

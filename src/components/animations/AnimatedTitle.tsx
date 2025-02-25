@@ -42,7 +42,7 @@ export default function AnimatedTitle({
                 duration: 0.65,
                 delay: 0.025 * index,
               }}
-              className="overflow-hidden inline-block"
+              className="inline-block"
             >
               {word}
             </motion.span>

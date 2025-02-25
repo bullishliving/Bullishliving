@@ -153,6 +153,14 @@ textarea::placeholder {
   background-color: red !important;
 }
 
+.or-border {
+  background-image: linear-gradient(
+    253.85deg,
+    #ffffff -51.43%,
+    rgba(186, 184, 184, 0) 165.09%
+  );
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
