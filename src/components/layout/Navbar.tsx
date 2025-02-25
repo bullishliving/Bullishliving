@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 
 import BullishLogo from '@/assets/svg/logo.svg';
 
@@ -9,76 +8,35 @@ import useToggle from '@/hooks/useToggle';
 
 import UiIcon from '../ui/UiIcon';
 import SearchPanel from './SearchPanel';
-import { usePathname } from 'next/navigation';
 
 import MobileNav from './MobileNav';
+import NavItem from './NavItem';
 
 // --
 
 export default function Navbar() {
-  const currentRoute = usePathname();
 
   const isSearchPanelVisible = useToggle();
   const isMobileNavVisible = useToggle();
 
-  function isActive(href: string) {
-    return currentRoute === href;
-  }
-
   const routes = [
     {
       label: 'All Products',
-      path: '/all-products',
+      path: '',
     },
     {
       label: 'Running Community',
-      path: '/running-community',
+      path: '#community',
     },
     {
       label: 'Partner With Us',
+      path: ''
     },
     {
       label: 'About Us',
       path: '/about-us',
     },
   ];
-
-  const AnimatedLabel = (label: string) => {
-    return (
-      <motion.div
-        initial="initial"
-        whileHover="hovered"
-        className="relative overflow-hidden"
-      >
-        <motion.div
-          variants={{
-            initial: { y: 0 },
-            hovered: { y: '-100%' },
-          }}
-          transition={{
-            ease: 'easeInOut',
-            duration: 0.2,
-          }}
-          // className={`${isActive && 'text-primary-500'}`}
-        >
-          {label}
-        </motion.div>
-        <motion.div
-          variants={{
-            initial: { y: '100%' },
-            hovered: { y: 0 },
-          }}
-          transition={{
-            ease: 'easeInOut',
-            duration: 0.2,
-          }}
-          className="absolute inset-0 text-primary-500"
-        >
-          {label}
-        </motion.div>
-      </motion.div>
-    );
-  };
 
   function closeNav() {
     isMobileNavVisible.off();
@@ -95,14 +53,9 @@ export default function Navbar() {
           <BullishLogo />
         </Link>
         <ul className="hidden text-white md:flex gap-3 items-center text-sm font-montserrat font-bold">
-          {routes.map((route, index) => (
+          {routes.map((route, index) => (  
             <li className="relative flex items-center gap-3" key={index}>
-              <Link
-                href={route.path ? route.path : currentRoute}
-                className={`${isActive(route.path || '') && 'text-primary-500'}`}
-              >
-                {AnimatedLabel(route.label)}
-              </Link>
+              <NavItem {...route}/>
               {index < routes.length - 1 && (
                 <div className="w-1 h-1 rounded-full bg-white"></div>
               )}
