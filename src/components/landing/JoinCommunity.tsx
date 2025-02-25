@@ -68,7 +68,10 @@ export default function JoinCommunity() {
   }
 
   return (
-    <section className="bg-primary-500 px-4 py-16 md:py-24 md:px-6 2xl:px-8">
+    <section
+      id="community"
+      className="bg-primary-500 px-4 py-16 md:py-24 md:px-6 2xl:px-8"
+    >
       <div className="max-w-[1280px] mx-auto">
         <h2 className="font-obitron font-black text-center text-[34px] leading-[40px] md:text-[40px] md:leading-[52px] text-secondary-500 mb-2 md:mb-4">
           <AnimatedTitle
