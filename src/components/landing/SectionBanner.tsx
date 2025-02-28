@@ -1,7 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-
 import UiButton from '../ui/UiButton';
 import UiIcon from '../ui/UiIcon';
 import AnimatedTitle from '../animations/AnimatedTitle';
@@ -13,7 +11,6 @@ interface Props {
   CTAText: string;
   CTAFunc: VoidFunction;
   textAlign?: 'center' | 'left';
-  backBtn?: boolean;
 }
 
 export default function SectionBanner({
@@ -22,22 +19,10 @@ export default function SectionBanner({
   title,
   textAlign = 'center',
   CTAFunc,
-  backBtn,
 }: Props) {
-  const router = useRouter();
   return (
     <section className=" unstoppable">
       <div className="relative max-w-[1280px] h-[80vh] lg:h-screen px-4 py-16 md:py-24 md:px-6 2xl:px-8 mx-auto flex justify-center items-center">
-        {backBtn && (
-          <button
-            onClick={() => router.back()}
-            className="absolute hidden  top-10 stroke-white left-4 md:flex items-center gap-2 text-white text-sm font-montserrat font-bold"
-          >
-            <UiIcon icon="ArrowLeft" size="24" />
-            Back
-          </button>
-        )}
-
         <div
           className={`${textAlign === 'center' ? 'text-center' : 'text-left md:text-center'}`}
         >

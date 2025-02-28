@@ -68,14 +68,14 @@ input:-webkit-autofill {
 
 .unstoppable {
   background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
-    url('../assets/images/boxer.jpg');
+    url('../assets/images/boxer.gif');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
 
 .community-bg-image {
-  background-image: url('../assets/images/woman-carrying-weights.jpg');
+  background-image: url('../assets/images/runners.png');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

@@ -15,7 +15,6 @@ import NavItem from './NavItem';
 // --
 
 export default function Navbar() {
-
   const isSearchPanelVisible = useToggle();
   const isMobileNavVisible = useToggle();
 
@@ -53,9 +52,9 @@ export default function Navbar() {
           <BullishLogo />
         </Link>
         <ul className="hidden text-white md:flex gap-3 items-center text-sm font-montserrat font-bold">
-          {routes.map((route, index) => (  
+          {routes.map((route, index) => (
             <li className="relative flex items-center gap-3" key={index}>
-              <NavItem {...route}/>
+              <NavItem {...route} />
               {index < routes.length - 1 && (
                 <div className="w-1 h-1 rounded-full bg-white"></div>
               )}

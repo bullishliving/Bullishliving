@@ -1,9 +1,8 @@
-'use client'
+'use client';
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-
 
 interface NavItemProps {
   path: string;
@@ -12,7 +11,7 @@ interface NavItemProps {
 
 const NavItem: React.FC<NavItemProps> = ({ path, label }) => {
   const currentRoute = usePathname();
-  
+
   function isActive(href: string) {
     return currentRoute === href;
   }
@@ -59,10 +58,7 @@ const NavItem: React.FC<NavItemProps> = ({ path, label }) => {
       {AnimatedLabel(label)}
     </a>
   ) : (
-    <Link
-      href={path}
-      className={`${isActive(path) && 'text-primary-500'}`}
-    >
+    <Link href={path} className={`${isActive(path) && 'text-primary-500'}`}>
       {AnimatedLabel(label)}
     </Link>
   );

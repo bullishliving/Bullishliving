@@ -13,7 +13,7 @@ import UiIcon from '../ui/UiIcon';
 
 export default function Hero() {
   return (
-    <section className="bg-secondary-500 px-4 md:px-6 2xl:px-8 pb-16 md:pb-20 pt-5 md:pt-6">
+    <section className="bg-secondary-500 p-4 md:px-6 2xl:px-8 pb-16 md:pb-20 pt-5 md:pt-6">
       <div className="text-white max-w-[1280px] mx-auto h-full">
         <motion.div
           initial={{
@@ -39,11 +39,11 @@ export default function Hero() {
           <h2 className="relative block text-primary-500 text-[40px] leading-[48px] sm:text-6xl md:text-6xl xl:text-[100px] font-obitron font-black md:leading-[72px] xl:leading-[100px]">
             <AnimatedTitle
               text="Designed to stay active"
-              textStyle="mr-4 sm:mr-5 md:mr-8 lg:mr-10 inline-block pb-2"
+              textStyle="mr-4 sm:mr-5 md:mr-8 lg:mr-10 inline-block pb-[0.1rem]"
             />
           </h2>
           <FadeIn>
-            <p className="text-white text-base md:text-lg mb-6 font-montserrat">
+            <p className="text-white text-base md:text-lg mb-4 md:mb-6 font-montserrat">
               Inspiring strength & style to stay Ready for Whatever
             </p>
             <button className="group flex items-center gap-3 group">

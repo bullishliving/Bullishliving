@@ -42,7 +42,7 @@ export default function MoreThanALifestyle() {
           <Image
             src={ActiveGif}
             alt="guy skating"
-            className="max-w-full sm:max-w-[436px] max-h-[509px] md:max-h-[874px] w-fit mx-auto object-contain rounded-xl"
+            className="min-w-full sm:min-w-[436px] min-h-[343px] md:min-h-[874px] w-fit mx-auto object-contain rounded-xl"
           />
           <FadeIn>
             <div className="hidden xl:block max-w-[341px]">
