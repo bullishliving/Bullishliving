@@ -46,7 +46,7 @@ export default function MobileNav({ routes, isNavOpen, closeNav }: Props) {
             <li
               onClick={() => {
                 route?.func?.();
-                closeNav()
+                closeNav();
               }}
               className={`relative flex items-center gap-3 border-b border-secondary-500 py-4 text-sm  ${isActive(route.path || '') ? 'font-black' : 'font-semibold'}`}
               key={index}

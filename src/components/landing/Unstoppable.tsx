@@ -8,7 +8,7 @@ export default function Unstoppable() {
   return (
     <SectionBanner
       CTAFunc={() => router.push('/partnership-details')}
-      CTAText="Apply to Collaborate"
+      CTAText="Join the movement"
       desc="Are you a trainer, athlete, or content creator passionate about
             fitness and style? Partner with us to inspire others and amplify the
             bullish mindset."

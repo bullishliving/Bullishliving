@@ -1,30 +1,26 @@
 'use client';
 
-import SectionBanner from '@/components/landing/SectionBanner';
 import PartnerWithUs from '@/components/layout/PartnerWithUs';
 import UiButton from '@/components/ui/UiButton';
 import UiIcon from '@/components/ui/UiIcon';
 import useToggle from '@/hooks/useToggle';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
   const isPartnerWithUsVisible = useToggle();
+  const router = useRouter();
 
   return (
     <div>
-      <SectionBanner
-        CTAFunc={() => isPartnerWithUsVisible.on()}
-        CTAText="Apply now"
-        desc="Are you a trainer, athlete, or content creator passionate about fitness and style? Partner with us to inspire others and amplify the bullish mindset."
-        title="Apply to collaborate"
-        textAlign="left"
-        backBtn
-      />
-      <PartnerWithUs
-        isOpen={isPartnerWithUsVisible.value}
-        onClose={() => isPartnerWithUsVisible.off()}
-      />
-      <div className="bg-secondary-500 pt-14 pb-16 xl:pb-[188px]">
+      <div className="bg-secondary-500 pt-10 md:pt-16 pb-16 xl:pb-[188px]">
         <div className="max-w-[865px] mx-auto px-4 md:px-6">
+          <button
+            onClick={() => router.back()}
+            className="stroke-white mb-6 md:mb-16 md:flex items-center gap-2 text-white text-sm font-montserrat font-bold"
+          >
+            <UiIcon icon="ArrowLeft" size="24" />
+            Back
+          </button>
           <p className="text-primary-500 text-xs font-black font-obitron mb-2">
             PARTNER WITH US
           </p>
@@ -117,22 +113,25 @@ export default function Page() {
                 fitness accessible and inspirational for our community.
               </li>
             </ul>
-            <p className="font-montserrat mb-16 mt-4">Apply to collaborate </p>
             <p className="font-montserrat mb-10">
               If this sounds like an opportunity you’d be interested in, please
               fill the form below and we will reach out to you.
             </p>
           </div>
           <div className="flex justify-end">
-            <div className="md:max-w-[157px] flex-1">
+            <div className="md:max-w-[230px] flex-1">
               <UiButton onClick={() => isPartnerWithUsVisible.on()}>
-                Apply Now
+                Join the movement
                 <UiIcon icon="ArrowDiagonal" size="24" />
               </UiButton>
             </div>
           </div>
         </div>
       </div>
+      <PartnerWithUs
+        isOpen={isPartnerWithUsVisible.value}
+        onClose={() => isPartnerWithUsVisible.off()}
+      />
     </div>
   );
 }
