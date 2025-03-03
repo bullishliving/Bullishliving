@@ -11,6 +11,7 @@ import SearchPanel from './SearchPanel';
 
 import MobileNav from './MobileNav';
 import NavItem from './NavItem';
+import { usePathname } from 'next/navigation';
 
 // --
 
@@ -18,10 +19,14 @@ export default function Navbar() {
   const isSearchPanelVisible = useToggle();
   const isMobileNavVisible = useToggle();
 
+  const pathname = usePathname();
+  
+  const isWhite = pathname.includes('/products');
+  
   const routes = [
     {
       label: 'All Products',
-      path: '',
+      path: '/products',
     },
     {
       label: 'Running Community',
@@ -32,7 +37,7 @@ export default function Navbar() {
       path: '/partnership-details',
     },
     {
-      label: 'About Us',
+      label: 'About Us ',
       path: '/about-us',
     },
   ];
@@ -46,22 +51,30 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="bg-secondary-500 py-4 px-4 md:px-6 md:py-8 2xl:p-8">
+    <nav
+      className={`${isWhite ? 'bg-white border-b border-gray-300' : 'bg-secondary-500'} py-4 px-4 md:px-6 md:py-8 2xl:p-8`}
+    >
       <div className="relative max-w-[1280px] mx-auto flex justify-between items-center ">
         <Link href="/" className="w-10 h-[27px] md:w-14 md:h-[38px]">
           <BullishLogo />
         </Link>
-        <ul className="hidden text-white md:flex gap-3 items-center text-sm font-montserrat font-bold">
+        <ul
+          className={`hidden  md:flex gap-3 items-center text-sm font-montserrat ${isWhite ? 'text-secondary-500' : 'text-white'} `}
+        >
           {routes.map((route, index) => (
             <li className="relative flex items-center gap-3" key={index}>
               <NavItem {...route} />
               {index < routes.length - 1 && (
-                <div className="w-1 h-1 rounded-full bg-white"></div>
+                <div
+                  className={`w-1 h-1 rounded-full ${isWhite ? 'bg-secondary-500' : 'bg-white'}`}
+                ></div>
               )}
             </li>
           ))}
         </ul>
-        <div className="stroke-white flex gap-6 items-center">
+        <div
+          className={`flex gap-6 items-center ${isWhite ? 'stroke-secondary-500' : 'stroke-white'}`}
+        >
           <button onClick={() => isSearchPanelVisible.toggle()}>
             <UiIcon icon="Search" size="24" />
           </button>

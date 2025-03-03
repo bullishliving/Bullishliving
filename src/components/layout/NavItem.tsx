@@ -12,16 +12,20 @@ interface NavItemProps {
 const NavItem: React.FC<NavItemProps> = ({ path, label }) => {
   const currentRoute = usePathname();
 
+  const isWhite = currentRoute.includes('/products');
+
+
   function isActive(href: string) {
     return currentRoute === href;
-  }
+  };
 
   const AnimatedLabel = (label: string) => {
+    
     return (
       <motion.div
         initial="initial"
         whileHover="hovered"
-        className="relative overflow-hidden"
+        className={`relative overflow-hidden ${isWhite ? 'font-medium' : 'font-bold'}  ${isActive(path) && '!font-bold'}`}
       >
         <motion.div
           variants={{
@@ -32,7 +36,6 @@ const NavItem: React.FC<NavItemProps> = ({ path, label }) => {
             ease: 'easeInOut',
             duration: 0.2,
           }}
-          // className={`${isActive && 'text-primary-500'}`}
         >
           {label}
         </motion.div>
@@ -45,7 +48,7 @@ const NavItem: React.FC<NavItemProps> = ({ path, label }) => {
             ease: 'easeInOut',
             duration: 0.2,
           }}
-          className="absolute inset-0 text-primary-500"
+          className={`absolute inset-0 !text-primary-500`}
         >
           {label}
         </motion.div>
@@ -58,7 +61,10 @@ const NavItem: React.FC<NavItemProps> = ({ path, label }) => {
       {AnimatedLabel(label)}
     </a>
   ) : (
-    <Link href={path} className={`${isActive(path) && 'text-primary-500'}`}>
+    <Link
+      href={path}
+      className={`${isActive(path) && 'text-primary-500'} `}
+    >
       {AnimatedLabel(label)}
     </Link>
   );

@@ -1,7 +1,7 @@
 import JoinCommunity from '@/components/landing/JoinCommunity';
 import Hero from '@/components/landing/Hero';
 import MoreThanALifestyle from '@/components/landing/MoreThanALifestyle';
-// import NewArrivals from '@/components/landing/NewArrivals';
+import NewArrivals from '@/components/landing/NewArrivals';
 import TopProducts from '@/components/landing/TopProducts';
 import Unstoppable from '@/components/landing/Unstoppable';
 
@@ -10,7 +10,7 @@ export default function Home() {
     <div className="">
       <Hero />
       <TopProducts />
-      {/* <NewArrivals /> */}
+      <NewArrivals />
       <MoreThanALifestyle />
       <Unstoppable />
       <JoinCommunity />

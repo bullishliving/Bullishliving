@@ -4,6 +4,7 @@ import ArrowRight from '@/assets/svg/arrow-right.svg';
 import Cart from '@/assets/svg/cart.svg';
 import Close from '@/assets/svg/close.svg';
 import Email from '@/assets/svg/email.svg';
+import Filter from '@/assets/svg/filter.svg';
 import Hamburger from '@/assets/svg/hamburger.svg';
 import Instagram from '@/assets/svg/instagram.svg';
 import Search from '@/assets/svg/search.svg';
@@ -19,6 +20,7 @@ const icons = {
   Cart,
   Close,
   Email,
+  Filter,
   Hamburger,
   Instagram,
   Search,
