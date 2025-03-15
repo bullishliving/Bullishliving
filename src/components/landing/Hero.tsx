@@ -39,7 +39,7 @@ export default function Hero() {
           <h2 className="relative block text-primary-500 text-[40px] leading-[48px] sm:text-6xl md:text-6xl xl:text-[100px] font-obitron font-black md:leading-[72px] xl:leading-[100px]">
             <AnimatedTitle
               text="Designed to stay active"
-              textStyle="mr-4 sm:mr-5 md:mr-8 lg:mr-10 inline-block pb-[0.1rem]"
+              textStyle="mr-4 sm:mr-5 md:mr-8 lg:mr-10 inline-block pb-[.3rem]"
             />
           </h2>
           <FadeIn>

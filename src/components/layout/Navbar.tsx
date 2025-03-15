@@ -66,7 +66,7 @@ export default function Navbar() {
             <UiIcon icon="Search" size="24" />
           </button>
           <button className="relative">
-            <div className="absolute -top-[21.3%] -right-[28.3%] w-5 h-5 rounded-full flex justify-center items-center text-white text-xs font-montserrat font-medium bg-danger-500 ">
+            <div className="absolute hidden -top-[21.3%] -right-[28.3%] w-5 h-5 rounded-full  justify-center items-center text-white text-xs font-montserrat font-medium bg-danger-500 ">
               2
             </div>
             <UiIcon icon="Cart" size="24" />
