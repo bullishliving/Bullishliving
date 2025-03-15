@@ -1,6 +1,5 @@
 import { useState, useMemo } from 'react';
 import UiField from './UiField';
-// import UiIcon from './UiIcon';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 
@@ -8,7 +7,7 @@ export type InputType = 'text' | 'password' | 'number' | 'phone' | 'date';
 
 const variantClasses = {
   dark: 'border border-grey-500',
-  light: '',
+  light: 'border border-grey-300',
   transparent: 'border-b border-grey-500 text-white pb-4',
 };
 
@@ -80,7 +79,7 @@ export default function UiInput({
   }, [error]);
 
   return (
-    <UiField label={label} error={error}>
+    <UiField label={label} error={error} variant={variant}>
       <div
         className={`relative flex items-center w-full !bg-transparent text-sm font-normal font-montserrat ${variant !== 'transparent' && 'h-[52px] px-4 rounded'} ${variantClasses[variant]} ${validationStyle}`}
       >
@@ -105,7 +104,7 @@ export default function UiInput({
           </div>
         ) : (
           <input
-            className={`flex-1 outline-none text-white placeholder:text-sm placeholder:font-normal text-base font-semibold h-full bg-transparent ${prefixNode ? 'pl-0' : ''}  ${placeholderStyle}`}
+            className={`hide-number-spinners flex-1 outline-none  placeholder:text-sm placeholder:font-normal text-base font-semibold h-full bg-transparent ${variant === 'light' ? 'text-secondary-500' : 'text-white'} ${prefixNode ? 'pl-0' : ''}  ${placeholderStyle}`}
             placeholder={placeholder}
             type={inputType}
             value={value || ''}

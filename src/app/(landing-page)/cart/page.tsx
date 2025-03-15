@@ -1,0 +1,87 @@
+'use client'
+
+import Image from "next/image";
+import { cartItems } from "@/api/mock/cartItems";
+
+import CartSummary from "@/components/cart/CartSummary";
+import EmptyCart from "@/components/cart/EmptyCart";
+import MobileCartItem from "@/components/cart/MobileCartItem";
+import QuantityIncrementor from "@/components/products/QuantityIncrementor";
+
+import UiIcon from "@/components/ui/UiIcon";
+import UiTable, { Header } from '@/components/ui/UiTable';
+
+//---
+
+export default function page() {
+  const cartHeaders: Header[] = [
+    {
+      query: 'products',
+      title: 'PRODUCTS(S)',
+    },
+    {
+      query: 'quantity',
+      title: 'QUANTITY',
+    },
+    {
+      query: 'price',
+      title: 'PRICE',
+    },
+    {
+      query: 'action',
+      title: 'ACTION',
+    },
+  ];
+
+  const cartData = cartItems.map((item) => {
+    return {
+      id: item.id,
+      products: (
+        <div className="flex gap-3">
+          <Image src={item.image} alt="product image" className="w-16 h-16" />
+          <div>
+            <p className="text-sm text-secondary-500 font-bold mb-2">{item.name}</p>
+            {item.variant && <p>{item.variant}</p>}
+          </div>
+        </div>
+      ),
+      quantity: <QuantityIncrementor />,
+      price: <p>{item.price}</p>,
+      action: (
+        <button className="stroke-tertiary-700">
+          {' '}
+          <UiIcon icon="Trash" size="24" />
+        </button>
+      ),
+    };
+  })
+  
+  return (
+    <section className="p-4 md:py-14 md:px-6 2xl:px-8">
+      <div className="max-w-[1280px] mx-auto">
+        <h2 className="font-obitron font-black text-secondary-500 text-2xl mb-4">
+          Your Cart
+        </h2>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          <main className=" md:col-span-2">
+            {false ? (
+              <EmptyCart/>
+            ) : (
+              <div>
+                <div className="hidden md:block">
+                  <UiTable data={cartData} headers={cartHeaders} />
+                </div>
+                <div className="md:hidden grid gap-4">
+                  {cartItems.map((item) => (
+                    <MobileCartItem cartItem={item} key={item.id} />
+                  ))}
+                </div>
+              </div>
+            )}
+          </main>
+          <CartSummary/>
+        </div>
+      </div>
+    </section>
+  );
+}

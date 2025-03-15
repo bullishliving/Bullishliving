@@ -120,7 +120,6 @@ export default function PartnerWithUs({ isOpen, onClose }: Props) {
               collaborate to inspire others and amplify the BullishLiving
               mindset. Fill out the form to get started!
             </p>
-
             <UiForm
               formData={formData.value}
               onSubmit={onSubmit}

@@ -1,6 +1,6 @@
 import CommunityMember from '@/types/CommunityMember';
 import Partner from '@/types/Partner';
-import { createClient } from './supabaseClient';
+import { createClient } from '@/utils/supabase/supabaseClient';
 import { SupabaseTables } from '@/types/enums/SupabaseTables';
 
 class SupabaseService {

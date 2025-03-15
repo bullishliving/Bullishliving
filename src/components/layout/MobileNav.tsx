@@ -32,7 +32,7 @@ export default function MobileNav({ routes, isNavOpen, closeNav }: Props) {
       }`}
     >
       <div>
-        <div className="flex justify-between py-[18px] mb-6">
+        <div className="flex items-center justify-between py-[18px] mb-6">
           <BullishLogo />
           <button
             onClick={closeNav}

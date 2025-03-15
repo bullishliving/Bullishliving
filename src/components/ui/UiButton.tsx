@@ -10,6 +10,8 @@ const variantClasses = {
   primary:
     'bg-primary-500 hover:bg-primary-600 text-secondary-500 stroke-secondary-500',
   secondary: 'bg-secondary-500  text-primary-500',
+  'secondary-outlined':
+    'bg-white text-secondary-500 border border-secondary-500 stroke-secondary-500 hover:bg-[#f6f6f6]',
   white: 'bg-white text-secondary-500 stroke-secondary-500',
   orange: 'bg-orange-500 hover:bg-orange-600 text-white stroke-white',
 };
@@ -17,7 +19,8 @@ const variantClasses = {
 export type BtnVariants = keyof typeof variantClasses;
 
 const roundedClasses = {
-  sm: 'rounded-[4px]',
+  sm: 'rounded',
+  md: 'rounded-[8px]',
   full: 'rounded-full',
 };
 

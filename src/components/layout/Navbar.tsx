@@ -15,33 +15,22 @@ import { usePathname } from 'next/navigation';
 
 // --
 
-export default function Navbar() {
+interface Props {
+  routes: {
+    label: string;
+    path: string;
+  }[];
+}
+
+export default function Navbar({ routes }: Props) {
   const isSearchPanelVisible = useToggle();
   const isMobileNavVisible = useToggle();
 
   const pathname = usePathname();
   
-  const isWhite = pathname.includes('/products');
+  const whiteRoutes = ['/products', '/cart', '/checkout'];
+  const isWhite = whiteRoutes.some((route) => pathname.startsWith(route));
   
-  const routes = [
-    {
-      label: 'All Products',
-      path: '/products',
-    },
-    {
-      label: 'Running Community',
-      path: '/#community',
-    },
-    {
-      label: 'Partner With Us',
-      path: '/partnership-details',
-    },
-    {
-      label: 'About Us ',
-      path: '/about-us',
-    },
-  ];
-
   function closeNav() {
     isMobileNavVisible.off();
   }
@@ -78,12 +67,12 @@ export default function Navbar() {
           <button onClick={() => isSearchPanelVisible.toggle()}>
             <UiIcon icon="Search" size="24" />
           </button>
-          <button className="relative">
+          <Link href='/cart' className="relative">
             <div className="absolute -top-[21.3%] -right-[28.3%] w-5 h-5 rounded-full flex justify-center items-center text-white text-xs font-montserrat font-medium bg-danger-500 ">
               2
             </div>
             <UiIcon icon="Cart" size="24" />
-          </button>
+          </Link>
           <button onClick={toggleMobileNav} className="md:hidden">
             <UiIcon icon="Hamburger" size="24" />
           </button>

@@ -7,9 +7,36 @@ html {
   overflow: auto;
 }
 
+@layer utilities {
+  .hide-number-spinners {
+    -moz-appearance: textfield;
+  }
+
+  .hide-number-spinners::-webkit-inner-spin-button,
+  .hide-number-spinners::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
 /* disable static page icon */
 [data-next-route-indicator] {
   display: none !important;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button
+  input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0;
+}
+
+input[type='number'],
+input[type='number'] {
+  -moz-appearance: textfield !important;
+  -ms-appearance: textfield !important;
+  appearance: textfield !important;
 }
 
 input:-webkit-autofill {
@@ -17,11 +44,10 @@ input:-webkit-autofill {
   box-shadow: 0 0 0px 1000px transparent inset;
   -webkit-text-fill-color: inherit;
 }
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
-  -webkit-text-fill-color: white;
-  -webkit-text-fill-color: white;
   transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -30,25 +56,41 @@ input:-webkit-autofill {
   color: white;
 }
 
+/* admin nav indicator */
+.active-indicator::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  height: 2px;
+  width: 24px;
+  background-color: #CD9900;
+  transform: translateX(-50%);
+}
+
 .embla {
   max-width: 1280px;
   margin: auto;
   --slide-spacing: 1rem;
   --slide-size: 100%;
 }
+
 .embla__viewport {
   overflow: hidden;
 }
+
 .embla__container {
   display: flex;
   touch-action: pan-y pinch-zoom;
   margin-left: calc(var(--slide-spacing) * -1);
 }
+
 .embla__slide {
   transform: translate3d(0, 0, 0);
   flex: 0 0 var(--slide-size);
   min-width: 0;
 }
+
 .embla__slide__number {
   box-shadow: inset 0 0 0 0.2rem var(--detail-medium-contrast);
   border-radius: 1.8rem;
@@ -165,6 +207,23 @@ textarea::placeholder {
     rgba(186, 184, 184, 0) 165.09%
   );
 }
+
+
+
+/* Checked state */
+.custom-checkbox[data-state="checked"] {
+  background-color: #CD9900!important;
+  border-color: #CD9900 !important;
+  stroke: #1E1E1E !important;
+}
+
+.custom-checkbox[data-state="checked"] svg {
+   display: block !important;
+  stroke: #1E1E1E !important;
+  width: 12px;
+  height: 10px;
+}
+
 
 @keyframes fadeInUp {
   from {

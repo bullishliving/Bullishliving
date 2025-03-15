@@ -12,8 +12,8 @@ interface NavItemProps {
 const NavItem: React.FC<NavItemProps> = ({ path, label }) => {
   const currentRoute = usePathname();
 
-  const isWhite = currentRoute.includes('/products');
-
+  const whiteRoutes = ['/products', '/cart', '/checkout'];
+  const isWhite = whiteRoutes.some((route) => currentRoute.startsWith(route));
 
   function isActive(href: string) {
     return currentRoute === href;
