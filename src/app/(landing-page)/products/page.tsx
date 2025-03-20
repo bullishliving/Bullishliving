@@ -1,41 +1,46 @@
-'use client'
+'use client';
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 
-
 import { products } from '@/api/mock/products';
 
-import UiIcon from "@/components/ui/UiIcon";
+import UiIcon from '@/components/ui/UiIcon';
 import UiPaginator from '@/components/ui/UiPaginator';
-import ProductCard from "@/components/products/ProductCard";
+import ProductCard from '@/components/products/ProductCard';
 import ProductsFilter from '@/components/products/ProductsFilter';
 import MobileProductsFilter from '@/components/products/MobileProductsFilter';
 
 import useToggle from '@/hooks/useToggle';
 import { usePagination } from '@/hooks/usePagination';
 
-
 import { CategoryValue } from '@/types/Category';
 
 export default function Page() {
   const [categoryValues, setCategoryValues] = useState<CategoryValue[]>([]);
-  const {onPageChange, page, totalPages} = usePagination({dataLimit: 10, totalData: 500});
+  const { onPageChange, page, totalPages } = usePagination({
+    dataLimit: 10,
+    totalData: 500,
+  });
 
   function handleCategoryValueChange(checkedValue: CategoryValue) {
     setCategoryValues((prevValues) => {
-      const isChecked = prevValues.some((prevValue) => prevValue.id === checkedValue.id);
+      const isChecked = prevValues.some(
+        (prevValue) => prevValue.id === checkedValue.id
+      );
 
-      return isChecked ? prevValues.filter((value) => value.id !== checkedValue.id ) : [...prevValues, checkedValue]
-    })    
+      return isChecked
+        ? prevValues.filter((value) => value.id !== checkedValue.id)
+        : [...prevValues, checkedValue];
+    });
   }
 
   const isFilterVisible = useToggle();
   const isMobile = useToggle();
 
   function hideFilter() {
-    isFilterVisible.off()
+    isFilterVisible.off();
   }
 
   const webFilterVariant = {
@@ -55,7 +60,7 @@ export default function Page() {
   useEffect(() => {
     function checkScreenSize() {
       if (window.innerWidth < 768) {
-        isMobile.on()
+        isMobile.on();
       }
     }
 

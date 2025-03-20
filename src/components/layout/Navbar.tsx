@@ -27,10 +27,10 @@ export default function Navbar({ routes }: Props) {
   const isMobileNavVisible = useToggle();
 
   const pathname = usePathname();
-  
+
   const whiteRoutes = ['/products', '/cart', '/checkout'];
   const isWhite = whiteRoutes.some((route) => pathname.startsWith(route));
-  
+
   function closeNav() {
     isMobileNavVisible.off();
   }
@@ -67,7 +67,7 @@ export default function Navbar({ routes }: Props) {
           <button onClick={() => isSearchPanelVisible.toggle()}>
             <UiIcon icon="Search" size="24" />
           </button>
-          <Link href='/cart' className="relative">
+          <Link href="/cart" className="relative">
             <div className="absolute -top-[21.3%] -right-[28.3%] w-5 h-5 rounded-full flex justify-center items-center text-white text-xs font-montserrat font-medium bg-danger-500 ">
               2
             </div>

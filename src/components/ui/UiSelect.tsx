@@ -12,6 +12,11 @@ const variantClasses = {
   transparent: 'border-b border-grey-500 text-white pb-4',
 };
 
+const roundedClasses = {
+  md: 'rounded',
+  lg: 'rounded-[16px]',
+};
+
 export interface Option {
   label: React.ReactNode;
   value: string;
@@ -20,7 +25,7 @@ export interface Option {
 
 interface Props {
   label?: string;
-  value: string ;
+  value: string;
   placeholder?: string;
   /** The name property should always be the same as the model value. example if the input belongs to
    * formData.confirm_password, the name prop should be confirm_password.
@@ -29,6 +34,7 @@ interface Props {
   error?: string;
   disabled?: boolean;
   options: Option[];
+  roundedVariant?: keyof typeof roundedClasses;
   variant?: keyof typeof variantClasses;
   inputRef?: React.RefObject<HTMLInputElement>;
   isSearchable?: boolean;
@@ -37,6 +43,7 @@ interface Props {
 export default function UiSelect({
   value,
   variant = 'light',
+  roundedVariant = 'md',
   label,
   disabled,
   placeholder = 'Select from the options',
@@ -49,7 +56,9 @@ export default function UiSelect({
   const [optionsAreVisible, setOptionsAreVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredOptions = options.filter((option) => option.value.toLowerCase().includes(searchQuery.toLocaleLowerCase()));
+  const filteredOptions = options.filter((option) =>
+    option.value.toLowerCase().includes(searchQuery.toLocaleLowerCase())
+  );
 
   const displayText = useMemo(() => {
     if (value === null) return placeholder;
@@ -76,7 +85,7 @@ export default function UiSelect({
 
     onChange({ name, value });
     setOptionsAreVisible(false);
-    setSearchQuery('')
+    setSearchQuery('');
   }
 
   function toggleOptions() {
@@ -93,7 +102,7 @@ export default function UiSelect({
           type="button"
           data-testid="ui-select-trigger"
           style={{ minHeight: '52px' }}
-          className={`flex text-left text-sm px-4 items-center w-full rounded font-normal font-montserrat ${disabled && 'cursor-not-allowed'} ${variantClasses[variant]} ${validationStyle}`}
+          className={`flex text-left text-sm px-4 items-center w-full  font-normal font-montserrat ${roundedClasses[roundedVariant]} ${disabled && 'cursor-not-allowed'} ${variantClasses[variant]} ${validationStyle}`}
           onClick={toggleOptions}
         >
           <div

@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { signup } from '@/api/actions/auth';
 
@@ -24,21 +24,20 @@ export default function Page() {
   async function onSubmit() {
     try {
       loading.on();
-  
+
       const formData = new FormData();
       formData.append('email', signInFormData.value.email);
       formData.append('password', signInFormData.value.password);
-  
+
       const result = await signup(formData);
-  
+
       if (result.success) {
-        showToast('Signup successful! please click the confirmation link in your mail', 'success');
-  
-      } else {
         showToast(
-          result.error || 'error signing up',
-          'error'
+          'Signup successful! please click the confirmation link in your mail',
+          'success'
         );
+      } else {
+        showToast(result.error || 'error signing up', 'error');
       }
     } catch (error) {
       console.error(error);

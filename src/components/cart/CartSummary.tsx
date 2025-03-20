@@ -1,10 +1,10 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-import UiButton from "../ui/UiButton";
-import UiIcon from "../ui/UiIcon";
+import UiButton from '../ui/UiButton';
+import UiIcon from '../ui/UiIcon';
 
 interface Props {
-  onAction?: VoidFunction
+  onAction?: VoidFunction;
 }
 
 export default function CartSummary({ onAction }: Props) {

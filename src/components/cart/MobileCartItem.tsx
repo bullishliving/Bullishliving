@@ -39,9 +39,9 @@ export default function MobileCartItem({ cartItem }: Props) {
         </div>
         <div className="flex items-center justify-between">
           <p className="text-sm  text-tertiary-700">Action</p>
-          <button className='flex items-center gap-2 stroke-danger-400'>
+          <button className="flex items-center gap-2 stroke-danger-400">
             <UiIcon icon="Trash" size="24" />
-            <p className='font-bold text-sm text-danger-400'>Remove</p>
+            <p className="font-bold text-sm text-danger-400">Remove</p>
           </button>
         </div>
       </div>

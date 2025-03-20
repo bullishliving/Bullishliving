@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import typography from '@tailwindcss/typography';
 
 export default {
   darkMode: ['class'],
@@ -23,12 +24,14 @@ export default {
           500: '#141414',
         },
         grey: {
+          100: '#FAFAFA',
           200: '#DEDFE0',
           300: '#E1E1E1',
+          400: '#E3E3E3',
           500: '#606060',
           600: '#717171',
           700: '#4B525A',
-          800: '#8C9196'
+          800: '#8C9196',
         },
         tertiary: {
           700: '#4B525A',
@@ -48,7 +51,8 @@ export default {
       },
       boxShadow: {
         'search-panel': '0px 4px 24px 0px #0000001F',
-        'select-options': '0px 4px 24px 0px #0000001F'
+        'select-options': '0px 4px 24px 0px #0000001F',
+        'dropdown-options': '0px 4px 20px 10px #0D0B0E0D',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -57,5 +61,5 @@ export default {
       },
     },
   },
-  // plugins: [require("tailwindcss-animate")],
+  plugins: [typography],
 } satisfies Config;

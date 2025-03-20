@@ -1,32 +1,30 @@
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
-import { SUPABASE_ANON_KEY,  SUPABASE_URL } from '../privateKeys'
+import { createServerClient } from '@supabase/ssr';
+import { NextResponse, type NextRequest } from 'next/server';
+import { SUPABASE_ANON_KEY, SUPABASE_URL } from '../privateKeys';
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
-  })
+  });
 
-  const supabase = createServerClient(
-    SUPABASE_URL!,
-    SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll()
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({
-            request,
-          })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
-        },
+  const supabase = createServerClient(SUPABASE_URL!, SUPABASE_ANON_KEY!, {
+    cookies: {
+      getAll() {
+        return request.cookies.getAll();
       },
-    }
-  )
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value }) =>
+          request.cookies.set(name, value)
+        );
+        supabaseResponse = NextResponse.next({
+          request,
+        });
+        cookiesToSet.forEach(({ name, value, options }) =>
+          supabaseResponse.cookies.set(name, value, options)
+        );
+      },
+    },
+  });
 
   // Do not run code between createServerClient and
   // supabase.auth.getUser(). A simple mistake could make it very hard to debug
@@ -38,18 +36,13 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  
-  if (
-    !user &&
-    request.nextUrl.pathname.startsWith('/admin/dashboard')
-  ) {
+  if (!user && request.nextUrl.pathname.startsWith('/admin/dashboard')) {
     // no user, potentially respond by redirecting the user to the login page
-    const url = request.nextUrl.clone()
-    url.pathname = '/admin/auth/login'
-    return NextResponse.redirect(url)
+    const url = request.nextUrl.clone();
+    url.pathname = '/admin/auth/login';
+    return NextResponse.redirect(url);
   }
 
-  
   // 🚀 Redirect authenticated users away from '/admin/auth' (Login page)
   if (user && request.nextUrl.pathname.startsWith('/admin/auth/login')) {
     const url = request.nextUrl.clone();
@@ -70,5 +63,5 @@ export async function updateSession(request: NextRequest) {
   // If this is not done, you may be causing the browser and server to go out
   // of sync and terminate the user's session prematurely!
 
-  return supabaseResponse
+  return supabaseResponse;
 }

@@ -1,8 +1,7 @@
-'use client'
+'use client';
 
 import { useMemo, useState } from 'react';
 import { Country, State, City } from 'country-state-city';
-
 
 import useObjectState from '@/hooks/useObjectState';
 
@@ -10,7 +9,6 @@ import CartSummary from '../cart/CartSummary';
 
 import UiInput from '../ui/UiInput';
 import UiSelect, { Option } from '../ui/UiSelect';
-
 
 import UiForm from '../ui/UiForm';
 
@@ -36,11 +34,11 @@ export default function CheckoutForm() {
     console.log(formData.value);
   }
 
-  const countryOptions: Option[] = useMemo(()=>{
-     return countries.map((country) => ({
-       label: country.name,
-       value: country.name,
-     }));
+  const countryOptions: Option[] = useMemo(() => {
+    return countries.map((country) => ({
+      label: country.name,
+      value: country.name,
+    }));
   }, [countries]);
 
   const stateOptions: Option[] = useMemo(() => {
@@ -56,15 +54,16 @@ export default function CheckoutForm() {
     );
   }, [selectedCountryISO, selectedStateISO]);
 
- function getSelectedCountry(name: string) {
-  return countries.find((country) => country.name === name )
- }
+  function getSelectedCountry(name: string) {
+    return countries.find((country) => country.name === name);
+  }
 
- function getSelectedState(name: string) {
-  return State.getStatesOfCountry(selectedCountryISO).find((state)=> state.name === name)
- }
+  function getSelectedState(name: string) {
+    return State.getStatesOfCountry(selectedCountryISO).find(
+      (state) => state.name === name
+    );
+  }
 
- 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
       <main className="md:col-span-2">

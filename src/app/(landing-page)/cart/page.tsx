@@ -1,14 +1,14 @@
-'use client'
+'use client';
 
-import Image from "next/image";
-import { cartItems } from "@/api/mock/cartItems";
+import Image from 'next/image';
+import { cartItems } from '@/api/mock/cartItems';
 
-import CartSummary from "@/components/cart/CartSummary";
-import EmptyCart from "@/components/cart/EmptyCart";
-import MobileCartItem from "@/components/cart/MobileCartItem";
-import QuantityIncrementor from "@/components/products/QuantityIncrementor";
+import CartSummary from '@/components/cart/CartSummary';
+import EmptyCart from '@/components/cart/EmptyCart';
+import MobileCartItem from '@/components/cart/MobileCartItem';
+import QuantityIncrementor from '@/components/products/QuantityIncrementor';
 
-import UiIcon from "@/components/ui/UiIcon";
+import UiIcon from '@/components/ui/UiIcon';
 import UiTable, { Header } from '@/components/ui/UiTable';
 
 //---
@@ -40,7 +40,9 @@ export default function page() {
         <div className="flex gap-3">
           <Image src={item.image} alt="product image" className="w-16 h-16" />
           <div>
-            <p className="text-sm text-secondary-500 font-bold mb-2">{item.name}</p>
+            <p className="text-sm text-secondary-500 font-bold mb-2">
+              {item.name}
+            </p>
             {item.variant && <p>{item.variant}</p>}
           </div>
         </div>
@@ -54,8 +56,8 @@ export default function page() {
         </button>
       ),
     };
-  })
-  
+  });
+
   return (
     <section className="p-4 md:py-14 md:px-6 2xl:px-8">
       <div className="max-w-[1280px] mx-auto">
@@ -65,7 +67,7 @@ export default function page() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           <main className=" md:col-span-2">
             {false ? (
-              <EmptyCart/>
+              <EmptyCart />
             ) : (
               <div>
                 <div className="hidden md:block">
@@ -79,7 +81,7 @@ export default function page() {
               </div>
             )}
           </main>
-          <CartSummary/>
+          <CartSummary />
         </div>
       </div>
     </section>

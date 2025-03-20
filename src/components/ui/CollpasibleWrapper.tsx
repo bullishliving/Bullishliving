@@ -1,11 +1,11 @@
-import { useState } from "react";
-import UiIcon from "./UiIcon";
+import { useState } from 'react';
+import UiIcon from './UiIcon';
 
 interface Props {
   title: string;
-  children: React.ReactNode
-  initialOpen?: boolean
-  hideBorderTop?: boolean
+  children: React.ReactNode;
+  initialOpen?: boolean;
+  hideBorderTop?: boolean;
 }
 
 export default function CollpasibleWrapper({

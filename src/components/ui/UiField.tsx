@@ -2,7 +2,7 @@ import React from 'react';
 
 const variantClasses = {
   dark: 'text-white',
-  light: 'text-[#1B1E21]',
+  light: 'text-secondary-300',
   transparent: 'border-b border-grey-500 text-white pb-4',
 };
 interface Props {
@@ -23,7 +23,9 @@ export default function UiField({
 }: Props) {
   return (
     <div className="text-left relative">
-      <label className={`text-sm leading-7 font-montserrat ${variantClasses[variant]}`}>
+      <label
+        className={`text-sm leading-7 font-montserrat ${variantClasses[variant]}`}
+      >
         {label}{' '}
         {isOptional && <span className="text-gray-600">(optional)</span>}
       </label>

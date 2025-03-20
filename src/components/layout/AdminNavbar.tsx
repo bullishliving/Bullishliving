@@ -1,11 +1,14 @@
-'use client'
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+
+import { logout } from '@/api/actions/auth';
 
 import BullishLogo from '@/assets/svg/logo.svg';
 import DummyAvatar from '@/assets/svg/avatar.svg';
-import UiIcon from "../ui/UiIcon";
+
+import UiIcon from '../ui/UiIcon';
 
 interface Props {
   routes: {
@@ -16,14 +19,23 @@ interface Props {
 
 export default function AdminNavbar({ routes }: Props) {
   const currentRoute = usePathname();
-    
+  const router = useRouter();
+
   function isActive(href: string) {
     return currentRoute === href;
+  }
+
+  const handleLogout = async () => {
+    const result = await logout();
+
+    if (result.success) {
+      router.refresh();
+    }
   };
 
   return (
     <nav
-      className={`bg-white border-b border-gray-300 py-4 px-4 md:px-6 md:py-6 2xl:p-8`}
+      className={`bg-grey-100 border-b border-gray-300 py-4 px-4 md:px-6 md:py-6 2xl:p-8`}
     >
       <div className="relative max-w-[1280px] mx-auto flex justify-between items-center ">
         <Link href="/" className="w-10 h-[27px] md:w-14 md:h-[38px]">
@@ -43,6 +55,8 @@ export default function AdminNavbar({ routes }: Props) {
             </li>
           ))}
         </ul>
+
+        {/* <button onClick={handleLogout}>logout</button> */}
         <button className={`flex gap-3 items-center font-montserrat `}>
           <DummyAvatar />
           <div className="flex gap-4 items-center stroke-tertiary-700">

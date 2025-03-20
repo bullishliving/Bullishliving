@@ -37,8 +37,8 @@ export default function Page() {
     isDescExpanded.value || !shouldTruncate
       ? productDescription
       : productDescription.slice(0, 160) + '...';
-  
-  const productDetails = useMemo(()=> {
+
+  const productDetails = useMemo(() => {
     return (
       <div className="grid gap-4 mb-6">
         <h2 className="text-secondary-500 font-obitron font-black text-[28px] sm:text-3xl md:text-[40px]">
@@ -61,7 +61,7 @@ export default function Page() {
         </p>
       </div>
     );
-  }, [displayedDesc, isDescExpanded, shouldTruncate])
+  }, [displayedDesc, isDescExpanded, shouldTruncate]);
 
   function handleActiveVariant(variant: string) {
     setActiveVariant(variant);

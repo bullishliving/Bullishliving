@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { useMemo, useState } from "react";
-import UiIcon from "./UiIcon";
+import { useMemo, useState } from 'react';
+import UiIcon from './UiIcon';
 
 interface Props {
   currentPage: number;
@@ -9,10 +9,13 @@ interface Props {
   onPageChange: (page: number) => void;
 }
 
-export default function UiPaginator({ currentPage, totalPages, onPageChange }: Props) {
+export default function UiPaginator({
+  currentPage,
+  totalPages,
+  onPageChange,
+}: Props) {
   const [startPage, setStartPage] = useState(1);
-  
-  
+
   const pageLimit = 5;
 
   function handlePageChange(page: number) {
@@ -27,26 +30,26 @@ export default function UiPaginator({ currentPage, totalPages, onPageChange }: P
     }
   }
 
-  function handleNext (){
+  function handleNext() {
     const nextPage = currentPage + 1;
     if (nextPage <= totalPages) {
       handlePageChange(nextPage);
     }
-  };
+  }
 
   function handlePrev() {
     const prevPage = currentPage - 1;
     if (prevPage >= 1) {
       handlePageChange(prevPage);
     }
-  };
+  }
 
   function isPrevDisabled() {
-    return currentPage === 1
+    return currentPage === 1;
   }
 
   function isNextDisabled() {
-    return currentPage >= totalPages
+    return currentPage >= totalPages;
   }
 
   const endPage = Math.min(startPage + pageLimit - 1, totalPages);

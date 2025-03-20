@@ -11,7 +11,13 @@ const variantClasses = {
   transparent: 'border-b border-grey-500 text-white pb-4',
 };
 
+const roundedClasses = {
+  md: 'rounded',
+  lg: 'rounded-[16px]',
+};
+
 type Variant = keyof typeof variantClasses;
+type RoundedVariant = keyof typeof roundedClasses;
 
 interface Props {
   label?: string;
@@ -24,6 +30,7 @@ interface Props {
   inputRef?: React.RefObject<HTMLInputElement>;
   onChange: (event: { name: string; value: string | null }) => void;
   variant?: Variant;
+  roundedVariant?: RoundedVariant;
   prefixNode?: React.ReactNode;
   suffixNode?: React.ReactNode;
 }
@@ -36,6 +43,7 @@ export default function UiInput({
   disabled,
   error,
   variant = 'light',
+  roundedVariant = 'md',
   onChange,
   prefixNode,
   suffixNode,
@@ -81,7 +89,7 @@ export default function UiInput({
   return (
     <UiField label={label} error={error} variant={variant}>
       <div
-        className={`relative flex items-center w-full !bg-transparent text-sm font-normal font-montserrat ${variant !== 'transparent' && 'h-[52px] px-4 rounded'} ${variantClasses[variant]} ${validationStyle}`}
+        className={`relative flex items-center w-full !bg-transparent text-sm font-normal font-montserrat ${variant !== 'transparent' && `h-[52px] px-4 ${roundedClasses[roundedVariant]}`} ${variantClasses[variant]} ${validationStyle}`}
       >
         {prefixNode && (
           <div className="pl-2  text-gray-500 text-sm flex items-center">
@@ -117,9 +125,7 @@ export default function UiInput({
 
         {/* Suffix Node */}
         {suffixNode && (
-          <div className="pl-2 pr-4 text-gray-500 text-sm flex items-center">
-            {suffixNode}
-          </div>
+          <div className="text-sm flex items-center">{suffixNode}</div>
         )}
 
         {type === 'password' && (

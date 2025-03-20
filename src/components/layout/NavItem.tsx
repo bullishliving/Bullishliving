@@ -17,10 +17,9 @@ const NavItem: React.FC<NavItemProps> = ({ path, label }) => {
 
   function isActive(href: string) {
     return currentRoute === href;
-  };
+  }
 
   const AnimatedLabel = (label: string) => {
-    
     return (
       <motion.div
         initial="initial"
@@ -61,10 +60,7 @@ const NavItem: React.FC<NavItemProps> = ({ path, label }) => {
       {AnimatedLabel(label)}
     </a>
   ) : (
-    <Link
-      href={path}
-      className={`${isActive(path) && 'text-primary-500'} `}
-    >
+    <Link href={path} className={`${isActive(path) && 'text-primary-500'} `}>
       {AnimatedLabel(label)}
     </Link>
   );

@@ -1,4 +1,4 @@
-import Category from "@/types/Category";
+import Category from '@/types/Category';
 
 export const categories: Category[] = [
   {
@@ -7,16 +7,16 @@ export const categories: Category[] = [
     values: [
       {
         id: '1',
-        value: 'fitness apparel'
+        value: 'fitness apparel',
       },
       {
         id: '2',
-        value: 'accessories'
+        value: 'accessories',
       },
       {
         id: '23',
-        value: 'foot wear'
+        value: 'foot wear',
       },
-    ]
-  }
-]
+    ],
+  },
+];

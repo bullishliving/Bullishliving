@@ -1,10 +1,14 @@
 interface Props {
   variant: string;
   isActive: boolean;
-  onVariantChange: VoidFunction
+  onVariantChange: VoidFunction;
 }
 
-export default function ProductVariant({ isActive, variant, onVariantChange }: Props) {
+export default function ProductVariant({
+  isActive,
+  variant,
+  onVariantChange,
+}: Props) {
   return (
     <button
       onClick={onVariantChange}

@@ -1,5 +1,5 @@
 import BullishSinglet from '@/assets/images/bullish-singlet.png';
-import BullishSingletYellow from '@/assets/images/bullish-yellow-singlet.png'
+import BullishSingletYellow from '@/assets/images/bullish-yellow-singlet.png';
 
 export const cartItems = [
   {
@@ -7,14 +7,14 @@ export const cartItems = [
     name: 'Structure logo hat - Blackuyy',
     price: '₦34,000.00',
     image: BullishSinglet,
-    variant: 'XL'
+    variant: 'XL',
   },
   {
     id: '2',
     name: 'Structure logo hat - Blackuyy',
     price: '₦34,000.00',
     image: BullishSingletYellow,
-    variant: 'XL'
+    variant: 'XL',
   },
   {
     id: '3',
@@ -27,8 +27,7 @@ export const cartItems = [
     name: 'Structure logo hat - Blackuyy',
     price: '₦34,000.00',
     image: BullishSinglet,
-    variant: 'M'
-
+    variant: 'M',
   },
   {
     id: '5',
@@ -41,5 +40,5 @@ export const cartItems = [
     name: 'Structure logo hat - Blackuyy',
     price: '₦34,000.00',
     image: BullishSinglet,
-  }
-]
+  },
+];

@@ -1,6 +1,6 @@
 interface Props {
-  children: React.ReactNode
-  title: string
+  children: React.ReactNode;
+  title: string;
 }
 
 export default function AdminAuthWrapper({ children, title }: Props) {

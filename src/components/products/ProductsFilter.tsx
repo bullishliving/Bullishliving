@@ -1,21 +1,23 @@
+import { categories } from '@/api/mock/categories';
+import { CategoryValue } from '@/types/Category';
 
-import { categories } from "@/api/mock/categories";
-import { CategoryValue } from "@/types/Category";
+import CollpasibleWrapper from '../ui/CollpasibleWrapper';
+import UiIcon from '../ui/UiIcon';
 
-
-import CollpasibleWrapper from "../ui/CollpasibleWrapper";
-import UiIcon from "../ui/UiIcon";
-
-import PriceFilter from "./PriceFilter"
-import UiCheckbox from "../ui/UiCheckbox";
+import PriceFilter from './PriceFilter';
+import UiCheckbox from '../ui/UiCheckbox';
 
 interface Props {
   onHideFilter: VoidFunction;
   categoryValues: CategoryValue[];
-  onCategoryValueChange: (value: CategoryValue) => void
+  onCategoryValueChange: (value: CategoryValue) => void;
 }
 
-export default function ProductsFilter({ onHideFilter, categoryValues, onCategoryValueChange }: Props) {
+export default function ProductsFilter({
+  onHideFilter,
+  categoryValues,
+  onCategoryValueChange,
+}: Props) {
   return (
     <div>
       <div className="flex justify-between border border-[#1212121F] rounded-t-[8px] border-b-0 py-6 px-4">

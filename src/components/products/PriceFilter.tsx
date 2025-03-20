@@ -1,15 +1,16 @@
-'use client'
+'use client';
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from 'react';
 
-
-import { Slider } from "../ui/slider";
+import { Slider } from '../ui/slider';
 
 type PriceRange = [number, number];
 
 export default function PriceFilter() {
-  const [initalPrice] = useState({min: 2000, max: 300000}) 
-  const [priceRange, setPriceRange] = useState<[number, number]>([2000, 300000]);
+  const [initalPrice] = useState({ min: 2000, max: 300000 });
+  const [priceRange, setPriceRange] = useState<[number, number]>([
+    2000, 300000,
+  ]);
   const [priceInputs, setPriceInputs] = useState({
     min: `${priceRange[0].toLocaleString()}`,
     max: `${priceRange[1].toLocaleString()}`,
@@ -17,7 +18,7 @@ export default function PriceFilter() {
   const [thumbPositions, setThumbPositions] = useState<[number, number]>([
     0, 100,
   ]);
-  
+
   const calculateThumbPositions = useCallback(() => {
     const minPercent =
       ((priceRange[0] - initalPrice.min) /
@@ -29,27 +30,26 @@ export default function PriceFilter() {
       100;
     setThumbPositions([minPercent, maxPercent]);
   }, [initalPrice, priceRange]);
-  
 
   function handlePriceRange(range: PriceRange) {
     const [min, max] = range;
 
-    if(min >= max) {
-      return 
+    if (min >= max) {
+      return;
     }
 
-    setPriceRange(range)    
+    setPriceRange(range);
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
 
-    const numericValue = value.replace(/\D/g, ''); 
+    const numericValue = value.replace(/\D/g, '');
     const parsedValue = numericValue ? parseInt(numericValue, 10) : 0;
 
     setPriceInputs((prev) => ({
       ...prev,
-      [name]: parsedValue.toLocaleString(), 
+      [name]: parsedValue.toLocaleString(),
     }));
   }
 
@@ -80,7 +80,7 @@ export default function PriceFilter() {
       return `₦${(num / 1000).toFixed(0)}k`;
     }
     return `₦${num.toLocaleString()}`;
-  };
+  }
 
   useEffect(() => {
     calculateThumbPositions();
@@ -91,9 +91,7 @@ export default function PriceFilter() {
   }, [calculateThumbPositions, priceRange]);
 
   return (
-    <div
-      className={`rounded-b-[8px] w-full`}
-    >
+    <div className={`rounded-b-[8px] w-full`}>
       <div className={`font-montserrat pt-8`}>
         <div className="relative">
           <Slider

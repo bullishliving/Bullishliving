@@ -1,5 +1,5 @@
-import { useState } from "react";
-import UiIcon from "../ui/UiIcon"
+import { useState } from 'react';
+import UiIcon from '../ui/UiIcon';
 
 export default function QuantityIncrementor() {
   const [quantity, setQuantity] = useState(1);
@@ -9,7 +9,7 @@ export default function QuantityIncrementor() {
   }
 
   function decreaseQuantity() {
-    if(quantity > 1){
+    if (quantity > 1) {
       setQuantity((prevQuantity) => prevQuantity - 1);
     }
   }

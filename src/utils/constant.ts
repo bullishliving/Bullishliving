@@ -57,6 +57,7 @@ export const adminRoutes = [
     label: 'Running Community',
     path: '/admin/dashboard/community',
   },
-]
+];
 
-export const inputStyles = 'h-12 outline-none px-4 rounded-[8px] placeholder:text-sm placeholder:text-grey-700 border'
+export const inputStyles =
+  'h-12 outline-none px-4 rounded-[8px] placeholder:text-sm placeholder:text-grey-700 border';

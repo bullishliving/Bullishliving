@@ -1,13 +1,12 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
-
 import Logo from '@/assets/svg/logo.svg';
 
 import CollpasibleWrapper from '../ui/CollpasibleWrapper';
 import PriceFilter from './PriceFilter';
 
-import UiIcon from "../ui/UiIcon";
+import UiIcon from '../ui/UiIcon';
 import { categories } from '@/api/mock/categories';
 import UiCheckbox from '../ui/UiCheckbox';
 import { CategoryValue } from '@/types/Category';
@@ -17,10 +16,14 @@ interface Props {
   onHideFilter: VoidFunction;
   onCategoryValueChange: (value: CategoryValue) => void;
   categoryValues: CategoryValue[];
-  isVisible: boolean
+  isVisible: boolean;
 }
 
-export default function MobileProductsFilter({ categoryValues, onCategoryValueChange, onHideFilter }: Props) {
+export default function MobileProductsFilter({
+  categoryValues,
+  onCategoryValueChange,
+  onHideFilter,
+}: Props) {
   const filterVariant = {
     hidden: { opacity: 0 },
     visible: {

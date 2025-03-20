@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import useToggle from '@/hooks/useToggle';
 
@@ -35,9 +35,8 @@ export default function LoginForm() {
         showToast('Login successful! 🎉', 'success');
 
         setTimeout(() => {
-          router.push('/admin/dashboard') 
+          router.push('/admin/dashboard');
         }, 1500);
-
       } else {
         showToast(
           result.error || 'Invalid credentials, please try again.',
@@ -51,7 +50,6 @@ export default function LoginForm() {
       loading.off();
     }
   }
-
 
   return (
     <AdminAuthWrapper title="Login">

@@ -28,7 +28,10 @@ export default function UiTable({ data, headers }: Props) {
       </thead>
       <tbody>
         {data.map((item, index) => (
-          <tr key={index} className={`${index + 1 !== data.length ? 'border-b': ''}`}>
+          <tr
+            key={index}
+            className={`${index + 1 !== data.length ? 'border-b' : ''}`}
+          >
             {headers.map((header) => (
               <td key={header.query} className="p-4">
                 <div>{item[header.query]}</div>
