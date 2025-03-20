@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
-import HeroImg from '@/assets/images/hero-image.jpg';
+import HeroImg from '@/assets/images/active-image.jpg';
 
 import AnimatedTitle from '../animations/AnimatedTitle';
 import FadeIn from '../animations/FadeIn';
