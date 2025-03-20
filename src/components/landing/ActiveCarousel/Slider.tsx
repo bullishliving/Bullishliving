@@ -36,7 +36,7 @@ const ActiveSlider: React.FC<PropType> = ({ slides, options }) => {
   return (
     <section className="w-full relative">
       {/* Embla Container */}
-      <div className=" active-carousel-div" ref={emblaRef}>
+      <div className="active-carousel-div overflow-x-hidden" ref={emblaRef}>
         <div className="flex gap-2">
           {slides.map((img, index) => (
             <div
