@@ -85,7 +85,9 @@ export default function JoinCommunityForm() {
         <p className="text-white text-sm font-montserrat">
           Join bullish run community on{' '}
           <a
-            href=""
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://strava.app.link/a2N2Rl6fVRb"
             className="font-bold text-orange-500 hover:text-orange-600"
           >
             STRAVA
@@ -93,9 +95,15 @@ export default function JoinCommunityForm() {
           to win while running
         </p>
         <div className="min-w-[129px]">
-          <UiButton variant="orange">
-            Join now <UiIcon icon="ArrowDiagonal" size="24" />
-          </UiButton>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://strava.app.link/a2N2Rl6fVRb"
+          >
+            <UiButton variant="orange">
+              Join now <UiIcon icon="ArrowDiagonal" size="24" />
+            </UiButton>
+          </a>
         </div>
       </div>
     </div>
