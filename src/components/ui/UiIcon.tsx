@@ -10,6 +10,8 @@ import CaretLeftBig from '@/assets/svg/caret-left-big.svg';
 import CaretRightBig from '@/assets/svg/caret-right-big.svg';
 import Cart from '@/assets/svg/cart.svg';
 import Close from '@/assets/svg/close.svg';
+import DropDownMenu from '@/assets/svg/drop-down-menu.svg';
+import Edit from '@/assets/svg/edit.svg';
 import Email from '@/assets/svg/email.svg';
 import Filter from '@/assets/svg/filter.svg';
 import Hamburger from '@/assets/svg/hamburger.svg';
@@ -38,6 +40,8 @@ const icons = {
   CaretRightBig,
   Cart,
   Close,
+  DropDownMenu,
+  Edit,
   Email,
   Filter,
   Hamburger,

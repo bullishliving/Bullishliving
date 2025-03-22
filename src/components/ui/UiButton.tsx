@@ -9,6 +9,7 @@ const sizeClasses = {
 const variantClasses = {
   primary:
     'bg-primary-500 hover:bg-primary-600 text-secondary-500 stroke-secondary-500',
+    'primary-text': 'text-primary-500 hover:text-primary-600 font-bold stroke-primary-500 hover:stroke-primary-600', 
   secondary: 'bg-secondary-500  text-primary-500',
   'secondary-outlined':
     'bg-white text-secondary-500 border border-secondary-500 stroke-secondary-500 hover:bg-[#f6f6f6]',

@@ -5,6 +5,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
+import UiIcon from './UiIcon';
+
 export type DropDownData = {
   label: React.ReactNode;
   func: (id?: string) => void;
@@ -30,11 +32,10 @@ export default function UiDropDown({
     <DropdownMenu>
       <DropdownMenuTrigger className="outline-none">
         {trigger || (
-          <div>trigger</div>
-          // <UiIcon
-          //   icon="ThreeDotsVertical"
-          //   size={triggerSizeClasses[triggerSize]}
-          // />
+          <UiIcon
+            icon="DropDownMenu"
+            size='24'
+          />
         )}
       </DropdownMenuTrigger>
       <DropdownMenuContent

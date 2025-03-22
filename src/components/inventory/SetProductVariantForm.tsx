@@ -10,6 +10,8 @@ export type ProductVariant = {
   stock: string;
 };
 
+
+
 export default function SetProductVariantForm() {
   const [variants, setVariants] = useState<ProductVariant[]>([
     { type: '', value: [''], stock: '' },

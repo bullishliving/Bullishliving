@@ -1,29 +1,36 @@
-import useObjectState from '@/hooks/useObjectState';
+
+import { useSetProductContext } from '@/app/context/SetProductContext';
 
 import UiButton from '../ui/UiButton';
 import UiForm from '../ui/UiForm';
 import UiImageUploader from '../ui/UiImageUploader';
 import UiInput from '../ui/UiInput';
 import UiRichTextEditor from '../ui/UiRichTextEditor';
-import UiSelect from '../ui/UiSelect';
+import UiSelect, { Option } from '../ui/UiSelect';
 
 import ProductVariantList from './ProductVariantList';
+import UiIcon from '../ui/UiIcon';
+import Category from '@/types/Category';
 
 //---
 
-export default function SetProductForm() {
-  const formData = useObjectState({
-    name: '',
-    images: null,
-    category: '',
-    price: '',
-    discountedPrice: '',
-    stock: '',
-  });
+interface Props {
+  categories: Category[];
+  onSetActiveView: (index: number) => void;
+}
+
+export default function SetProductForm({ categories, onSetActiveView }: Props) {
+  const { formData } = useSetProductContext()
+  
+  const formattedCategories: Option[] = categories?.map((category) => ({
+    label: category.name,
+    value: category.id
+  })) || [];
 
   function onSubmit() {
     console.log(formData.value);
   }
+
 
   return (
     <UiForm formData={formData.value} onSubmit={onSubmit}>
@@ -41,7 +48,7 @@ export default function SetProductForm() {
             placeholder="Enter name"
             onChange={formData.set}
             value={formData.value.name}
-            roundedVariant="lg"
+            roundedVariant="xl"
           />
           <UiRichTextEditor content="" />
           <UiSelect
@@ -50,8 +57,21 @@ export default function SetProductForm() {
             label="Category"
             roundedVariant="lg"
             onChange={formData.set}
-            options={[]}
+            options={formattedCategories}
             value={formData.value.category}
+            isSearchable
+            bottomNode={
+              <div className="border-t bg-white">
+                <UiButton
+                  variant="primary-text"
+                  onClick={() => onSetActiveView(2)}
+                >
+                  {' '}
+                  <p className="texto-sm">Manage Categories</p>
+                  <UiIcon icon="ArrowRight" size="24" />
+                </UiButton>
+              </div>
+            }
           />
           <UiInput
             name="price"
@@ -59,7 +79,7 @@ export default function SetProductForm() {
             placeholder="Enter Amount"
             onChange={formData.set}
             value={formData.value.price}
-            roundedVariant="lg"
+            roundedVariant="xl"
           />
           <UiInput
             name="discountedPrice"
@@ -67,7 +87,7 @@ export default function SetProductForm() {
             placeholder="Enter discounted price"
             onChange={formData.set}
             value={formData.value.discountedPrice}
-            roundedVariant="lg"
+            roundedVariant="xl"
           />
           <UiInput
             name="stock"
@@ -75,9 +95,9 @@ export default function SetProductForm() {
             placeholder="Total Number In Stock"
             onChange={formData.set}
             value={formData.value.stock}
-            roundedVariant="lg"
+            roundedVariant="xl"
           />
-          <ProductVariantList />
+          <ProductVariantList showVariantForm={() => onSetActiveView(1)} />
           <div className="mt-4">
             <UiButton>Create product</UiButton>
           </div>

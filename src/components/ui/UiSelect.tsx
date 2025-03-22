@@ -18,7 +18,7 @@ const roundedClasses = {
 };
 
 export interface Option {
-  label: React.ReactNode;
+  label: string;
   value: string;
   disabled?: boolean;
 }
@@ -38,6 +38,7 @@ interface Props {
   variant?: keyof typeof variantClasses;
   inputRef?: React.RefObject<HTMLInputElement>;
   isSearchable?: boolean;
+  bottomNode?: React.ReactNode;
   onChange: (event: OnChangeParams) => void;
 }
 export default function UiSelect({
@@ -51,13 +52,14 @@ export default function UiSelect({
   options,
   error,
   isSearchable,
+  bottomNode,
   onChange,
 }: Props) {
   const [optionsAreVisible, setOptionsAreVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredOptions = options.filter((option) =>
-    option.value.toLowerCase().includes(searchQuery.toLocaleLowerCase())
+    option.label.toLowerCase().includes(searchQuery.toLocaleLowerCase())
   );
 
   const displayText = useMemo(() => {
@@ -148,6 +150,7 @@ export default function UiSelect({
                   {option.label}
                 </li>
               ))}
+              {bottomNode && <div className='sticky bottom-0'>{bottomNode}</div>}
             </div>
           </ul>
         )}

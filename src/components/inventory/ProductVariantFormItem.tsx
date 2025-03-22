@@ -44,7 +44,7 @@ export default function ProductVariantFormItem({
         value={variant.type}
         label="Variant Type"
         placeholder="e.g Size"
-        roundedVariant="lg"
+        roundedVariant="xl"
       />
       <div className="relative grid gap-4">
         {variant.value.map((value, index) => (
@@ -57,7 +57,7 @@ export default function ProductVariantFormItem({
             }
             label={index < 1 ? 'Variant Value' : ''}
             placeholder="e.g XXL"
-            roundedVariant="lg"
+            roundedVariant="xl"
             suffixNode={
               index > 0 && (
                 <button

@@ -13,7 +13,8 @@ const variantClasses = {
 
 const roundedClasses = {
   md: 'rounded',
-  lg: 'rounded-[16px]',
+  lg: 'rounded-[8px]',
+  xl: 'rounded-[16px]',
 };
 
 type Variant = keyof typeof variantClasses;
