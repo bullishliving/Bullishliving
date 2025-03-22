@@ -1,14 +1,8 @@
 import Image from 'next/image';
-
-import GuySkating from '@/assets/images/guy-skating.png';
 import AboutImg1 from '@/assets/images/about-image-1.png';
 import AboutImg2 from '@/assets/images/about-image-2.png';
 import AboutImg3 from '@/assets/images/about-image-3.png';
 import AboutImg4 from '@/assets/images/about-image-4.png';
-
-
-
-
 
 import Community from '@/components/landing/JoinCommunity';
 import Unstoppable from '@/components/landing/Unstoppable';
