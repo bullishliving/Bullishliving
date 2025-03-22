@@ -23,6 +23,10 @@ export const socials = [
     icon: 'Email',
     link: 'mailto:Info@bullishliving.com'
   },
+  {
+    icon: 'X',
+    link: 'https://x.com/bullishactive?s=21'
+  },
 ]
 
 export const roleOptions: Option[] = [
