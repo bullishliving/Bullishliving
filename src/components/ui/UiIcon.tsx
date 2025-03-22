@@ -9,6 +9,7 @@ import Instagram from '@/assets/svg/instagram.svg';
 import Search from '@/assets/svg/search.svg';
 import Snapchat from '@/assets/svg/snapchat.svg';
 import TikTok from '@/assets/svg/tiktok.svg';
+import X from '@/assets/svg/twitter.svg';
 
 // These icons should be arranged alphabetically for easy sorting
 
@@ -24,6 +25,7 @@ const icons = {
   Search,
   Snapchat,
   TikTok,
+  X,
 };
 
 export type Icons = keyof typeof icons;
