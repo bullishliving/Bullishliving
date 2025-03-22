@@ -21,7 +21,7 @@ export const socials = [
   },
   {
     icon: 'Email',
-    link: 'mailto:https://www.tiktok.com/@bullishliving?_t=ZM-8usJzwYIDaA&_r=1'
+    link: 'mailto:Info@bullishliving.com'
   },
 ]
 
