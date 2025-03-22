@@ -110,7 +110,7 @@ export default function AboutUs() {
           className={`px-4 py-16 md:py-24 md:px-6 2xl:px-8 ${isEvenSection(index) ? 'bg-secondary-500' : 'bg-primary-500'}`}
         >
           <div
-            className={`max-w-[1280px] mx-auto flex flex-col md:flex-row gap-4 ${!isEvenSection(index) && '!flex-row-reverse'}  md:justify-between md:items-center`}
+            className={`max-w-[1280px] mx-auto flex flex-col-reverse  gap-4 ${!isEvenSection(index) ? 'md:flex-row-reverse' : 'md:flex-row'}  md:justify-between md:items-center`}
           >
             <Image
               src={section.image}
