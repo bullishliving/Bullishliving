@@ -10,15 +10,24 @@ import { Color } from '@tiptap/extension-color';
 import ListItem from '@tiptap/extension-list-item';
 import TextStyle from '@tiptap/extension-text-style';
 
+import UiField from './UiField';
+
 import UiRichTextEditorToolBar from './UiRichTextEditorToolBar';
 
 interface Props {
-  content: string;
+  name: string;
+  value: string;
+  onChange: (event: { name: string; value: string }) => void;
+  error?: string;
+  label: string
 }
 
-export default function UiRichTextEditor({ content }: Props) {
+export default function UiRichTextEditor({ name, onChange, value, error, label }: Props) {
   const editor = useEditor({
-    content,
+    content: value,
+    onUpdate:({ editor } ) => {
+      onChange({name: name, value: editor.getHTML()})
+    },
     editorProps: {
       attributes: {
         class:
@@ -57,14 +66,18 @@ export default function UiRichTextEditor({ content }: Props) {
   if (!editor) return null;
 
   return (
-    <div className="border border-grey-400 rounded-2xl p-4 max-w-full">
-      <UiRichTextEditorToolBar editor={editor} />
-      <div className="h-[200px] overflow-y-auto !outline-none">
-        <EditorContent
-          editor={editor}
-          className="!outline-none min-h-[200px]"
-        />
+    <UiField label={label} error={error}>
+      <div
+        className={`border rounded-2xl p-4 max-w-full ${error ? 'border-danger-400' : 'border-grey-400 '}`}
+      >
+        <UiRichTextEditorToolBar editor={editor} />
+        <div className="h-[200px] overflow-y-auto !outline-none">
+          <EditorContent
+            editor={editor}
+            className="!outline-none min-h-[200px]"
+          />
+        </div>
       </div>
-    </div>
+    </UiField>
   );
 }

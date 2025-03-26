@@ -1,8 +1,5 @@
-import { StaticImageData } from 'next/image';
+import { ProductType } from '@/app/context/SetProductContext';
 
-export default interface Product {
-  id: string;
-  name: string;
-  price: number;
-  images: StaticImageData[];
+export default interface Product extends ProductType {
+  id: number;
 }

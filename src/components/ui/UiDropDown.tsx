@@ -29,7 +29,7 @@ export default function UiDropDown({
   side = 'right',
 }: Props) {
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger className="outline-none">
         {trigger || (
           <UiIcon

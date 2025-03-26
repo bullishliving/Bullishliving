@@ -9,7 +9,7 @@ interface Props {
   error?: string;
   label?: React.ReactNode;
   hint?: string;
-  variant: keyof typeof variantClasses;
+  variant?: keyof typeof variantClasses;
   isOptional?: boolean;
   children: React.ReactNode;
 }
@@ -17,7 +17,7 @@ export default function UiField({
   error,
   label,
   isOptional,
-  variant,
+  variant='light',
   hint,
   children,
 }: Props) {
@@ -30,7 +30,10 @@ export default function UiField({
         {isOptional && <span className="text-gray-600">(optional)</span>}
       </label>
       {children}
-      <div data-testid="error-text" className=" text-red-500 text-xs">
+      <div
+        data-testid="error-text"
+        className=" text-danger-500 text-sm font-montserrat leading-7"
+      >
         {error}
       </div>
       <div className="text-xs text-gray-900">{hint}</div>

@@ -7,8 +7,7 @@ import useAddCategoryMutation from "@/api/mutations/categories/useAddCategoryMut
 import useDeleteCategoryMutation from "@/api/mutations/categories/useDeleteCategoryMutation";
 
 import useObjectState from "@/hooks/useObjectState";
-import CreateCategorySchema from "@/utils/schemas/CreateCategorySchema";
-
+import CreateCategorySchema from '@/utils/schemas/CreateCategorySchema';
 import showToast from "../ui/UiToast";
 import UiForm from "../ui/UiForm";
 import UiInput from "../ui/UiInput";
@@ -30,7 +29,7 @@ export default function ManageCategories({ categories,  handleActiveView, setAct
   const { mutation: {mutateAsync: addCategory, isPending: isAddCategoryLoading } } = useAddCategoryMutation();
   const { mutation: {mutateAsync: deleteCategory } } = useDeleteCategoryMutation();
 
-  const { formData: setProductData } = useSetProductContext()
+  const { formData: setProductData } = useSetProductContext();
   
   const formData = useObjectState({
     name: ''
@@ -140,9 +139,10 @@ export default function ManageCategories({ categories,  handleActiveView, setAct
           </UiForm>
         </div>
         <UiButton
+          type='button'
           disabled={selectedCategoryId === ''}
           onClick={() =>
-            setProductData.set({ name: 'category', value: selectedCategoryId })
+            setProductData.set({ name: 'category_id', value: selectedCategoryId })
           }
         >
           Save Changes

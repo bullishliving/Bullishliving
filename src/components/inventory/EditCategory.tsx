@@ -3,7 +3,6 @@ import useUpdateCategoryMutation from "@/api/mutations/categories/useUpdateCateg
 
 import useObjectState from "@/hooks/useObjectState";
 import CreateCategorySchema from "@/utils/schemas/CreateCategorySchema";
-
 import UiInput from "../ui/UiInput";
 import UiForm from "../ui/UiForm";
 import UiButton from "../ui/UiButton";

@@ -84,7 +84,7 @@ export default function UiInput({
   }, [variant]);
 
   const validationStyle = useMemo(() => {
-    return error && 'border-danger-200';
+    return error && 'border-danger-500';
   }, [error]);
 
   return (

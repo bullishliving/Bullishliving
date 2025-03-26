@@ -22,6 +22,7 @@ import Minus from '@/assets/svg/minus.svg';
 import NumberedList from '@/assets/svg/numbered-list.svg';
 import Search from '@/assets/svg/search.svg';
 import Snapchat from '@/assets/svg/snapchat.svg';
+import Star from '@/assets/svg/star.svg';
 import TikTok from '@/assets/svg/tiktok.svg';
 import Trash from '@/assets/svg/trash.svg';
 
@@ -52,6 +53,7 @@ const icons = {
   NumberedList,
   Search,
   Snapchat,
+  Star,
   TikTok,
   Trash,
 };

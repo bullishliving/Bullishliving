@@ -6,7 +6,7 @@ import UiIcon from '../ui/UiIcon';
 
 import SetProductForm from './SetProductForm';
 import useCategoriesQuery from '@/api/query/useCategoriesQuery';
-import {  useSetProductContext } from '@/app/context/SetProductContext'
+import { initialProductState, useSetProductContext } from '@/app/context/SetProductContext'
 
 const SetProductVariantForm = dynamic(() => import('./SetProductVariantForm'));
 const MangeCategories = dynamic(() => import('./ManageCategories'));
@@ -20,10 +20,11 @@ interface Props {
 export default function AddProductModal({ isOpen, onClose }: Props) {
   const [activeView, setActiveView] = useState(0);
   const [activeCategoryId, setActiveCategoryId] = useState<string>('');
+  
 
   const { query: { data: categories } } = useCategoriesQuery();
 
-  const { formData } = useSetProductContext();
+  const { formData,  setActiveVariantIndex } = useSetProductContext();
 
   function handleActiveView(index: number) {
     setActiveView(index)
@@ -35,15 +36,16 @@ export default function AddProductModal({ isOpen, onClose }: Props) {
 
   function closeModal() {
     onClose();
-    formData.reset()
+    formData.setValue(initialProductState);
+    setActiveView(0)
   }
 
-  
   const views = [
     {
-      title: `${false ? 'Edit' : 'Add'} Product`,
+      title: `${formData.value.id ? 'Edit' : 'Add'} Product`,
       node: (
         <SetProductForm
+          closeModal={closeModal}
           categories={categories || []}
           onSetActiveView={handleActiveView}
         />
@@ -54,7 +56,10 @@ export default function AddProductModal({ isOpen, onClose }: Props) {
       node: <SetProductVariantForm />,
       startNode: (
         <button
-          onClick={() => setActiveView(0)}
+          onClick={() => {
+            setActiveView(0);
+            setActiveVariantIndex(null);
+          }}
           className="stroke-secondary-500"
         >
           <UiIcon icon="ArrowLeft" size="24" />
@@ -94,13 +99,13 @@ export default function AddProductModal({ isOpen, onClose }: Props) {
   ];
 
   return (
-      <UiModal
-        isOpen={isOpen}
-        onClose={closeModal}
-        title={views[activeView].title}
-        startNode={views[activeView].startNode}
-      >
-        {views[activeView].node}
-      </UiModal>
+    <UiModal
+      isOpen={isOpen}
+      onClose={closeModal}
+      title={views[activeView].title}
+      startNode={views[activeView].startNode}
+    >
+      {views[activeView].node}
+    </UiModal>
   );
 }

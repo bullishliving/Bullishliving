@@ -3,7 +3,6 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Api } from '../supabaseService';
 
 export default function  useCategoriesQuery() {
-
   const queryKey = ['categories'];
   const queryClient = useQueryClient();
 

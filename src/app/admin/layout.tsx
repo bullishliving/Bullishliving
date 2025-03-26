@@ -16,7 +16,7 @@ export default function AdminLayout({
   });
   return (
     <QueryClientProvider client={queryClient}>
-      <section className="bg-grey-100">{children}</section>
+      <section className="bg-grey-100 overflow-x-hidden">{children}</section>
     </QueryClientProvider>
   );
 }

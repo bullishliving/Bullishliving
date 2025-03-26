@@ -19,7 +19,7 @@ export default function useAddCategoryMutation() {
   },
 
   onSuccess: () => {
-     queryClient.invalidateQueries({ queryKey: ['categories'] }); 
+    queryClient.invalidateQueries({ queryKey: ['categories'] }); 
   },
   
   })

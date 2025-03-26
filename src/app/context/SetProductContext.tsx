@@ -1,41 +1,90 @@
 'use client';
 
-import { createContext, useContext, ReactNode } from 'react';
-import useObjectState from '@/hooks/useObjectState'; 
+import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
+import useObjectState from '@/hooks/useObjectState';
+import { ProductVariant } from '@/components/inventory/SetProductVariantForm';
+import Category from '@/types/Category';
+import Product from '@/types/Product';
 
-interface ProductType {
+export interface ProductType {
+  id?: number;
   name: string;
-  images: File[] | null;
-  category: string;
+  description: string;
+  images: File[] | string[] | null;
+  category_id: string;
   price: string;
-  discountedPrice: string;
-  stock: string;
+  discounted_price: string | null;
+  stock: string | null;
+  variants: ProductVariant[];
+  is_out_of_stock: boolean;
 }
 
 interface FormContextType {
-  formData: ReturnType<typeof useObjectState<ProductType>>;
+  formData: ReturnType<typeof useObjectState<ProductType | Product>>;
+  activeVariant: ProductVariant | null;
+  setActiveVariant: (variant: ProductVariant | null) => void;
+  activeCategoryId: string | null;
+  setActiveCategoryId: (id: string) => void;
+  selectedCategory: Category | null;
+  setSelectedCategory: (category: Category) => void;
+  activeVariantIndex: number | null;
+  setActiveVariantIndex: (index: number | null) => void;
+  isEdit: boolean
 }
 
 const SetProductContext = createContext<FormContextType | undefined>(undefined);
+
+export const initialProductState = {
+  name: '',
+  description: '',
+  images: null,
+  category_id: '',
+  price: '',
+  discounted_price: null,
+  stock: null,
+  variants: [],
+  is_out_of_stock: false,
+};
 
 export function SetProductProvider({
   children,
   defaultProduct,
 }: {
   children: ReactNode;
-  defaultProduct?: ProductType;
+  defaultProduct?: Product;
 }) {
-  const formData = useObjectState<ProductType>(defaultProduct || {
-    name: '',
-    images: null,
-    category: '',
-    price: '',
-    discountedPrice: '',
-    stock: '',
-  });
+  
+  const formData = useObjectState<ProductType | Product>(
+    defaultProduct || initialProductState
+  );
+
+  const [activeVariant, setActiveVariant] = useState<ProductVariant | null>(
+    null
+  );
+  const [activeVariantIndex, setActiveVariantIndex] = useState<number | null>(null)
+  const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+
+  useEffect(() => {
+    if (defaultProduct) formData.setValue(defaultProduct);
+    
+  }, [defaultProduct, formData]);
 
   return (
-    <SetProductContext.Provider value={{ formData }}>
+    <SetProductContext.Provider
+      value={{
+        formData,
+        activeVariant,
+        setActiveVariant,
+        activeCategoryId,
+        setActiveCategoryId,
+        selectedCategory,
+        setSelectedCategory,
+        activeVariantIndex,
+        setActiveVariantIndex,
+        isEdit: !!defaultProduct
+      }}
+    >
       {children}
     </SetProductContext.Provider>
   );
@@ -44,7 +93,9 @@ export function SetProductProvider({
 export function useSetProductContext() {
   const context = useContext(SetProductContext);
   if (!context) {
-    throw new Error('useFormContext must be used within a FormProvider');
+    throw new Error(
+      'useSetProductContext must be used within a SetProductProvider'
+    );
   }
   return context;
 }

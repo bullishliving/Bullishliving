@@ -41,6 +41,8 @@ export default {
           500: '#B41B0D',
         },
         orange: {
+          50: '#FFEDD9',
+          400: '#FF6B00',
           500: '#FB4D04',
           600: '#fb4e04d5',
         },

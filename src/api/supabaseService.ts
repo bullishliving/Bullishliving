@@ -3,6 +3,8 @@ import Partner from '@/types/Partner';
 import Category from '@/types/Category';
 import { createClient } from '@/utils/supabase/supabaseClient';
 import { SupabaseTables } from '@/types/enums/SupabaseTables';
+import { ProductType } from '@/app/context/SetProductContext';
+import Product from '@/types/Product';
 
 class SupabaseService {
   addCommunityMember(member: CommunityMember) {
@@ -29,6 +31,22 @@ class SupabaseService {
 
   deleteCategory(id: string) {
     return this.delete(SupabaseTables.CATEGORIES, id)
+  }
+
+  addProduct(product: ProductType) {
+    return this.insert(SupabaseTables.PRODUCTS, product)
+  }
+
+  getProducts(): Promise<Product[]> {
+    return this.select(SupabaseTables.PRODUCTS)
+  }
+
+  upadteProduct(product:Product) {
+    return this.update(SupabaseTables.PRODUCTS, product.id, product)
+  }
+
+  deleteProduct(id: number) {
+    return this.delete(SupabaseTables.PRODUCTS, id)
   }
 
   private async insert<T>(table: SupabaseTables, data: T) {
