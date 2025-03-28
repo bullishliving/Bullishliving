@@ -21,7 +21,6 @@ export default function AddProductModal({ isOpen, onClose }: Props) {
   const [activeView, setActiveView] = useState(0);
   const [activeCategoryId, setActiveCategoryId] = useState<string>('');
   
-
   const { query: { data: categories } } = useCategoriesQuery();
 
   const { formData,  setActiveVariantIndex } = useSetProductContext();

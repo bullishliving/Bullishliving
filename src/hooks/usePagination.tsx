@@ -18,9 +18,29 @@ export function usePagination({ dataLimit, totalData }: PaginationData) {
     setPage(page);
   }
 
+  const isNextDisabled = useMemo(() => {
+    return page >= totalPages;
+  }, [page, totalPages]);
+
+  const isPrevDisabled = useMemo(() => {
+    return page <= 1;
+  }, [page]);
+
+  function increasePage() {
+    setPage((page) => Math.min(page + 1, totalPages));
+  }
+
+  function decreasePage() {
+    setPage((page) => Math.max(page - 1, 1));
+  }
+
   return {
     page,
     totalPages,
+    isNextDisabled,
+    isPrevDisabled,
+    increasePage,
+    decreasePage,
     onPageChange,
   };
 }

@@ -22,6 +22,8 @@ export interface ProductType {
 interface FormContextType {
   formData: ReturnType<typeof useObjectState<ProductType | Product>>;
   activeVariant: ProductVariant | null;
+  activeProduct: Product | undefined;
+  setActiveProduct: (product: Product | undefined) => void;
   setActiveVariant: (variant: ProductVariant | null) => void;
   activeCategoryId: string | null;
   setActiveCategoryId: (id: string) => void;
@@ -29,7 +31,7 @@ interface FormContextType {
   setSelectedCategory: (category: Category) => void;
   activeVariantIndex: number | null;
   setActiveVariantIndex: (index: number | null) => void;
-  isEdit: boolean
+  isEdit: boolean;
 }
 
 const SetProductContext = createContext<FormContextType | undefined>(undefined);
@@ -64,6 +66,7 @@ export function SetProductProvider({
   const [activeVariantIndex, setActiveVariantIndex] = useState<number | null>(null)
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [activeProduct , setActiveProduct] = useState<Product | undefined>(undefined);
 
   useEffect(() => {
     if (defaultProduct) formData.setValue(defaultProduct);
@@ -76,6 +79,8 @@ export function SetProductProvider({
         formData,
         activeVariant,
         setActiveVariant,
+        activeProduct,
+        setActiveProduct,
         activeCategoryId,
         setActiveCategoryId,
         selectedCategory,

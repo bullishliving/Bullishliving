@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Api } from '../../supabaseService';
-import Product from '@/types/Product';
 
 export default function useDeleteProductMutaion() {
   const queryClient = useQueryClient();
@@ -12,17 +11,11 @@ export default function useDeleteProductMutaion() {
       } catch (error) {
         throw error
       }
-    }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] }); 
+    },
   });
 
-  function removeProduct(productId: number) {
-    const cachedProduct = queryClient.getQueryData<Product[]>(['products']) || [];
-
-    const productIndex = cachedProduct.findIndex((product) => product.id === productId);
-    if(productIndex !== -1){
-      cachedProduct.splice(productIndex, 1)
-    }
-  }
-
-  return { mutation, removeProduct};
+  return { mutation };
 }

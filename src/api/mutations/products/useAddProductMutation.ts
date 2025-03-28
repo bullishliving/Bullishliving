@@ -14,8 +14,8 @@ export default function useAddProductMutation() {
       }
     }, 
     onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ['products'] }); 
-  },
+      queryClient.invalidateQueries({ queryKey: ['products'] }); 
+    },
   })
 
   return { mutation }

@@ -1,31 +1,39 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-
 import { Api } from '../supabaseService';
 import Product from '@/types/Product';
 
-export default function useProductQuery() {
-  const queryKey = ['products'];
+type ProductData = {
+  data: Product[];
+  count?: number;
+};
+
+export default function useProductQuery(page: number, limit: number, searchQuery?: string, searchColumn?: string) {
+  const queryKey = ['products', page, limit, searchQuery, searchColumn];
   const queryClient = useQueryClient();
+  
+  const start = (page - 1) * limit;
+  const end = start + limit - 1;
 
   const query = useQuery({
     queryKey,
     queryFn: async () => {
       try {
-        const products = await Api.getProducts()
-        return products
+        const data = await Api.getProducts(limit, start, end, searchQuery, searchColumn);
+        return data;
       } catch (error) {
         return Promise.reject(error);
       }
-    }
-  })
+    },
+    placeholderData: (previousData) => previousData,
+  });
 
-  const cachedProducts =
-    queryClient.getQueryData<Product[]>(['products']) || [];
+  const cachedProductsData = queryClient.getQueryData<ProductData>([
+    'products',
+  ]);
 
   function getProduct(productId: number) {
-    console.log(cachedProducts);
-    
-    return cachedProducts.find(({ id }) => id === productId);
+    if (!cachedProductsData) return;
+    return cachedProductsData.data.find(({ id }) => id === productId);
   }
 
   return { query, getProduct };

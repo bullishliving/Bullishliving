@@ -21,8 +21,8 @@ class SupabaseService {
     return this.insert(SupabaseTables.CATEGORIES, category)
   }
 
-  getCategories(): Promise<Category[]> {
-    return this.select(SupabaseTables.CATEGORIES)
+  getCategories() {
+    return this.select<Category>(SupabaseTables.CATEGORIES)
   }
 
   upadteCategory(id: string, data: {name: string}) {
@@ -37,8 +37,8 @@ class SupabaseService {
     return this.insert(SupabaseTables.PRODUCTS, product)
   }
 
-  getProducts(): Promise<Product[]> {
-    return this.select(SupabaseTables.PRODUCTS)
+  getProducts( limit: number, start?: number, end?:number, searchQuery?: string, searchColumn?: string, ){
+    return this.selectPaginated<Product>(SupabaseTables.PRODUCTS, "*", undefined, true, limit,  start, end, searchQuery, searchColumn)
   }
 
   upadteProduct(product:Product) {
@@ -56,23 +56,60 @@ class SupabaseService {
 
   private async select<T>(
     table: SupabaseTables,
-    columns: string = '*', 
+    columns: string = "*",
     filters?: { column: string; value: any }[]
   ): Promise<T[]> {
-    const query = createClient().from(table).select(columns);
+    let query = createClient().from(table).select(columns);
 
     if (filters) {
       filters.forEach(({ column, value }) => {
-        query.eq(column, value); 
+        query = query.eq(column, value);
       });
     }
 
     const { data, error } = await query;
-
     if (error) throw error;
 
     return data as T[];
   }
+
+  private async selectPaginated<T>(
+    table: SupabaseTables,
+    columns: string = "*",
+    filters?: { column: string; value: any }[],
+    getCount: boolean = false,
+    limit: number = 10,
+    start?: number,
+    end?: number,
+    searchQuery?: string,  // Search text
+    searchColumn?: string  // Column to search in
+  ): Promise<{ data: T[]; count?: number }> {  
+    let query = createClient()
+    .from(table)
+    .select(columns, getCount ? { count: "exact" } : undefined);
+
+  if (filters) {
+    filters.forEach(({ column, value }) => {
+      query = query.eq(column, value);
+    });
+  }
+
+  if (start !== undefined && end !== undefined) {
+    query = query.range(start, end);
+  }
+
+   if (searchQuery && searchColumn) {
+    query = query.textSearch(searchColumn, searchQuery, { type: 'websearch' });
+  }
+
+  query = query.limit(limit);
+
+  const { data, error, count } = await query;
+
+  if (error) throw error;
+
+  return { data: data as T[], count: count ?? 0 };
+}
 
   private async update<T>(table: SupabaseTables, id: string | number, data: Partial<T>) {
     const { error } = await createClient()

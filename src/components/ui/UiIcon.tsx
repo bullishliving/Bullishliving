@@ -6,7 +6,9 @@ import ArrowRight from '@/assets/svg/arrow-right.svg';
 import Bold from '@/assets/svg/bold.svg';
 import BuilletList from '@/assets/svg/bullet-list.svg';
 import CaretDown from '@/assets/svg/caret-down.svg';
+import CaretLeft from '@/assets/svg/caret-left.svg';
 import CaretLeftBig from '@/assets/svg/caret-left-big.svg';
+import CaretRight from '@/assets/svg/caret-right.svg';
 import CaretRightBig from '@/assets/svg/caret-right-big.svg';
 import Cart from '@/assets/svg/cart.svg';
 import Close from '@/assets/svg/close.svg';
@@ -22,6 +24,7 @@ import Minus from '@/assets/svg/minus.svg';
 import NumberedList from '@/assets/svg/numbered-list.svg';
 import Search from '@/assets/svg/search.svg';
 import Snapchat from '@/assets/svg/snapchat.svg';
+import Sort from '@/assets/svg/sort.svg';
 import Star from '@/assets/svg/star.svg';
 import TikTok from '@/assets/svg/tiktok.svg';
 import Trash from '@/assets/svg/trash.svg';
@@ -37,6 +40,8 @@ const icons = {
   Bold,
   BuilletList,
   CaretDown,
+  CaretLeft,
+  CaretRight,
   CaretLeftBig,
   CaretRightBig,
   Cart,
@@ -53,6 +58,7 @@ const icons = {
   NumberedList,
   Search,
   Snapchat,
+  Sort,
   Star,
   TikTok,
   Trash,

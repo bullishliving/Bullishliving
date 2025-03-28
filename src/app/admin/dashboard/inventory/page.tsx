@@ -1,17 +1,19 @@
 'use client';
 
-import {  useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import useDeleteProductMutaion from '@/api/mutations/products/useDeleteProductCategory';
 import useProductQuery from '@/api/query/useProductsQuery';
-import {
-  SetProductProvider,
-} from '@/app/context/SetProductContext';
+import { SetProductProvider } from '@/app/context/SetProductContext';
+import { usePagination } from '@/hooks/usePagination';
 
 import AddProductModal from '@/components/inventory/AddProductModal';
 import AdminBasePage from '@/components/layout/AdminBasePage';
 import AnalyticsCard from '@/components/inventory/AnalyticsCard';
+import DeleteConfirmation from '@/components/DeleteConfirmation';
+import showToast from '@/components/ui/UiToast';
+import UiAdminPaginator from '@/components/ui/UiAdminPaginator';
 import UiButton from '@/components/ui/UiButton';
 import UiDropDown, { DropDownData } from '@/components/ui/UiDropDown';
 import UiIcon from '@/components/ui/UiIcon';
@@ -21,16 +23,45 @@ import UiTable, { Header } from '@/components/ui/UiTable';
 import useToggle from '@/hooks/useToggle';
 
 import Product from '@/types/Product';
-import showToast from '@/components/ui/UiToast';
+import SearchInput from '@/components/ui/SearchInput';
+
+//---
 
 export default function Page() {
-  const { query: {data: products, isLoading: isProductsLoading}, getProduct } = useProductQuery();
-  const { mutation: { mutateAsync: deleteProduct }, removeProduct } = useDeleteProductMutaion();
+  const [limit, setLimit] = useState<number>(5);
+  const [totalData, setTotalData] = useState<number | undefined>(undefined);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const {
+    decreasePage,
+    increasePage,
+    isNextDisabled,
+    isPrevDisabled,
+    page,
+    totalPages,
+  } = usePagination({ dataLimit: limit, totalData: totalData || 0 });
+
+  const {
+    query: { data: productsData, isLoading: isProductsLoading },
+    getProduct,
+  } = useProductQuery(page, limit, searchQuery, 'products_name_description');
+
+  const {
+    mutation: { mutateAsync: deleteProduct },
+  } = useDeleteProductMutaion();
+
   const [activeProduct, setActiveProduct] = useState<Product | undefined>(
     undefined
   );
+
   const isAddProductVisible = useToggle();
-    
+  const isDeleteConfirmVisible = useToggle();
+  const isDeleteLoading = useToggle();
+
+  function handleSearchQuery(query: string) {
+    setSearchQuery(query)
+  }
+
   function showAddProduct() {
     isAddProductVisible.on();
     setActiveProduct(undefined);
@@ -38,18 +69,26 @@ export default function Page() {
 
   function hideAddProduct() {
     isAddProductVisible.off();
-    setActiveProduct(undefined)
-  };
+    setActiveProduct(undefined);
+  }
 
-  async function DeleteProduct(id: number) {
+  async function DeleteProduct() {
     try {
-      await deleteProduct(id);
-      showToast('product deleted', 'success')
+      if (!activeProduct) throw new Error('no active product to delete');
+      isDeleteLoading.on();
+
+      await deleteProduct(activeProduct.id);
+      isDeleteConfirmVisible.off();
+      showToast('product deleted', 'success');
     } catch (error) {
-        showToast('Error deleting category', 'error');
-        throw new Error(`An error occured ${error}`);
+      showToast('Error deleting product', 'error');
+      throw new Error(`An error occured ${error}`);
+    } finally {
+      isDeleteLoading.off();
     }
   }
+
+  // const filterDropDowonData
 
   const productDropDownOptions: DropDownData[] = [
     {
@@ -61,9 +100,7 @@ export default function Page() {
           </p>
         </div>
       ),
-      func: () => {
-
-      },
+      func: () => {},
     },
     {
       label: (
@@ -75,9 +112,9 @@ export default function Page() {
       func: (id) => {
         const product = getProduct(Number(id));
         console.log(product, id);
-        
+
         setActiveProduct(product!);
-        isAddProductVisible.on()
+        isAddProductVisible.on();
       },
     },
     {
@@ -88,8 +125,10 @@ export default function Page() {
         </div>
       ),
       func: (id) => {
-        DeleteProduct(Number(id));
-        removeProduct(Number(id));
+        const product = getProduct(Number(id));
+
+        setActiveProduct(product);
+        isDeleteConfirmVisible.on();
       },
     },
   ];
@@ -125,7 +164,7 @@ export default function Page() {
     },
   ];
 
-  const productsData = products?.map((product) => {    
+  const productsNodes = productsData?.data?.map((product) => {
     return {
       id: `${product.id}`,
       name: (
@@ -137,9 +176,13 @@ export default function Page() {
             src={product.images![0] as string}
             className="w-10 h-10 rounded-lg "
           />
-          <div className='flex gap-2 items-center'>
+          <div className="flex gap-2 items-center">
             <p>{product.name}</p>{' '}
-            {product.variants.length > 0 && <span className='text-orange-400 text-xs rounded-full w-[25px] h-6 bg-orange-50 flex justify-center items-center'>V</span>}
+            {product.variants.length > 0 && (
+              <span className="text-orange-400 text-xs rounded-full w-[25px] h-6 bg-orange-50 flex justify-center items-center">
+                V
+              </span>
+            )}
           </div>
         </div>
       ),
@@ -170,12 +213,25 @@ export default function Page() {
       left: '40',
       revenue: '₦10,000,200',
       inStock: '',
-      action: <UiDropDown align='start' side='bottom' options={productDropDownOptions} itemId={`${product.id}`}/>,
+      action: (
+        <UiDropDown
+          align="start"
+          side="bottom"
+          options={productDropDownOptions}
+          itemId={`${product.id}`}
+        />
+      ),
     };
-  })
+  });  
 
-  if(isProductsLoading) {
-    return <UiLoader/>
+  useEffect(() => {
+    if (productsData?.count !== undefined) {
+      setTotalData(productsData.count);
+    }
+  }, [productsData?.count]);
+
+  if (isProductsLoading) {
+    return <UiLoader />;
   }
 
   return (
@@ -203,20 +259,60 @@ export default function Page() {
           }
         />
       </div>
-      {productsData && (
+      {productsNodes && (
         <div className="bg-white p-4 rounded-[8px]">
-          <div className="w-full font-montserrat mb-4">
+          <div className="w-full font-montserrat mb-4 flex justify-between items-center">
             <h3 className="font-bold text-secondary-500">All Products</h3>
+            <div className="flex items-center gap-4">
+              <SearchInput
+                searchQuery={searchQuery}
+                setSearchQuery={handleSearchQuery}
+              />
+              <UiDropDown
+                options={[]}
+                align='start' 
+                side='bottom'
+                trigger={
+                  <div className="md:w-[86px] bg-transparent border border-grey-300 hover:bg-grey-100 h-10 rounded-lg flex gap-2 items-center justify-center font-bold text-sm">
+                    Filter
+                    <UiIcon icon="Sort" size="16" />
+                  </div>
+                }
+              />
+            </div>
           </div>
-          <UiTable headers={productsHeaders} data={productsData} />
+          <UiTable headers={productsHeaders} data={productsNodes} />
+          <div className="mt-4">
+            <UiAdminPaginator
+              decreasePage={decreasePage}
+              increasePage={increasePage}
+              isNextDisabled={isNextDisabled}
+              isPrevDisabled={isPrevDisabled}
+              limit={limit}
+              page={page}
+              setLimit={setLimit}
+              totalPages={totalPages}
+            />
+          </div>
         </div>
       )}
+
       <SetProductProvider defaultProduct={activeProduct}>
         <AddProductModal
           isOpen={isAddProductVisible.value}
           onClose={hideAddProduct}
         />
       </SetProductProvider>
+
+      <DeleteConfirmation
+        isOpen={isDeleteConfirmVisible.value}
+        onAction={() => {
+          if (activeProduct) {
+            DeleteProduct();
+          }
+        }}
+        onClose={() => isDeleteConfirmVisible.off()}
+      />
     </AdminBasePage>
   );
 }
