@@ -3,11 +3,12 @@ import UiButton from "./ui/UiButton";
 
 interface Props {
   isOpen: boolean;
+  isDeleteLoading: boolean
   onAction: VoidFunction;
   onClose: VoidFunction
 }
 
-export default function DeleteConfirmation({ isOpen, onAction, onClose }: Props) {
+export default function DeleteConfirmation({ isOpen, isDeleteLoading, onAction, onClose }: Props) {
   return (
     <UiModal title="Confirm Delete" isOpen={isOpen} onClose={onClose}>
       <p className="font-montserrat text-tertiary-700 mb-5">
@@ -18,7 +19,7 @@ export default function DeleteConfirmation({ isOpen, onAction, onClose }: Props)
         <UiButton variant="grey" onClick={onClose}>
           Cancel
         </UiButton>
-        <UiButton variant="danger" onClick={onAction}>
+        <UiButton loading={isDeleteLoading} variant="danger" onClick={onAction}>
           Delete
         </UiButton>
       </div>

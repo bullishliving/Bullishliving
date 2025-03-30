@@ -49,6 +49,14 @@ class SupabaseService {
     return this.delete(SupabaseTables.PRODUCTS, id)
   }
 
+  toggleOutOfStock(id: number, data: boolean) {
+    return this.update(SupabaseTables.PRODUCTS, id, {is_out_of_stock: data})
+  }
+
+  toggleIsFeatured(id: number, data: boolean) {
+    return this.update(SupabaseTables.PRODUCTS, id, {is_featured: data})
+  }
+
   private async insert<T>(table: SupabaseTables, data: T) {
     const { error } = await createClient().from(table).insert([data]);
     if (error) throw error;
@@ -59,7 +67,7 @@ class SupabaseService {
     columns: string = "*",
     filters?: { column: string; value: any }[]
   ): Promise<T[]> {
-    let query = createClient().from(table).select(columns);
+    let query = createClient().from(table).select(columns).order('created_at', { ascending: false });
 
     if (filters) {
       filters.forEach(({ column, value }) => {
@@ -86,7 +94,7 @@ class SupabaseService {
   ): Promise<{ data: T[]; count?: number }> {  
     let query = createClient()
     .from(table)
-    .select(columns, getCount ? { count: "exact" } : undefined);
+    .select(columns, getCount ? { count: "exact" } : undefined).order('created_at', { ascending: false });
 
   if (filters) {
     filters.forEach(({ column, value }) => {

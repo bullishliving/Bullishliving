@@ -17,6 +17,7 @@ export interface ProductType {
   stock: string | null;
   variants: ProductVariant[];
   is_out_of_stock: boolean;
+  is_featured: boolean;
 }
 
 interface FormContextType {
@@ -46,6 +47,7 @@ export const initialProductState = {
   stock: null,
   variants: [],
   is_out_of_stock: false,
+  is_featured: false
 };
 
 export function SetProductProvider({
@@ -55,11 +57,6 @@ export function SetProductProvider({
   children: ReactNode;
   defaultProduct?: Product;
 }) {
-  
-  const formData = useObjectState<ProductType | Product>(
-    defaultProduct || initialProductState
-  );
-
   const [activeVariant, setActiveVariant] = useState<ProductVariant | null>(
     null
   );
@@ -68,10 +65,17 @@ export function SetProductProvider({
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [activeProduct , setActiveProduct] = useState<Product | undefined>(undefined);
 
+  const formData = useObjectState<ProductType | Product>(
+    activeProduct || initialProductState
+  );
+
+  console.log(activeProduct);
+  
+
+
   useEffect(() => {
-    if (defaultProduct) formData.setValue(defaultProduct);
-    
-  }, [defaultProduct, formData]);
+    if (activeProduct) formData.setValue(activeProduct);
+  }, [activeProduct, formData]);
 
   return (
     <SetProductContext.Provider

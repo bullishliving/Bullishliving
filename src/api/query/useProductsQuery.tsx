@@ -7,13 +7,15 @@ type ProductData = {
   count?: number;
 };
 
-export default function useProductQuery(page: number, limit: number, searchQuery?: string, searchColumn?: string) {
-  const queryKey = ['products', page, limit, searchQuery, searchColumn];
+export default function useProductQuery(page: number, limit: number, total: number,  searchQuery?: string, searchColumn?: string) {
+  const queryKey = ['products', page, limit, total, searchQuery, searchColumn];
   const queryClient = useQueryClient();
   
-  const start = (page - 1) * limit;
-  const end = start + limit - 1;
+  const maxPage = Math.ceil(total / limit);
+const safePage = Math.min(page, maxPage);
 
+const start = (safePage - 1) * limit;
+const end = Math.min(start + limit - 1, total - 1)
   const query = useQuery({
     queryKey,
     queryFn: async () => {
@@ -33,8 +35,14 @@ export default function useProductQuery(page: number, limit: number, searchQuery
 
   function getProduct(productId: number) {
     if (!cachedProductsData) return;
+    console.log(productId);
+    
     return cachedProductsData.data.find(({ id }) => id === productId);
   }
 
-  return { query, getProduct };
+  function reloadQuery() {
+    return queryClient.invalidateQueries({ queryKey: ['products'] });
+  }
+
+  return { query, getProduct, reloadQuery };
 }

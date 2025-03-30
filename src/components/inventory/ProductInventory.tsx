@@ -1,30 +1,195 @@
-import Image from "next/image";
-import UiDropDown, { DropDownData } from "../ui/UiDropDown";
-import UiIcon from "../ui/UiIcon";
-import UiTable, { Header } from "../ui/UiTable";
-import Product from "@/types/Product";
+import { useEffect, useMemo, useState } from 'react';
+import Image from 'next/image';
 
-interface Props {
-  products: Product[];
-  getProduct: (id: number) => Product | undefined
-  setActiveProduct: (product: Product) => void;
-  showDeleteConfirm: VoidFunction;
-  showAddProduct: VoidFunction
-}
+import { Api } from '@/api/supabaseService';
+import { initialProductState, useSetProductContext } from '@/app/context/SetProductContext';
+import useDeleteProductMutaion from '@/api/mutations/products/useDeleteProductMutation';
+import useProductQuery from '@/api/query/useProductsQuery';
 
-export default function ProductInventory({ products, showAddProduct, showDeleteConfirm ,setActiveProduct, getProduct }: Props) {
-  const productDropDownOptions: DropDownData[] = [
+import Product from '@/types/Product';
+
+import useToggle from '@/hooks/useToggle';
+import { usePagination } from '@/hooks/usePagination';
+
+import EditCostPrice from './EditCostPrice';
+import DeleteConfirmation from '../DeleteConfirmation';
+import SearchInput from '../ui/SearchInput';
+import showToast from '../ui/UiToast';
+import UiAdminPaginator from '../ui/UiAdminPaginator';
+import UiDropDown, { DropDownData } from '../ui/UiDropDown';
+import UiFilter from '../ui/UiFilter';
+import UiIcon from '../ui/UiIcon';
+import UiSwith from '../ui/UiSwitch';
+import UiTable, { Header } from '../ui/UiTable';
+
+import AddProductModal from './AddProductModal';
+import UiMobileDataList from '../ui/UiMobileDataList';
+
+export default function ProductInventory() {
+  const { activeProduct, formData,  setActiveProduct } = useSetProductContext();
+  const [limit, setLimit] = useState<number>(5);
+  const [totalData, setTotalData] = useState<number | undefined>(undefined);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterType, setFilterType] = useState('');
+
+  const {
+    decreasePage,
+    increasePage,
+    isNextDisabled,
+    isPrevDisabled,
+    page,
+    totalPages,
+  } = usePagination({ dataLimit: limit, totalData: totalData || 0 });
+
+  
+
+  const {
+    query: { data: productsData, isLoading: isProductsLoading }, reloadQuery
+  } = useProductQuery(page, limit, totalData || 0,  searchQuery, 'products_name_description');
+
+  const {
+    mutation: { mutateAsync: deleteProduct },
+  } = useDeleteProductMutaion();
+
+  const isEditProductVisible = useToggle();
+  const isDeleteConfirmVisible = useToggle();
+  const isEditCostPriceVisible = useToggle();
+  const isDeleteLoading = useToggle();
+
+  function handleSearchQuery(query: string) {
+    setSearchQuery(query);
+  }
+
+  function handleFilterType(filterType: string) {
+    setFilterType(filterType)
+  }
+
+  async function toggleOutOfStock(productId: number, value: boolean) {
+    try {
+      await Api.toggleOutOfStock(productId, value);
+      showToast('Stock updated', 'success');
+      reloadQuery()
+    } catch (error) {
+      console.log(error);
+      showToast('Error updating out of stock', 'error');
+    throw new Error(`An error occured ${error}`)
+    }
+  }
+
+  async function toggleIsFeatured(productId: number, value: boolean) {
+    try {
+      await Api.toggleIsFeatured(productId, value);
+      showToast(
+        `${value ? 'Product added to collections' : 'Product removed from collections'}`,
+        'success'
+      );
+      reloadQuery();
+    } catch (error) {
+      console.log(error);
+      showToast('An error occurred', 'error');
+      throw new Error(`An error occured ${error}`);
+    }
+  }
+
+  async function DeleteProduct() {
+    try {
+      if (!activeProduct) throw new Error('no active product to delete');
+      isDeleteLoading.on();
+
+      await deleteProduct(activeProduct.id);
+      isDeleteConfirmVisible.off();
+      setActiveProduct(undefined);
+      showToast('product deleted', 'success');
+    } catch (error) {
+      showToast('Error deleting product', 'error');
+      throw new Error(`An error occured ${error}`);
+    } finally {
+      isDeleteLoading.off();
+      setActiveProduct(undefined);
+    }
+  }
+
+  function clearFilter() {
+    setFilterType('');
+  }
+
+  const filteredProducts = useMemo(() => {
+    switch (filterType) {
+      case 'Highest price':
+        return productsData?.data
+          .slice()
+          .sort(
+            (a, b) =>
+              Number(b.discounted_price || b.price) -
+              Number(a.discounted_price || a.price)
+          );
+      case 'Lowest price':
+        return productsData?.data
+          .slice()
+          .sort(
+            (a, b) =>
+              Number(a.discounted_price || a.price) -
+              Number(b.discounted_price || b.price)
+          );
+      case 'Collections':
+        return productsData?.data.filter((product) => product.is_featured)
+      case 'Out of stock':
+        return productsData?.data.filter((product) => product.is_out_of_stock)
+
+      default: 
+          return productsData?.data || []
+    }
+  }, [filterType, productsData])
+
+  const filterDropDowonData: DropDownData[] = [
     {
       label: (
-        <div className="flex items-center gap-2 stroke-tertiary-700 fill-white">
+        <div className="w-[142px] text-tertiary-700 text-sm">Highest price</div>
+      ),
+      func: () => {
+        handleFilterType('Highest price');
+      },
+    },
+    {
+      label: (
+        <div className="w-[142px] text-tertiary-700 text-sm">Lowest price</div>
+      ),
+      func: () => {
+        handleFilterType('Lowest price');
+      },
+    },
+    {
+      label: (
+        <div className="w-[142px] text-tertiary-700 text-sm">Collections</div>
+      ),
+      func: () => {
+        handleFilterType('Collections');
+      },
+    },
+    {
+      label: (
+        <div className="w-[142px] text-tertiary-700 text-sm">Out of stock</div>
+      ),
+      func: () => {
+        handleFilterType('Out of stock');
+      },
+    },
+  ];
+
+  const productDropDownOptions: DropDownData[] = [
+    {
+      label: (product: Product) => (
+        <div
+          className={`flex items-center gap-2 ${product.is_featured ? 'stroke-primary-500 fill-primary-500' : 'stroke-tertiary-700 fill-white'}`}
+        >
           <UiIcon icon="Star" size="24" />
           <p className="text-sm font-montserrat text-[#4F4F4F]">
             Add to collections
           </p>
         </div>
       ),
-      func: () => {
-
+      func: (productId, product: Product) => {
+        toggleIsFeatured(Number(productId), !product.is_featured);
       },
     },
     {
@@ -34,13 +199,9 @@ export default function ProductInventory({ products, showAddProduct, showDeleteC
           <p className="text-sm font-montserrat text-[#4F4F4F]">Edit</p>
         </div>
       ),
-      func: (id) => {
-        const product = getProduct(Number(id));
-        console.log(product);
-        
-        setActiveProduct(product!);
-        
-        showAddProduct()
+      func: (__, item) => {
+        setActiveProduct(item as Product);
+        isEditProductVisible.on();
       },
     },
     {
@@ -50,15 +211,13 @@ export default function ProductInventory({ products, showAddProduct, showDeleteC
           <p className="text-sm font-montserrat text-[#E41C11]">Delete</p>
         </div>
       ),
-      func: (id) => {
-        const product = getProduct(Number(id));
-        if(!product) return;
-
-        setActiveProduct(product!);
-        showDeleteConfirm()
+      func: (__, item) => {
+        setActiveProduct(item as Product);
+        isDeleteConfirmVisible.on();
       },
     },
   ];
+
   const productsHeaders: Header[] = [
     {
       query: 'name',
@@ -81,8 +240,8 @@ export default function ProductInventory({ products, showAddProduct, showDeleteC
       title: 'Revenue',
     },
     {
-      query: 'In stock',
-      title: 'inStock',
+      query: 'inStock',
+      title: 'In stock',
     },
     {
       query: 'action',
@@ -90,9 +249,34 @@ export default function ProductInventory({ products, showAddProduct, showDeleteC
     },
   ];
 
-  const productsNodes = products.map((product) => {
+  const mobileProductHeaders = productsHeaders.filter(
+    (header) => (header.query !== 'name') 
+  );
+
+  const productsNodes = filteredProducts?.map((product) => {
     return {
       id: `${product.id}`,
+      topNode: (
+        <div className="flex items-center gap-3 pb-2 border-b">
+          <Image
+            width={32}
+            height={32}
+            alt={product.name}
+            src={product.images![0] as string}
+            className="w-8 h-8 rounded-lg "
+          />
+          <div>
+            <p className="text-sm font-bold text-secondary-500 truncate w-full">
+              {product.name}
+            </p>
+            {product.variants.length > 0 && (
+              <span className="text-orange-400 text-xs rounded-full w-5 h-5 bg-orange-50 flex justify-center items-center">
+                V
+              </span>
+            )}
+          </div>
+        </div>
+      ),
       name: (
         <div className="flex gap-4 items-center">
           <Image
@@ -129,7 +313,10 @@ export default function ProductInventory({ products, showAddProduct, showDeleteC
               </p>
             )}
           </div>
-          <button>
+          <button onClick={()=> {
+            isEditCostPriceVisible.on();
+            setActiveProduct(product)
+          }}>
             {' '}
             <UiIcon icon="Edit" size="24" />
           </button>
@@ -138,23 +325,126 @@ export default function ProductInventory({ products, showAddProduct, showDeleteC
       sold: '20',
       left: '40',
       revenue: '₦10,000,200',
-      inStock: '',
+      inStock: (
+        <UiSwith
+          value={!product.is_out_of_stock}
+          onChange={() =>
+            toggleOutOfStock(product.id, !product.is_out_of_stock)
+          }
+        />
+      ),
       action: (
         <UiDropDown
           align="start"
           side="bottom"
           options={productDropDownOptions}
           itemId={`${product.id}`}
+          item={product}
         />
+      ),
+      bottomNode: (
+        <div className="flex justify-center items-center gap-8 pt-6 border-t">
+          <button onClick={() => {
+            setActiveProduct(product);
+            isEditProductVisible.on();
+          }}>
+            <UiIcon icon="Edit" size="24" />
+          </button>
+          <button
+            onClick={() => toggleIsFeatured(product.id, !product.is_featured)}
+            className={`${product.is_featured ? 'stroke-primary-500 fill-primary-500' : 'stroke-tertiary-700 fill-white'}`}
+          >
+            <UiIcon icon="Star" size="24" />
+          </button>
+          <button onClick={() => {
+            setActiveProduct(product);
+            isDeleteConfirmVisible.on();
+          }} className=" gap-2 stroke-tertiary-700">
+            <UiIcon icon="Trash" size="24" />
+          </button>
+        </div>
       ),
     };
   });
+
+  useEffect(() => {
+    if (productsData?.count !== undefined) {
+      setTotalData(productsData.count);
+    }
+  }, [productsData?.count]);
+
   return (
-    <div className="bg-white p-4 rounded-[8px]">
+    <div className="md:bg-white md:p-4 rounded-[8px]">
       <div className="w-full font-montserrat mb-4">
-        <h3 className="font-bold text-secondary-500">All Products</h3>
+        <div className="w-full font-montserrat mb-6 md:mb-4 flex flex-col sm:flex-row justify-between md:items-center gap-4">
+          <h3 className="font-bold text-secondary-500">All Products</h3>
+          <div className="flex items-center gap-4">
+            <SearchInput
+              searchQuery={searchQuery}
+              setSearchQuery={handleSearchQuery}
+            />
+            <UiFilter
+              clearFilter={clearFilter}
+              filterOptions={filterDropDowonData}
+              filterType={filterType}
+            />
+          </div>
+        </div>
+        {productsNodes && (
+          <div>
+            <div className="hidden md:block">
+              <UiTable headers={productsHeaders} data={productsNodes} />
+            </div>
+            <div className="md:hidden">
+              <UiMobileDataList
+                data={productsNodes}
+                headers={mobileProductHeaders}
+              />
+            </div>
+            <div className="mt-4">
+              <UiAdminPaginator
+                decreasePage={decreasePage}
+                increasePage={increasePage}
+                isNextDisabled={isNextDisabled}
+                isPrevDisabled={isPrevDisabled}
+                limit={limit}
+                page={page}
+                setLimit={setLimit}
+                totalPages={totalPages}
+              />
+            </div>
+          </div>
+        )}
       </div>
-      <UiTable headers={productsHeaders} data={productsNodes} />
+
+      <AddProductModal
+        isOpen={isEditProductVisible.value}
+        onClose={() => {
+          isEditProductVisible.off();
+          setActiveProduct(undefined);
+        }}
+      />
+      <DeleteConfirmation
+        isDeleteLoading={isDeleteLoading.value}
+        isOpen={isDeleteConfirmVisible.value}
+        onAction={() => {
+          if (activeProduct) {
+            DeleteProduct();
+          }
+        }}
+        onClose={() => {
+          isDeleteConfirmVisible.off();
+          setActiveProduct(undefined);
+        }}
+      />
+      <EditCostPrice
+        isOpen={isEditCostPriceVisible.value}
+        onClose={() => {
+          isEditCostPriceVisible.off();
+          setActiveProduct(undefined);
+          formData.setValue(initialProductState)
+        }}
+      />
     </div>
   );
 }
