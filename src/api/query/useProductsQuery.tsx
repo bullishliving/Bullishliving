@@ -12,10 +12,11 @@ export default function useProductQuery(page: number, limit: number, total: numb
   const queryClient = useQueryClient();
   
   const maxPage = Math.ceil(total / limit);
-const safePage = Math.min(page, maxPage);
+  const safePage = Math.min(page, maxPage);
 
-const start = (safePage - 1) * limit;
-const end = Math.min(start + limit - 1, total - 1)
+  const start = (safePage - 1) * limit;
+  const end = Math.min(start + limit - 1, total - 1);
+  
   const query = useQuery({
     queryKey,
     queryFn: async () => {

@@ -11,7 +11,10 @@ export default function useUpdateProductMutation() {
       } catch (error) {
         throw error
       }
-    } 
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] }); 
+    },
   })
 
   function setProduct(updatedProduct: Product) {

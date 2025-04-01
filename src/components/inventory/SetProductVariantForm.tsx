@@ -10,11 +10,11 @@ import showToast from '../ui/UiToast';
 
 export type ProductVariant = {
   type: string;
-  values: { value: string; stock: string }[];
+  values: { value: string; stock: string | number }[];
 };
 
 export default function SetProductVariantForm() {
-  const { formData, activeVariant, activeVariantIndex } = useSetProductContext()
+  const { formData, activeVariant, activeVariantIndex } = useSetProductContext();
   const [variants, setVariants] = useState<ProductVariant[]>([
     (activeVariantIndex !== null && formData.value.variants[activeVariantIndex]) || {
       type: '',

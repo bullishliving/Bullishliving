@@ -5,6 +5,7 @@ import { createClient } from '@/utils/supabase/supabaseClient';
 import { SupabaseTables } from '@/types/enums/SupabaseTables';
 import { ProductType } from '@/app/context/SetProductContext';
 import Product from '@/types/Product';
+import OutOfStockProduct from '@/types/OutOfStockProduct';
 
 class SupabaseService {
   addCommunityMember(member: CommunityMember) {
@@ -57,9 +58,23 @@ class SupabaseService {
     return this.update(SupabaseTables.PRODUCTS, id, {is_featured: data})
   }
 
-  private async insert<T>(table: SupabaseTables, data: T) {
-    const { error } = await createClient().from(table).insert([data]);
+  updateCostPrice(id: number, field: keyof Pick<Product, 'price' | 'discounted_price'>,  price: string) {
+    return this.update(SupabaseTables.PRODUCTS, id, {[field]: price})
+  }
+
+  async getOutOfStockProducts(): Promise<OutOfStockProduct[]> {
+    const { data, error } = await createClient()
+      .rpc('get_out_of_stock_products');
+
     if (error) throw error;
+    
+    return data || []; 
+  }
+
+  private async insert<T>(table: SupabaseTables, data: T) {
+    const { error } = await createClient().from(table).insert([data]).select()
+    if (error) throw error;
+
   }
 
   private async select<T>(

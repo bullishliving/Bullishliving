@@ -4,7 +4,6 @@ import { SetProductProvider } from '@/app/context/SetProductContext';
 
 import AddProductModal from '@/components/inventory/AddProductModal';
 import AdminBasePage from '@/components/layout/AdminBasePage';
-import AnalyticsCard from '@/components/inventory/AnalyticsCard';
 import ProductInventory from '@/components/inventory/ProductInventory';
 import UiButton from '@/components/ui/UiButton';
 import UiIcon from '@/components/ui/UiIcon';
@@ -36,22 +35,8 @@ export default function Page() {
         </div>
       }
     >
-      <div className="grid md:grid-cols-3 gap-4 md:gap-6 mb-4">
-        <AnalyticsCard figure="₦1,200,980" title="Total Inventory Balance" />
-        <AnalyticsCard figure="7" title="Total Inventory Number" />
-        <AnalyticsCard
-          figure="40"
-          title="Out Of Stock Items"
-          edgeNode={
-            <button className="stroke-primary-500 font-bold">
-              <UiIcon icon="ArrowRight" />
-            </button>
-          }
-        />
-      </div>
       <SetProductProvider>
         <ProductInventory />
-
         <AddProductModal
           isOpen={isAddProductVisible.value}
           onClose={hideAddProduct}

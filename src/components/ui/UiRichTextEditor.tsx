@@ -31,7 +31,7 @@ export default function UiRichTextEditor({ name, onChange, value, error, label }
     editorProps: {
       attributes: {
         class:
-          'ProseMirror min-h-[200px] outline-none font-montserrat text-secondary-500 ',
+          'ProseMirror min-h-[200px] outline-none font-montserrat text-secondary-500 text-wrap',
       },
     },
     extensions: [
@@ -68,7 +68,7 @@ export default function UiRichTextEditor({ name, onChange, value, error, label }
   return (
     <UiField label={label} error={error}>
       <div
-        className={`border rounded-2xl p-4 max-w-full ${error ? 'border-danger-400' : 'border-grey-400 '}`}
+        className={`border rounded-2xl  p-4 max-w-full ${error ? 'border-danger-400' : 'border-grey-400 '}`}
       >
         <UiRichTextEditorToolBar editor={editor} />
         <div className="h-[200px] overflow-y-auto !outline-none">

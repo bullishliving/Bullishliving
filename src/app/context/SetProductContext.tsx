@@ -12,9 +12,9 @@ export interface ProductType {
   description: string;
   images: File[] | string[] | null;
   category_id: string;
-  price: string;
-  discounted_price: string | null;
-  stock: string | null;
+  price: number;
+  discounted_price: number | null;
+  stock: number | null;
   variants: ProductVariant[];
   is_out_of_stock: boolean;
   is_featured: boolean;
@@ -25,7 +25,7 @@ interface FormContextType {
   activeVariant: ProductVariant | null;
   activeProduct: Product | undefined;
   setActiveProduct: (product: Product | undefined) => void;
-  setActiveVariant: (variant: ProductVariant | null) => void;
+  setActiveVariant: (variant: ProductVariant) => void;
   activeCategoryId: string | null;
   setActiveCategoryId: (id: string) => void;
   selectedCategory: Category | null;
@@ -42,7 +42,7 @@ export const initialProductState = {
   description: '',
   images: null,
   category_id: '',
-  price: '',
+  price: 0,
   discounted_price: null,
   stock: null,
   variants: [],
@@ -69,13 +69,10 @@ export function SetProductProvider({
     activeProduct || initialProductState
   );
 
-  console.log(activeProduct);
-  
-
-
   useEffect(() => {
     if (activeProduct) formData.setValue(activeProduct);
-  }, [activeProduct, formData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeProduct]);
 
   return (
     <SetProductContext.Provider

@@ -2,9 +2,10 @@ import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 
 import { Api } from '@/api/supabaseService';
-import { initialProductState, useSetProductContext } from '@/app/context/SetProductContext';
+import { useSetProductContext, initialProductState } from '@/app/context/SetProductContext';
 import useDeleteProductMutaion from '@/api/mutations/products/useDeleteProductMutation';
 import useProductQuery from '@/api/query/useProductsQuery';
+import useOutOfStockProductsQuery from '@/api/query/useOutOfStockProductsQuery';
 
 import Product from '@/types/Product';
 
@@ -24,9 +25,11 @@ import UiTable, { Header } from '../ui/UiTable';
 
 import AddProductModal from './AddProductModal';
 import UiMobileDataList from '../ui/UiMobileDataList';
+import UiLoader from '../ui/UiLoader';
+import AnalyticsCard from './AnalyticsCard';
 
 export default function ProductInventory() {
-  const { activeProduct, formData,  setActiveProduct } = useSetProductContext();
+  const { activeProduct, setActiveProduct, formData } = useSetProductContext();
   const [limit, setLimit] = useState<number>(5);
   const [totalData, setTotalData] = useState<number | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState('');
@@ -41,8 +44,6 @@ export default function ProductInventory() {
     totalPages,
   } = usePagination({ dataLimit: limit, totalData: totalData || 0 });
 
-  
-
   const {
     query: { data: productsData, isLoading: isProductsLoading }, reloadQuery
   } = useProductQuery(page, limit, totalData || 0,  searchQuery, 'products_name_description');
@@ -50,6 +51,10 @@ export default function ProductInventory() {
   const {
     mutation: { mutateAsync: deleteProduct },
   } = useDeleteProductMutaion();
+
+  const { query: {data: outOfStockProducts, isLoading} } = useOutOfStockProductsQuery();
+
+  
 
   const isEditProductVisible = useToggle();
   const isDeleteConfirmVisible = useToggle();
@@ -313,10 +318,12 @@ export default function ProductInventory() {
               </p>
             )}
           </div>
-          <button onClick={()=> {
-            isEditCostPriceVisible.on();
-            setActiveProduct(product)
-          }}>
+          <button
+            onClick={() => {
+              isEditCostPriceVisible.on();
+              setActiveProduct(product);
+            }}
+          >
             {' '}
             <UiIcon icon="Edit" size="24" />
           </button>
@@ -344,10 +351,12 @@ export default function ProductInventory() {
       ),
       bottomNode: (
         <div className="flex justify-center items-center gap-8 pt-6 border-t">
-          <button onClick={() => {
-            setActiveProduct(product);
-            isEditProductVisible.on();
-          }}>
+          <button
+            onClick={() => {
+              setActiveProduct(product);
+              isEditProductVisible.on();
+            }}
+          >
             <UiIcon icon="Edit" size="24" />
           </button>
           <button
@@ -356,10 +365,13 @@ export default function ProductInventory() {
           >
             <UiIcon icon="Star" size="24" />
           </button>
-          <button onClick={() => {
-            setActiveProduct(product);
-            isDeleteConfirmVisible.on();
-          }} className=" gap-2 stroke-tertiary-700">
+          <button
+            onClick={() => {
+              setActiveProduct(product);
+              isDeleteConfirmVisible.on();
+            }}
+            className=" gap-2 stroke-tertiary-700"
+          >
             <UiIcon icon="Trash" size="24" />
           </button>
         </div>
@@ -367,84 +379,108 @@ export default function ProductInventory() {
     };
   });
 
+  
   useEffect(() => {
     if (productsData?.count !== undefined) {
       setTotalData(productsData.count);
     }
   }, [productsData?.count]);
 
-  return (
-    <div className="md:bg-white md:p-4 rounded-[8px]">
-      <div className="w-full font-montserrat mb-4">
-        <div className="w-full font-montserrat mb-6 md:mb-4 flex flex-col sm:flex-row justify-between md:items-center gap-4">
-          <h3 className="font-bold text-secondary-500">All Products</h3>
-          <div className="flex items-center gap-4">
-            <SearchInput
-              searchQuery={searchQuery}
-              setSearchQuery={handleSearchQuery}
-            />
-            <UiFilter
-              clearFilter={clearFilter}
-              filterOptions={filterDropDowonData}
-              filterType={filterType}
-            />
-          </div>
-        </div>
-        {productsNodes && (
-          <div>
-            <div className="hidden md:block">
-              <UiTable headers={productsHeaders} data={productsNodes} />
-            </div>
-            <div className="md:hidden">
-              <UiMobileDataList
-                data={productsNodes}
-                headers={mobileProductHeaders}
-              />
-            </div>
-            <div className="mt-4">
-              <UiAdminPaginator
-                decreasePage={decreasePage}
-                increasePage={increasePage}
-                isNextDisabled={isNextDisabled}
-                isPrevDisabled={isPrevDisabled}
-                limit={limit}
-                page={page}
-                setLimit={setLimit}
-                totalPages={totalPages}
-              />
-            </div>
-          </div>
-        )}
-      </div>
+    if (isProductsLoading) {
+      return <UiLoader />;
+    }
 
-      <AddProductModal
-        isOpen={isEditProductVisible.value}
-        onClose={() => {
-          isEditProductVisible.off();
-          setActiveProduct(undefined);
-        }}
-      />
-      <DeleteConfirmation
-        isDeleteLoading={isDeleteLoading.value}
-        isOpen={isDeleteConfirmVisible.value}
-        onAction={() => {
-          if (activeProduct) {
-            DeleteProduct();
+  return (
+    <div>
+      <div className="grid md:grid-cols-3 gap-4 md:gap-6 mb-4">
+        <AnalyticsCard figure="₦1,200,980" title="Total Inventory Balance" />
+        <AnalyticsCard
+          figure={`${productsData?.count || 0}`}
+          title="Total Inventory Number"
+        />
+        <AnalyticsCard
+          figure="40"
+          title="Out Of Stock Items"
+          edgeNode={
+            <button className="stroke-primary-500 font-bold">
+              <UiIcon icon="ArrowRight" />
+            </button>
           }
-        }}
-        onClose={() => {
-          isDeleteConfirmVisible.off();
-          setActiveProduct(undefined);
-        }}
-      />
-      <EditCostPrice
-        isOpen={isEditCostPriceVisible.value}
-        onClose={() => {
-          isEditCostPriceVisible.off();
-          setActiveProduct(undefined);
-          formData.setValue(initialProductState)
-        }}
-      />
+        />
+      </div>
+      <div className="md:bg-white md:p-4 rounded-[8px]">
+        <div className="w-full font-montserrat mb-4">
+          <div className="w-full font-montserrat mb-6 md:mb-4 flex flex-col sm:flex-row justify-between md:items-center gap-4">
+            <h3 className="font-bold text-secondary-500">All Products</h3>
+            <div className="flex items-center gap-4">
+              <SearchInput
+                searchQuery={searchQuery}
+                setSearchQuery={handleSearchQuery}
+              />
+              <UiFilter
+                clearFilter={clearFilter}
+                filterOptions={filterDropDowonData}
+                filterType={filterType}
+              />
+            </div>
+          </div>
+          {productsNodes && (
+            <div>
+              <div className="hidden md:block">
+                <UiTable headers={productsHeaders} data={productsNodes} />
+              </div>
+              <div className="md:hidden">
+                <UiMobileDataList
+                  data={productsNodes}
+                  headers={mobileProductHeaders}
+                />
+              </div>
+              <div className="mt-4">
+                <UiAdminPaginator
+                  decreasePage={decreasePage}
+                  increasePage={increasePage}
+                  isNextDisabled={isNextDisabled}
+                  isPrevDisabled={isPrevDisabled}
+                  limit={limit}
+                  page={page}
+                  setLimit={setLimit}
+                  totalPages={totalPages}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+
+        <AddProductModal
+          isOpen={isEditProductVisible.value}
+          onClose={() => {
+            isEditProductVisible.off();
+            setActiveProduct(undefined);
+          }}
+        />
+        <DeleteConfirmation
+          isDeleteLoading={isDeleteLoading.value}
+          isOpen={isDeleteConfirmVisible.value}
+          onAction={() => {
+            if (activeProduct) {
+              DeleteProduct();
+            }
+          }}
+          onClose={() => {
+            isDeleteConfirmVisible.off();
+            setActiveProduct(undefined);
+          }}
+        />
+        <EditCostPrice
+          isOpen={isEditCostPriceVisible.value}
+          reload={reloadQuery}
+          onClose={() => {
+            isEditCostPriceVisible.off();
+            setActiveProduct(undefined);
+            formData.setValue(initialProductState);
+          }}
+        />
+      </div>
     </div>
   );
 }

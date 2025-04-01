@@ -8,8 +8,7 @@ import { useSetProductContext } from '@/app/context/SetProductContext';
 import Category from '@/types/Category';
 import cloudinaryInstance from '@/utils/Cloudinary';
 import useToggle from "@/hooks/useToggle";
-import AddProductSchema from "@/utils/schemas/AddProductSchema";
-
+import getAddProductSchema from "@/utils/schemas/AddProductSchema";
 import UiButton from '../ui/UiButton';
 import UiForm from '../ui/UiForm';
 import UiIcon from '../ui/UiIcon';
@@ -20,6 +19,7 @@ import UiSelect, { Option } from '../ui/UiSelect';
 
 import ProductVariantList from './ProductVariantList';
 import showToast from "../ui/UiToast";
+import Product from "@/types/Product";
 
 //---
 
@@ -30,7 +30,7 @@ interface Props {
 }
 
 export default function SetProductForm({ categories, onSetActiveView, closeModal }: Props) {
-  const { formData,  } = useSetProductContext();
+  const { formData } = useSetProductContext();
   const { mutation: {mutateAsync: addProduct, isPending: isAddProductPening} } = useAddProductMutation();
   const { mutation: {mutateAsync: updateProduct, isPending: isUpdateProductPending}, setProduct } = useUpdateProductMutation();
   const loading = useToggle();
@@ -44,10 +44,24 @@ export default function SetProductForm({ categories, onSetActiveView, closeModal
   async function onSubmit() {
     try {
       loading.on();
+
+
+      const formattedVariants = formData.value.variants.map((variant) => ({
+        ...variant,
+        values: variant.values.map((value) => ({
+          ...value,
+          stock: Number(value.stock) || 0,
+        })),
+      }));
+
       let formarttedProduct = {
         ...formData.value,
         description: DOMPurify.sanitize(formData.value.description),
-      };
+        price: Number(formData.value.price),
+        discounted_price: formData.value.discounted_price ? Number(formData.value.discounted_price): null,
+        stock: formData.value.variants.length > 0 ? null : Number(formData.value.stock),
+        variants: formattedVariants
+      }
 
       if (
         formData.value.images &&
@@ -60,7 +74,7 @@ export default function SetProductForm({ categories, onSetActiveView, closeModal
         }
       }
       if (!formData.value?.id) {
-        await addProduct(formarttedProduct);
+        await addProduct(formarttedProduct as Product);
         showToast('product successfully added!', 'success');
       } else {
         console.log({ ...formarttedProduct, id: formData.value.id });
@@ -83,11 +97,14 @@ export default function SetProductForm({ categories, onSetActiveView, closeModal
   return (
     <UiForm
       formData={formData.value}
-      schema={AddProductSchema}
+      schema={getAddProductSchema(
+        
+      )}
       onSubmit={onSubmit}
     >
       {({ errors }) => (
         <div className="grid gap-4">
+          {errors.stock}
           <UiImageUploader
             name="images"
             onChange={formData.set}
@@ -150,6 +167,7 @@ export default function SetProductForm({ categories, onSetActiveView, closeModal
             onChange={formData.set}
             value={formData.value.discounted_price}
             roundedVariant="xl"
+            error={errors.discounted_price}
           />
           {formData.value.variants.length < 1 && (
             <UiInput
@@ -159,6 +177,7 @@ export default function SetProductForm({ categories, onSetActiveView, closeModal
               onChange={formData.set}
               value={formData.value.stock}
               roundedVariant="xl"
+              error={errors.stock}
             />
           )}
 

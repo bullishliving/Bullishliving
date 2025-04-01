@@ -47,14 +47,19 @@ export default function ProductVariantList({ showVariantForm }:Props ) {
                   </div>
                 </div>
                 <div className="stroke-secondary-500 flex items-center gap-4">
-                  <button onClick={() => {
-                    showVariantForm()
-                    setActiveVariant(variant)
-                    setActiveVariantIndex(index)
-                  }} className="outline-none">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      showVariantForm();
+                      setActiveVariant(variant);
+                      setActiveVariantIndex(index);
+                    }}
+                    className="outline-none"
+                  >
                     <UiIcon icon="Edit" size="24" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => removeVariant(index)}
                     className="outline-none"
                   >
@@ -67,7 +72,7 @@ export default function ProductVariantList({ showVariantForm }:Props ) {
         )}
 
         <button
-          type='button'
+          type="button"
           onClick={showVariantForm}
           className="flex items-center gap-2 outline-none"
         >
