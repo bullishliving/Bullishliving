@@ -1,10 +1,9 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { Api } from '../supabaseService';
 
 export default function  useCategoriesQuery() {
   const queryKey = ['categories'];
-  const queryClient = useQueryClient();
 
   const query = useQuery({
     queryKey,
@@ -15,7 +14,7 @@ export default function  useCategoriesQuery() {
       } catch (error) {
         return Promise.reject(error)
       }
-    }
+    },
   });
 
   return { query }

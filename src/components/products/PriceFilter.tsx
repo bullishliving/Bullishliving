@@ -4,13 +4,15 @@ import { useState, useEffect, useCallback } from 'react';
 
 import { Slider } from '../ui/slider';
 
-type PriceRange = [number, number];
+export type PriceRange = [number, number];
 
-export default function PriceFilter() {
+interface Props {
+  priceRange: PriceRange;
+  setPriceRange: (range: PriceRange) => void;
+}
+
+export default function PriceFilter({ priceRange, setPriceRange }: Props) {
   const [initalPrice] = useState({ min: 2000, max: 300000 });
-  const [priceRange, setPriceRange] = useState<[number, number]>([
-    2000, 300000,
-  ]);
   const [priceInputs, setPriceInputs] = useState({
     min: `${priceRange[0].toLocaleString()}`,
     max: `${priceRange[1].toLocaleString()}`,

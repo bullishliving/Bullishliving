@@ -99,9 +99,12 @@ export default function ManageCategories({ categories,  handleActiveView, setAct
               label={category.name}
               name=""
               onChange={(param) => setSelectedCategoryId(param.value)}
-              value={category.id}
+              value={String(category.id)}
             />
-            <UiDropDown options={categoryActionsOptions} itemId={category.id} />
+            <UiDropDown
+              options={categoryActionsOptions}
+              itemId={`${category.id}`}
+            />
           </div>
         ))}
       </div>
@@ -139,10 +142,13 @@ export default function ManageCategories({ categories,  handleActiveView, setAct
           </UiForm>
         </div>
         <UiButton
-          type='button'
+          type="button"
           disabled={selectedCategoryId === ''}
           onClick={() =>
-            setProductData.set({ name: 'category_id', value: selectedCategoryId })
+            setProductData.set({
+              name: 'category_id',
+              value: selectedCategoryId,
+            })
           }
         >
           Save Changes

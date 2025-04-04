@@ -1,52 +1,60 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import Image from 'next/image';
+import { v4 as uuidv4 } from 'uuid';
+import DOMPurify from 'dompurify';
 
-import { products } from '@/api/mock/products';
+import useGetProductQuery from '@/api/query/useGetProductQuery';
 
 import ProductVariant from '@/components/products/ProductVariant';
 import QuantityIncrementor from '@/components/products/QuantityIncrementor';
-
-import UiIcon from '@/components/ui/UiIcon';
 import UiButton from '@/components/ui/UiButton';
+import UiIcon from '@/components/ui/UiIcon';
+import UiLoader from '@/components/ui/UiLoader';
 
+import { useCartStore } from '@/Store/CartStore';
 import useToggle from '@/hooks/useToggle';
-import Image from 'next/image';
+
+import { CartHandler } from '@/utils/CartHandler';
+import showToast from '@/components/ui/UiToast';
 
 export default function Page() {
   const { id } = useParams();
 
-  const product = products.find((product) => product.id === id);
+  const { data: product, isLoading} = useGetProductQuery(Number(id));
 
-  const [activeVariant, setActiveVariant] = useState<string>('M');
+  const [activeVariant, setActiveVariant] = useState<string | null>(null);
   const [activeImgIndex, setActiveImgIndex] = useState(0);
+  const [quantity, setQuantity] = useState(1)
 
   const router = useRouter();
 
+  const { refreshCartItems } = useCartStore();
+
   const isDescExpanded = useToggle();
 
-  const variants = ['M', 'L', 'XL', '2XL', '3XL'];
-
-  const productDescription =
-    'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Pariatur cum voluptate veniam voluptatem itaque, totam   reiciendis impedit! Eveniet ipsa minus labore consectetur sequi, vitae fugiat in, soluta nisi eligendi ullam. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Pariatur cum voluptate veniam voluptatem itaque, totam   reiciendis impedit! Eveniet ipsa minus labore consectetur sequi, vitae fugiat in, soluta nisi eligendi ullam. Lorem ipsum dolor sit amet consectetur, adipisicing elit.';
-
-  const shouldTruncate = productDescription.length > 160;
+  const shouldTruncate = product && product?.description.length > 160;
 
   const displayedDesc =
     isDescExpanded.value || !shouldTruncate
-      ? productDescription
-      : productDescription.slice(0, 160) + '...';
+      ? product?.description
+      : product?.description.slice(0, 160) + '...';
 
   const productDetails = useMemo(() => {
     return (
       <div className="grid gap-4 mb-6">
         <h2 className="text-secondary-500 font-obitron font-black text-[28px] sm:text-3xl md:text-[40px]">
-          Structure logo hat - Blackuyy
+          {product?.name}
         </h2>
-        <p className="font-montserrat text-base text-tertiary-700">
-          {displayedDesc}
-        </p>
+        <p
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(displayedDesc!),
+          }}
+          className="font-montserrat text-base text-tertiary-700"
+        />
+
         {shouldTruncate && (
           <button
             onClick={() => isDescExpanded.toggle()}
@@ -56,15 +64,43 @@ export default function Page() {
           </button>
         )}
 
-        <p className="text-lg  md:text-2xl text-secondary-500 font-montserrat font-medium">
-          ₦34,000.00
-        </p>
+        <div className='flex gap-2 items-center font-montserrat'>
+          <p className="text-lg md:text-2xl text-secondary-500 font-montserrat font-medium ">
+            ₦
+            {(product?.discounted_price
+              ? product.discounted_price
+              : product?.price)?.toLocaleString()}
+          </p>
+          {product?.discounted_price && (
+            <p className="line-through text-grey-800 ">₦{product.price.toLocaleString()}</p>
+          )}
+        </div>
       </div>
     );
-  }, [displayedDesc, isDescExpanded, shouldTruncate]);
+  }, [isDescExpanded, shouldTruncate, product, displayedDesc]);
 
   function handleActiveVariant(variant: string) {
     setActiveVariant(variant);
+  }
+
+  function increaseQuantity() {
+    setQuantity((prevQuantity) => prevQuantity + 1);
+  }
+
+  function decreaseQuantity() {
+    if (quantity > 1) {
+      setQuantity((prevQuantity) => prevQuantity - 1);
+    }
+  }
+
+  useEffect(()=>{
+    if(product?.variants) {
+      setActiveVariant(product?.variants[0]?.values[0]?.value);
+    }
+  },[product?.variants])
+
+  if(isLoading) {
+    return <UiLoader/>
   }
 
   return (
@@ -72,7 +108,7 @@ export default function Page() {
       <div className="max-w-[1280px] mx-auto">
         <button
           onClick={() => router.back()}
-          className="stroke-secondary-500 mb-6 md:flex items-center gap-2 text-secondary-500 text-sm font-montserrat font-bold"
+          className="stroke-secondary-500 mb-8 md:flex items-center gap-2 text-secondary-500 text-sm font-montserrat font-bold"
         >
           <UiIcon icon="ArrowLeft" size="24" />
           Back
@@ -81,15 +117,19 @@ export default function Page() {
           <div className="max-w-[544px] w-full h-fit">
             <div className="md:hidden">{productDetails}</div>
             <Image
-              src={product?.images[activeImgIndex] || ''}
+              src={product?.images![activeImgIndex] as string}
+              width={544}
+              height={547}
               alt=""
               className="max-h-[350px] md:max-h-[547px] mb-5"
             />
             <div className="flex items-center gap-4 justify-center">
-              {product?.images.map((image, index) => (
+              {product?.images!.map((image, index) => (
                 <button key={index} onClick={() => setActiveImgIndex(index)}>
                   <Image
-                    src={image}
+                    src={image as string}
+                    width={64}
+                    height={64}
                     alt=""
                     className={`w-14 h-14 md:w-16 md:h-16 object-cover ${activeImgIndex === index && 'outline outline-primary-500 rounded-[8px] transition-all duration-100 ease-in'}`}
                   />
@@ -104,26 +144,60 @@ export default function Page() {
                 <h3 className="font-black font-obitron capitalize text-secondary-500 text-sm mb-2">
                   quantity:
                 </h3>
-                <QuantityIncrementor />
+                <QuantityIncrementor
+                  quantity={quantity}
+                  increaseQuantity={increaseQuantity}
+                  decreaseQuantity={decreaseQuantity}
+                />
               </div>
-              <div>
-                <h3 className="font-black font-obitron capitalize text-secondary-500 text-sm mb-2">
-                  SIZE:
-                </h3>
-                <div className="flex gap-2">
-                  {variants.map((variant, index) => (
-                    <ProductVariant
-                      key={index}
-                      onVariantChange={() => handleActiveVariant(variant)}
-                      isActive={activeVariant === variant}
-                      variant={variant}
-                    />
-                  ))}
-                </div>
-              </div>
+              {product &&
+                product.variants.length > 0 &&
+                product.variants.map((variant, index) => (
+                  <div key={index}>
+                    <h3 className="font-black font-obitron capitalize text-secondary-500 text-sm mb-2">
+                      {variant.type}
+                    </h3>
+                    <div className="flex gap-2">
+                      {variant.values
+                        .filter((value) => value.stock > 0)
+                        .map((value, index) => (
+                          <ProductVariant
+                            key={index}
+                            onVariantChange={() =>
+                              handleActiveVariant(value.value)
+                            }
+                            isActive={activeVariant === value.value}
+                            variantValue={value.value}
+                          />
+                        ))}
+                    </div>
+                  </div>
+                ))}
             </div>
             <div className="grid gap-4">
-              <UiButton rounded="md" variant="secondary-outlined">
+              <UiButton
+                rounded="md"
+                variant="secondary-outlined"
+                onClick={() => {
+                  if(!product)  return;
+
+                  CartHandler.addItem({
+                    id: uuidv4(),
+                    product_id: product.id,
+                    quantity: quantity,
+                    variant_type: product.variants[0]?.type || null,
+                    variant_value: activeVariant,
+                    product_image: product.images![0] as string,
+                    product_discounted_price: product.discounted_price,
+                    product_name: product.name,
+                    product_price: product.price
+                  });
+
+                  refreshCartItems();
+              
+                  showToast('item added to cart!', 'success')
+                }}
+              >
                 Add To Cart <UiIcon icon="ArrowDiagonal" size="24" />
               </UiButton>
               <UiButton rounded="md">

@@ -38,7 +38,7 @@ export default function SetProductForm({ categories, onSetActiveView, closeModal
   
   const formattedCategories: Option[] = categories?.map((category) => ({
     label: category.name,
-    value: category.id
+    value: `${category.id}`
   })) || [];
 
   async function onSubmit() {

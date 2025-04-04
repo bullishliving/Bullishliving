@@ -4,40 +4,78 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 
-import { products } from '@/api/mock/products';
+import useProductQuery from '@/api/query/useProductsQuery';
+import useCategoriesQuery from '@/api/query/useCategoriesQuery';
 
-import UiIcon from '@/components/ui/UiIcon';
-import UiPaginator from '@/components/ui/UiPaginator';
+import MobileProductsFilter from '@/components/products/MobileProductsFilter';
 import ProductCard from '@/components/products/ProductCard';
 import ProductsFilter from '@/components/products/ProductsFilter';
-import MobileProductsFilter from '@/components/products/MobileProductsFilter';
+import UiIcon from '@/components/ui/UiIcon';
+import UiLoader from '@/components/ui/UiLoader';
+import UiPaginator from '@/components/ui/UiPaginator';
 
 import useToggle from '@/hooks/useToggle';
 import { usePagination } from '@/hooks/usePagination';
-
-import { CategoryValue } from '@/types/Category';
+import { PriceRange } from '@/components/products/PriceFilter';
 
 export default function Page() {
-  const [categoryValues, setCategoryValues] = useState<CategoryValue[]>([]);
-  const { onPageChange, page, totalPages } = usePagination({
-    dataLimit: 10,
-    totalData: 500,
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>(
+    []
+  );
+  const [priceRange, setPriceRange] = useState<[number, number]>([
+    2000, 300000,
+  ]);
+  const [totalData, setTotalData] = useState<number | undefined>(undefined);
+  const [isMobile, setIsMobile] = useState(false);
+
+  const { onPageChange, page, totalPages,  } = usePagination({
+    dataLimit: 12,
+    totalData: totalData || 0,
   });
 
-  function handleCategoryValueChange(checkedValue: CategoryValue) {
-    setCategoryValues((prevValues) => {
+  const {
+    query: { data: productsData, isLoading: isProductsLoading },
+  } = useProductQuery({
+    limit: 12,
+    page,
+    total: totalData || 0,
+    categoryIds: selectedCategoryIds,
+    minPrice: priceRange[0],
+    maxPrice: priceRange[1],
+    filters: [{ column: 'is_out_of_stock', value: false }],
+    searchColumn: 'products_name_description',
+    searchQuery,
+  });
+
+  const { query: { data: categories, isLoading: isCategoryLoading } } = useCategoriesQuery();
+
+  const isLoading = isProductsLoading || isCategoryLoading;
+
+  function clearFilter() {
+    setSelectedCategoryIds([])
+  }
+
+  function handleSearchQuery(query: string) {
+    setSearchQuery(query);
+  }
+
+  function handlePriceRangeChange(range: PriceRange) {
+    setPriceRange(range);
+  }
+  function handleCategoryValueChange(categoryId: number) {
+    setSelectedCategoryIds((prevValues) => {
       const isChecked = prevValues.some(
-        (prevValue) => prevValue.id === checkedValue.id
+        (prevValue) => prevValue === categoryId
       );
 
       return isChecked
-        ? prevValues.filter((value) => value.id !== checkedValue.id)
-        : [...prevValues, checkedValue];
+        ? prevValues.filter((value) => value !== categoryId)
+        : [...prevValues, categoryId];
     });
   }
 
   const isFilterVisible = useToggle();
-  const isMobile = useToggle();
 
   function hideFilter() {
     isFilterVisible.off();
@@ -57,10 +95,15 @@ export default function Page() {
     },
   };
 
+  console.log(selectedCategoryIds);
+  
+
   useEffect(() => {
     function checkScreenSize() {
       if (window.innerWidth < 768) {
-        isMobile.on();
+        setIsMobile(true)
+      } else {
+        setIsMobile(false)
       }
     }
 
@@ -70,12 +113,22 @@ export default function Page() {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, [isMobile]);
 
+    useEffect(() => {
+        if (productsData?.count !== undefined) {
+        setTotalData(productsData.count);
+      }
+    }, [productsData?.count]);
+
+    if(isLoading) {
+      return <UiLoader/>
+    }
+
   return (
     <section className="bg-white p-4 md:px-6 2xl:px-8 pb-16 md:pb-20 pt-5 md:pt-8">
       <div className="max-w-[1280px] mx-auto h-full  font">
-        <h2 className="font-obitron font-black  text-2xl mb-6">All Products</h2>
+        <h2 className="font-obitron font-black text-2xl mb-6">All Products</h2>
         <div className="flex gap-6">
-          {isFilterVisible.value && !isMobile.value && (
+          {isFilterVisible.value && !isMobile && (
             <AnimatePresence>
               <motion.aside
                 initial="hidden"
@@ -84,15 +137,22 @@ export default function Page() {
                 variants={webFilterVariant}
                 className="w-[302px]"
               >
-                <ProductsFilter
-                  categoryValues={categoryValues}
-                  onCategoryValueChange={handleCategoryValueChange}
-                  onHideFilter={hideFilter}
-                />
+                {categories && (
+                  <ProductsFilter
+                    priceRange={priceRange}
+                    setPriceRange={handlePriceRangeChange}
+                    selectedCategories={selectedCategoryIds}
+                    categories={categories}
+                    onCategoryValueChange={handleCategoryValueChange}
+                    onHideFilter={hideFilter}
+                    clearFilter={clearFilter}
+                  />
+                )}
               </motion.aside>
             </AnimatePresence>
           )}
-          <main>
+
+          <main className={``}>
             <div className="flex gap-6 font-montserrat">
               {!isFilterVisible.value && (
                 <button
@@ -108,15 +168,17 @@ export default function Page() {
                   <UiIcon icon="Search" size="20" />
                 </div>
                 <input
+                  value={searchQuery}
+                  onChange={(e) => handleSearchQuery(e.target.value)}
                   placeholder="Search"
                   className="w-full pl-[46px] text-tertiary-700 placeholder:text-tertiary-700 outline-none h-fit p-2"
                 />
               </div>
             </div>
             <div
-              className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 mt-6 gap-x-6 gap-y-8 mb-8 ${isFilterVisible.value && 'md:grid-cols-2 lg:grid-cols-3'}`}
+              className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 mt-6 gap-x-6 gap-y-8 mb-8 ${isFilterVisible.value && 'md:grid-cols-2 lg:!grid-cols-3'}`}
             >
-              {products.map((product) => (
+              {productsData?.data.map((product) => (
                 <Link key={product.id} href={`/products/${product.id}`}>
                   <ProductCard product={product} />
                 </Link>
@@ -130,11 +192,14 @@ export default function Page() {
           </main>
         </div>
       </div>
-      {isMobile.value && isFilterVisible.value && (
+      {isMobile && isFilterVisible.value && (
         <AnimatePresence>
           <MobileProductsFilter
             isVisible={isFilterVisible.value}
-            categoryValues={categoryValues}
+            categories={categories || []}
+            selectedCategories={selectedCategoryIds}
+            priceRange={priceRange}
+            setPriceRnage={handlePriceRangeChange}
             onCategoryValueChange={handleCategoryValueChange}
             onHideFilter={hideFilter}
           />

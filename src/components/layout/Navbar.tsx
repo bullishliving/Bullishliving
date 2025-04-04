@@ -1,8 +1,12 @@
 'use client';
 
+import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 import BullishLogo from '@/assets/svg/logo.svg';
+
+import { useCartStore } from '@/Store/CartStore';
 
 import useToggle from '@/hooks/useToggle';
 
@@ -11,7 +15,6 @@ import SearchPanel from './SearchPanel';
 
 import MobileNav from './MobileNav';
 import NavItem from './NavItem';
-import { usePathname } from 'next/navigation';
 
 // --
 
@@ -30,6 +33,9 @@ export default function Navbar({ routes }: Props) {
 
   const whiteRoutes = ['/products', '/cart', '/checkout'];
   const isWhite = whiteRoutes.some((route) => pathname.startsWith(route));
+  const cartCount = useCartStore((state) => state.cartItems.length);
+  const refreshCartItems = useCartStore((state) => state.refreshCartItems);
+
 
   function closeNav() {
     isMobileNavVisible.off();
@@ -38,6 +44,10 @@ export default function Navbar({ routes }: Props) {
   function toggleMobileNav() {
     isMobileNavVisible.toggle();
   }
+
+  useEffect(() => {
+    refreshCartItems();
+  }, [refreshCartItems]);
 
   return (
     <nav
@@ -68,9 +78,11 @@ export default function Navbar({ routes }: Props) {
             <UiIcon icon="Search" size="24" />
           </button>
           <Link href="/cart" className="relative">
-            <div className="absolute -top-[21.3%] -right-[28.3%] w-5 h-5 rounded-full flex justify-center items-center text-white text-xs font-montserrat font-medium bg-danger-500 ">
-              2
-            </div>
+            {cartCount > 0 && (
+              <div className="absolute -top-[21.3%] -right-[28.3%] w-5 h-5 rounded-full flex justify-center items-center text-white text-xs font-montserrat font-medium bg-danger-500 ">
+                {cartCount}
+              </div>
+            )}
             <UiIcon icon="Cart" size="24" />
           </Link>
           <button onClick={toggleMobileNav} className="md:hidden">

@@ -7,21 +7,26 @@ import CollpasibleWrapper from '../ui/CollpasibleWrapper';
 import PriceFilter from './PriceFilter';
 
 import UiIcon from '../ui/UiIcon';
-import { categories } from '@/api/mock/categories';
 import UiCheckbox from '../ui/UiCheckbox';
-import { CategoryValue } from '@/types/Category';
+import Category from '@/types/Category';
 import UiButton from '../ui/UiButton';
 
 interface Props {
   onHideFilter: VoidFunction;
-  onCategoryValueChange: (value: CategoryValue) => void;
-  categoryValues: CategoryValue[];
+  onCategoryValueChange: (categoryId: number) => void;
+  categories: Category[];
+  selectedCategories: number[];
   isVisible: boolean;
+  priceRange: [number, number]
+  setPriceRnage: (priceRange: [number, number]) => void
 }
 
 export default function MobileProductsFilter({
-  categoryValues,
+  categories,
+  selectedCategories,
+  priceRange,
   onCategoryValueChange,
+  setPriceRnage,
   onHideFilter,
 }: Props) {
   const filterVariant = {
@@ -60,25 +65,25 @@ export default function MobileProductsFilter({
         </div>
         <div className="grid gap-4">
           <CollpasibleWrapper title="Price" initialOpen>
-            <PriceFilter />
+            <PriceFilter priceRange={priceRange} setPriceRange={setPriceRnage} />
           </CollpasibleWrapper>
-          {categories.map((category) => (
-            <CollpasibleWrapper key={category.id} title={category.name}>
-              <div className="grid gap-4">
-                {category.values.map((value) => (
-                  <div key={value.id}>
-                    <UiCheckbox
-                      label={value.value}
-                      isChecked={categoryValues.some(
-                        (categoryValue) => categoryValue.id === value.id
-                      )}
-                      onCheckChange={() => onCategoryValueChange(value)}
-                    />
-                  </div>
-                ))}
-              </div>
-            </CollpasibleWrapper>
-          ))}
+          <CollpasibleWrapper title="Category">
+            <div className="grid gap-4">
+              {categories.map((category) => (
+                <div key={category.id}>
+                  <UiCheckbox
+                    label={category.name}
+                    isChecked={selectedCategories?.some(
+                      (selectedCategory) => selectedCategory === category.id
+                    )}
+                    onCheckChange={() =>
+                      onCategoryValueChange(category.id as number)
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+          </CollpasibleWrapper>
         </div>
       </div>
       <div className="shrink-0">

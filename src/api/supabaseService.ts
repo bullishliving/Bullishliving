@@ -7,6 +7,20 @@ import { ProductType } from '@/app/context/SetProductContext';
 import Product from '@/types/Product';
 import OutOfStockProduct from '@/types/OutOfStockProduct';
 
+type SelectPaginatedOptions = {
+  columns?: string;
+  filters?: { column: string; value: any }[];
+  getCount?: boolean;
+  limit?: number;
+  start?: number;
+  end?: number;
+  searchQuery?: string;
+  searchColumn?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  categoryIds?: number[];
+};
+
 class SupabaseService {
   addCommunityMember(member: CommunityMember) {
     return this.insert(SupabaseTables.COMMUNITY, member);
@@ -38,8 +52,15 @@ class SupabaseService {
     return this.insert(SupabaseTables.PRODUCTS, product)
   }
 
-  getProducts( limit: number, start?: number, end?:number, searchQuery?: string, searchColumn?: string, ){
-    return this.selectPaginated<Product>(SupabaseTables.PRODUCTS, "*", undefined, true, limit,  start, end, searchQuery, searchColumn)
+  getProducts( limit: number, start?: number, end?:number, searchQuery?: string, searchColumn?: string, minPrice?: number,
+  maxPrice?: number,
+  categoryIds?: number[], filters?:{ column: string; value: any }[],
+){
+    return this.selectPaginated<Product>(SupabaseTables.PRODUCTS, {columns: "*", filters: filters, getCount: true, limit, start, end, searchQuery, searchColumn, minPrice, categoryIds, maxPrice})
+  }
+
+  getProduct(productId: number) {
+    return this.selectRow<Product>(SupabaseTables.PRODUCTS, productId)
   }
 
   upadteProduct(product:Product) {
@@ -71,11 +92,23 @@ class SupabaseService {
     return data || []; 
   }
 
+  async updateStock(productId: number, stock: number, variantType: string | null, variantValue: string | null) {
+    const { error } = await createClient().rpc('update_stock', {
+      p_product_id: productId, 
+      p_new_stock: stock,
+      p_variant_type: variantType,  
+      p_variant_value: variantValue
+    });
+
+    if (error) throw error;
+  }
+
   private async insert<T>(table: SupabaseTables, data: T) {
     const { error } = await createClient().from(table).insert([data]).select()
     if (error) throw error;
 
   }
+  
 
   private async select<T>(
     table: SupabaseTables,
@@ -96,44 +129,67 @@ class SupabaseService {
     return data as T[];
   }
 
+  private async selectRow<T>(table: SupabaseTables, id: number) {
+    const query = createClient().from(table).select('*').eq('id', id)
+    .single();
+
+    const { error, data } = await query
+
+    if (error) throw error;
+
+    return data as T;
+  
+  }
+
+  private applyFilters(query: any, options: SelectPaginatedOptions) {
+    if (options.filters) {
+      options.filters.forEach(({ column, value }) => {
+        query = query.eq(column, value);
+      });
+    }
+
+    if (options.minPrice !== undefined && options.maxPrice !== undefined) {
+      query = query.or(
+        `price.gte.${options.minPrice},discounted_price.gte.${options.minPrice}`
+      ).or(
+        `price.lte.${options.maxPrice},discounted_price.lte.${options.maxPrice}`
+      );
+    }
+
+    if (options.categoryIds && options.categoryIds.length > 0) {
+      query = query.in("category_id", options.categoryIds);
+    }
+
+    return query;
+  }
+
   private async selectPaginated<T>(
     table: SupabaseTables,
-    columns: string = "*",
-    filters?: { column: string; value: any }[],
-    getCount: boolean = false,
-    limit: number = 10,
-    start?: number,
-    end?: number,
-    searchQuery?: string,  // Search text
-    searchColumn?: string  // Column to search in
+    options: SelectPaginatedOptions = {}
   ): Promise<{ data: T[]; count?: number }> {  
     let query = createClient()
-    .from(table)
-    .select(columns, getCount ? { count: "exact" } : undefined).order('created_at', { ascending: false });
+      .from(table)
+      .select(options.columns ?? "*", options.getCount ? { count: "exact" } : undefined)
+      .order("created_at", { ascending: false });
 
-  if (filters) {
-    filters.forEach(({ column, value }) => {
-      query = query.eq(column, value);
-    });
+    query = this.applyFilters(query, options);
+
+    if (options.start !== undefined && options.end !== undefined) {
+      query = query.range(options.start, options.end);
+    }
+
+    if (options.searchQuery && options.searchColumn) {
+      query = query.textSearch(options.searchColumn, options.searchQuery, { type: "websearch" });
+    }
+
+    query = query.limit(options.limit ?? 10);
+
+    const { data, error, count } = await query;
+    if (error) throw error;
+
+    return { data: data as T[], count: count ?? 0 };
   }
-
-  if (start !== undefined && end !== undefined) {
-    query = query.range(start, end);
-  }
-
-   if (searchQuery && searchColumn) {
-    query = query.textSearch(searchColumn, searchQuery, { type: 'websearch' });
-  }
-
-  query = query.limit(limit);
-
-  const { data, error, count } = await query;
-
-  if (error) throw error;
-
-  return { data: data as T[], count: count ?? 0 };
-}
-
+  
   private async update<T>(table: SupabaseTables, id: string | number, data: Partial<T>) {
     const { error } = await createClient()
       .from(table)

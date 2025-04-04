@@ -37,7 +37,7 @@ export default function UiTable({ data, headers, size= 'md' }: Props) {
             className={`${index + 1 !== data.length ? 'border-b' : ''} ${size === 'md' ? 'min-h-14 py-5' : 'min-h-24'}  text-sm font-bold text-[#0B0A0A] `}
           >
             {headers.map((header) => (
-              <td key={header.query} className={`px-4 ${size === 'md' && 'py-2'}`}>
+              <td key={header.query} className={`px-4 ${size === 'md' ? 'py-2' : 'py-4'}`}>
                 <div>{item[header.query]}</div>
               </td>
             ))}

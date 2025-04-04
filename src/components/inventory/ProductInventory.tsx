@@ -8,12 +8,17 @@ import useProductQuery from '@/api/query/useProductsQuery';
 import useOutOfStockProductsQuery from '@/api/query/useOutOfStockProductsQuery';
 
 import Product from '@/types/Product';
+import OutOfStockProduct from '@/types/OutOfStockProduct';
+
 
 import useToggle from '@/hooks/useToggle';
 import { usePagination } from '@/hooks/usePagination';
 
 import EditCostPrice from './EditCostPrice';
+import OutOfStockList from './OutOfStockList';
 import DeleteConfirmation from '../DeleteConfirmation';
+import RestockItem from './RestockItem';
+
 import SearchInput from '../ui/SearchInput';
 import showToast from '../ui/UiToast';
 import UiAdminPaginator from '../ui/UiAdminPaginator';
@@ -28,12 +33,15 @@ import UiMobileDataList from '../ui/UiMobileDataList';
 import UiLoader from '../ui/UiLoader';
 import AnalyticsCard from './AnalyticsCard';
 
+
+
 export default function ProductInventory() {
   const { activeProduct, setActiveProduct, formData } = useSetProductContext();
   const [limit, setLimit] = useState<number>(5);
   const [totalData, setTotalData] = useState<number | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('');
+  const [activeRestockItem, setActiveRestockItem] = useState<OutOfStockProduct | null>(null);
 
   const {
     decreasePage,
@@ -45,21 +53,33 @@ export default function ProductInventory() {
   } = usePagination({ dataLimit: limit, totalData: totalData || 0 });
 
   const {
-    query: { data: productsData, isLoading: isProductsLoading }, reloadQuery
-  } = useProductQuery(page, limit, totalData || 0,  searchQuery, 'products_name_description');
+    query: { data: productsData, isLoading: isProductsLoading },
+    reloadQuery,
+  } = useProductQuery({
+    limit,
+    page,
+    total: totalData || 0,
+    searchQuery,
+    searchColumn: 'products_name_description'
+  });
 
   const {
     mutation: { mutateAsync: deleteProduct },
   } = useDeleteProductMutaion();
 
-  const { query: {data: outOfStockProducts, isLoading} } = useOutOfStockProductsQuery();
-
-  
+  const { query: {data: outOfStockProducts, isLoading: isOutOfStockLoading} } = useOutOfStockProductsQuery();
 
   const isEditProductVisible = useToggle();
   const isDeleteConfirmVisible = useToggle();
   const isEditCostPriceVisible = useToggle();
   const isDeleteLoading = useToggle();
+  const isRestockItemVisible = useToggle();
+  const isOutOfStockListVisible = useToggle();
+  const isLoading = isOutOfStockLoading || isProductsLoading;
+
+  function handleRestockItem(item: OutOfStockProduct) {
+    setActiveRestockItem(item)
+  }
 
   function handleSearchQuery(query: string) {
     setSearchQuery(query);
@@ -268,7 +288,7 @@ export default function ProductInventory() {
             height={32}
             alt={product.name}
             src={product.images![0] as string}
-            className="w-8 h-8 rounded-lg "
+            className="w-8 h-8 rounded-lg"
           />
           <div>
             <p className="text-sm font-bold text-secondary-500 truncate w-full">
@@ -330,7 +350,7 @@ export default function ProductInventory() {
         </div>
       ),
       sold: '20',
-      left: '40',
+      left: product.stock_left,
       revenue: '₦10,000,200',
       inStock: (
         <UiSwith
@@ -386,7 +406,7 @@ export default function ProductInventory() {
     }
   }, [productsData?.count]);
 
-    if (isProductsLoading) {
+    if (isLoading) {
       return <UiLoader />;
     }
 
@@ -399,10 +419,13 @@ export default function ProductInventory() {
           title="Total Inventory Number"
         />
         <AnalyticsCard
-          figure="40"
+          figure={`${outOfStockProducts?.outOfStockProducts.length || 0}`}
           title="Out Of Stock Items"
           edgeNode={
-            <button className="stroke-primary-500 font-bold">
+            <button
+              onClick={() => isOutOfStockListVisible.on()}
+              className="stroke-primary-500 font-bold"
+            >
               <UiIcon icon="ArrowRight" />
             </button>
           }
@@ -413,10 +436,13 @@ export default function ProductInventory() {
           <div className="w-full font-montserrat mb-6 md:mb-4 flex flex-col sm:flex-row justify-between md:items-center gap-4">
             <h3 className="font-bold text-secondary-500">All Products</h3>
             <div className="flex items-center gap-4">
-              <SearchInput
-                searchQuery={searchQuery}
-                setSearchQuery={handleSearchQuery}
-              />
+              <div className="w-full md:max-w-[240px]">
+                <SearchInput
+                  searchQuery={searchQuery}
+                  setSearchQuery={handleSearchQuery}
+                />
+              </div>
+
               <UiFilter
                 clearFilter={clearFilter}
                 filterOptions={filterDropDowonData}
@@ -471,6 +497,25 @@ export default function ProductInventory() {
             setActiveProduct(undefined);
           }}
         />
+        {outOfStockProducts && (
+          <OutOfStockList
+            showRestockItemModal={() => isRestockItemVisible.on()}
+            isOpen={isOutOfStockListVisible.value}
+            setActiveRestockItem={handleRestockItem}
+            onClose={() => isOutOfStockListVisible.off()}
+            outOfStockitems={outOfStockProducts?.outOfStockProducts}
+          />
+        )}
+
+        {activeRestockItem && (
+          <RestockItem
+            isOpen={isRestockItemVisible.value}
+            onClose={() => isRestockItemVisible.off()}
+            reStockItem={activeRestockItem}
+            showOutOfStockList={() => isOutOfStockListVisible.on()}
+          />
+        )}
+
         <EditCostPrice
           isOpen={isEditCostPriceVisible.value}
           reload={reloadQuery}

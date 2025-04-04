@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { cartItems } from '@/api/mock/cartItems';
 
 import CartSummary from '@/components/cart/CartSummary';
 import EmptyCart from '@/components/cart/EmptyCart';
@@ -11,9 +10,13 @@ import QuantityIncrementor from '@/components/products/QuantityIncrementor';
 import UiIcon from '@/components/ui/UiIcon';
 import UiTable, { Header } from '@/components/ui/UiTable';
 
+import { useCartStore } from '@/Store/CartStore';
+
+
 //---
 
-export default function page() {
+export default function Page() {
+  const { cartItems, updateQuantity, removeItem } = useCartStore();
   const cartHeaders: Header[] = [
     {
       query: 'products',
@@ -38,25 +41,51 @@ export default function page() {
       id: item.id,
       products: (
         <div className="flex gap-3">
-          <Image src={item.image} alt="product image" className="w-16 h-16" />
+          <Image
+            src={item.product_image}
+            alt="product image"
+            width={64}
+            height={64}
+            className="w-16 h-16"
+          />
           <div>
             <p className="text-sm text-secondary-500 font-bold mb-2">
-              {item.name}
+              {item.product_name}
             </p>
-            {item.variant && <p>{item.variant}</p>}
+            {item.variant_value && <p>{item.variant_value}</p>}
           </div>
         </div>
       ),
-      quantity: <QuantityIncrementor />,
-      price: <p>{item.price}</p>,
+      quantity: (
+        <QuantityIncrementor
+          decreaseQuantity={() => {
+            if (item.quantity > 1) {
+              updateQuantity(item.id, item.quantity - 1);
+            }
+          }}
+          increaseQuantity={() => {
+            updateQuantity(item.id, item.quantity + 1);
+          }}
+          quantity={item.quantity}
+        />
+      ),
+      price: (
+        <p>
+          ₦
+          {(
+            item.product_discounted_price ?? item.product_price
+          ).toLocaleString()}
+        </p>
+      ),
       action: (
-        <button className="stroke-tertiary-700">
+        <button onClick={() => removeItem(item.id)} className="stroke-tertiary-700">
           {' '}
           <UiIcon icon="Trash" size="24" />
         </button>
       ),
     };
   });
+
 
   return (
     <section className="p-4 md:py-14 md:px-6 2xl:px-8">
@@ -66,12 +95,12 @@ export default function page() {
         </h2>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           <main className=" md:col-span-2">
-            {false ? (
+            {cartItems.length < 1 ? (
               <EmptyCart />
             ) : (
               <div>
                 <div className="hidden md:block">
-                  <UiTable data={cartData} headers={cartHeaders} />
+                  <UiTable size="lg" data={cartData} headers={cartHeaders} />
                 </div>
                 <div className="md:hidden grid gap-4">
                   {cartItems.map((item) => (
