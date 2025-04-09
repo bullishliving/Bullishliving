@@ -6,6 +6,9 @@ import { SupabaseTables } from '@/types/enums/SupabaseTables';
 import { ProductType } from '@/app/context/SetProductContext';
 import Product from '@/types/Product';
 import OutOfStockProduct from '@/types/OutOfStockProduct';
+import Order from '@/types/Order';
+import CartItem from '@/types/CartItem';
+import OrderStatusCount from '@/types/OrderStatusCount';
 
 type SelectPaginatedOptions = {
   columns?: string;
@@ -103,13 +106,55 @@ class SupabaseService {
     if (error) throw error;
   }
 
-  private async insert<T>(table: SupabaseTables, data: T) {
-    const { error } = await createClient().from(table).insert([data]).select()
-    if (error) throw error;
+  async canFulfillOrder(orderItems: CartItem[]) {
+    const { data } = await createClient().rpc('can_fulfill_order_items', {
+      order_items: orderItems,
+    })
+  
+    return data as [{
+      can_fulfill: boolean;
+      out_of_stock_item: CartItem
+    }]
+  }
+
+  async createOrder(order: Order) {
+    return await this.insert(SupabaseTables.ORDERS, order)
+  }
+
+  async reduceStock(orderItems: CartItem[]) {
+    const { error } = await createClient().rpc('reduce_product_stock', {
+      order_items: orderItems, 
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
 
   }
-  
 
+  async verifyPayment(ref: string) {
+     const {error} = await createClient().rpc('mark_order_as_verified', {
+      order_reference: ref
+    });
+
+    console.log(error);
+    
+
+    if (error) throw error;
+  }
+
+  async fetchOrderStatusCounts() {
+    const {data, error} = await createClient().rpc('get_order_counts_by_status');
+
+    if (error) throw error;
+    return data as OrderStatusCount[];
+  }
+
+  private async insert<T>(table: SupabaseTables, data: T) {
+    const { error } = await createClient().from(table).insert([data])
+    if (error) throw error;
+  }
+  
   private async select<T>(
     table: SupabaseTables,
     columns: string = "*",

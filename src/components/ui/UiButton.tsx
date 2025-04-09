@@ -57,7 +57,7 @@ export default function UiButton({
       className={`outline-none  whitespace-nowrap w-full text-sm flex gap-2 items-center justify-center font-bold font-montserrat transition-colors duration-150 ease-in rounded  ${variantClasses[variant]} ${sizeClasses[size]} ${
         roundedClasses[rounded]
       } ${disabled && 'cursor-not-allowed opacity-75'}`}
-      disabled={disabled}
+      disabled={disabled || loading}
       type={type}
       data-testid="ui-button"
       onClick={onClick}

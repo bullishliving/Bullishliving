@@ -1,3 +1,5 @@
+'use client'
+
 import CartItem from "@/types/CartItem";
 
 class CartHandlerService {
@@ -46,6 +48,10 @@ class CartHandlerService {
     this.setCartItems(cartItems);
   }
 
+  clearCart() {
+    localStorage.removeItem('cartItems')
+  }
+
   setItemQuantity(itemId: string, quantity: number) {    
     const cartItems: CartItem[] = this.getCartItems();
     const itemIndex = cartItems.findIndex((item) => item.id === itemId);
@@ -55,6 +61,38 @@ class CartHandlerService {
     cartItems[itemIndex].quantity = quantity;
 
     this.setCartItems(cartItems);
+  }
+
+  addBuyNowItem(item: CartItem) {
+    try {
+      if (typeof window === 'undefined') return;
+
+      localStorage.setItem('butNowItem', JSON.stringify(item));
+    } catch (error) {
+      console.error('Failed to add buy now item to cart', error);
+    }
+  }
+
+  getBuyNowItem(): CartItem | null {
+    try {
+      if (typeof window === 'undefined') return null;
+
+      const storedItem = localStorage.getItem('butNowItem')
+      return storedItem ? JSON.parse(storedItem) : null
+    } catch (error) {
+        console.error('Failed to get buy now item ', error);
+        return null
+    }
+  }
+
+  removeBuyNowItem() {
+    try {
+      if (typeof window === 'undefined') return;
+
+      localStorage.removeItem('butNowItem')
+    } catch (error) {
+      console.error('Failed to remove buy now item ', error);
+    }
   }
 }
 

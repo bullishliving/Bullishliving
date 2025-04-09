@@ -75,7 +75,7 @@ export default function UiSelect({
   }, [value, options, placeholder]);
 
   const validationStyle = useMemo(() => {
-    return !!error ? 'border-danger-200' : `border-tertiary-700`;
+    return error && '!border-danger-500';
   }, [error]);
 
   const placeholderStyle = useMemo(() => {

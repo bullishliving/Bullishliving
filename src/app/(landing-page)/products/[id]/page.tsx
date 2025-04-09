@@ -19,6 +19,7 @@ import useToggle from '@/hooks/useToggle';
 
 import { CartHandler } from '@/utils/CartHandler';
 import showToast from '@/components/ui/UiToast';
+import Product from '@/types/Product';
 
 export default function Page() {
   const { id } = useParams();
@@ -31,7 +32,7 @@ export default function Page() {
 
   const router = useRouter();
 
-  const { refreshCartItems } = useCartStore();
+  const { refreshCartItems, refreshBuyNow } = useCartStore();
 
   const isDescExpanded = useToggle();
 
@@ -41,6 +42,24 @@ export default function Page() {
     isDescExpanded.value || !shouldTruncate
       ? product?.description
       : product?.description.slice(0, 160) + '...';
+
+  function buildCartItem(
+    product: Product,
+    quantity: number,
+    activeVariant: string | null
+  ) {
+    return {
+      id: uuidv4(),
+      product_id: product.id,
+      quantity,
+      variant_type: product.variants[0]?.type || null,
+      variant_value: activeVariant,
+      product_image: product.images?.[0] as string,
+      product_discounted_price: product.discounted_price,
+      product_name: product.name,
+      product_price: product.price,
+    };
+  }
 
   const productDetails = useMemo(() => {
     return (
@@ -181,17 +200,7 @@ export default function Page() {
                 onClick={() => {
                   if(!product)  return;
 
-                  CartHandler.addItem({
-                    id: uuidv4(),
-                    product_id: product.id,
-                    quantity: quantity,
-                    variant_type: product.variants[0]?.type || null,
-                    variant_value: activeVariant,
-                    product_image: product.images![0] as string,
-                    product_discounted_price: product.discounted_price,
-                    product_name: product.name,
-                    product_price: product.price
-                  });
+                  CartHandler.addItem(buildCartItem(product, quantity, activeVariant));
 
                   refreshCartItems();
               
@@ -200,7 +209,17 @@ export default function Page() {
               >
                 Add To Cart <UiIcon icon="ArrowDiagonal" size="24" />
               </UiButton>
-              <UiButton rounded="md">
+              <UiButton onClick={() => {
+                if(!product) return;
+
+                CartHandler.addBuyNowItem(
+                  buildCartItem(product, quantity, activeVariant)
+                );
+
+                refreshBuyNow()
+                
+                router.push('/checkout?buynow');
+              }} rounded="md">
                 Buy It Now <UiIcon icon="ArrowDiagonal" size="24" />
               </UiButton>
             </div>

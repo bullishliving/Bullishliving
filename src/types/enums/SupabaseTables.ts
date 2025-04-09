@@ -2,5 +2,6 @@ export enum SupabaseTables {
   COMMUNITY = 'community',
   PARTNERS = 'partners',
   CATEGORIES = 'categories',
-  PRODUCTS = 'products'
+  PRODUCTS = 'products',
+  ORDERS = 'orders'
 }

@@ -1,22 +1,23 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import CartSummary from '@/components/cart/CartSummary';
 import EmptyCart from '@/components/cart/EmptyCart';
 import MobileCartItem from '@/components/cart/MobileCartItem';
 import QuantityIncrementor from '@/components/products/QuantityIncrementor';
-
 import UiIcon from '@/components/ui/UiIcon';
 import UiTable, { Header } from '@/components/ui/UiTable';
 
 import { useCartStore } from '@/Store/CartStore';
 
-
 //---
 
 export default function Page() {
   const { cartItems, updateQuantity, removeItem } = useCartStore();
+  const router = useRouter();
+
   const cartHeaders: Header[] = [
     {
       query: 'products',
@@ -110,7 +111,12 @@ export default function Page() {
               </div>
             )}
           </main>
-          <CartSummary />
+          <CartSummary
+            onAction={() => {
+              router.push('/checkout');
+            }}
+            cartItems={cartItems}
+          />
         </div>
       </div>
     </section>
