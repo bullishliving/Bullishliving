@@ -119,7 +119,7 @@ export default function CheckoutForm() {
         try {
             Api.createOrder({
               address: formValue.address,
-              amount: paystackConfig.amount,
+              amount: paystackConfig.amount / 100,
               apartment:
                 formValue.apartment === '' ? null : formValue.apartment,
               customer: `${formValue.lastName} ${formValue.firstName}`,

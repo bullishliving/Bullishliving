@@ -10,7 +10,6 @@ import useOutOfStockProductsQuery from '@/api/query/useOutOfStockProductsQuery';
 import Product from '@/types/Product';
 import OutOfStockProduct from '@/types/OutOfStockProduct';
 
-
 import useToggle from '@/hooks/useToggle';
 import { usePagination } from '@/hooks/usePagination';
 
@@ -33,12 +32,10 @@ import UiMobileDataList from '../ui/UiMobileDataList';
 import UiLoader from '../ui/UiLoader';
 import AnalyticsCard from './AnalyticsCard';
 
-
-
 export default function ProductInventory() {
   const { activeProduct, setActiveProduct, formData } = useSetProductContext();
   const [limit, setLimit] = useState<number>(5);
-  const [totalData, setTotalData] = useState<number | undefined>(undefined);
+  const [totalProducts, setTotalProducts] = useState<number | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('');
   const [activeRestockItem, setActiveRestockItem] = useState<OutOfStockProduct | null>(null);
@@ -50,7 +47,7 @@ export default function ProductInventory() {
     isPrevDisabled,
     page,
     totalPages,
-  } = usePagination({ dataLimit: limit, totalData: totalData || 0 });
+  } = usePagination({ dataLimit: limit, totalData: totalProducts || 0 });
 
   const {
     query: { data: productsData, isLoading: isProductsLoading },
@@ -58,7 +55,7 @@ export default function ProductInventory() {
   } = useProductQuery({
     limit,
     page,
-    total: totalData || 0,
+    total: totalProducts || 0,
     searchQuery,
     searchColumn: 'products_name_description'
   });
@@ -243,7 +240,7 @@ export default function ProductInventory() {
     },
   ];
 
-  const productsHeaders: Header[] = [
+  const productsHeaders: Header[] = useMemo(()=>([
     {
       query: 'name',
       title: 'Name',
@@ -272,11 +269,11 @@ export default function ProductInventory() {
       query: 'action',
       title: 'Action',
     },
-  ];
+  ]), [])
 
-  const mobileProductHeaders = productsHeaders.filter(
-    (header) => (header.query !== 'name') 
-  );
+  const mobileProductHeaders = useMemo(() => {
+    return productsHeaders.filter((header) => header.query !== 'name');
+  }, [productsHeaders]);
 
   const productsNodes = filteredProducts?.map((product) => {
     return {
@@ -349,9 +346,9 @@ export default function ProductInventory() {
           </button>
         </div>
       ),
-      sold: '20',
+      sold: product.sold,
       left: product.stock_left,
-      revenue: '₦10,000,200',
+      revenue: `₦${product.revenue.toLocaleString()}`,
       inStock: (
         <UiSwith
           value={!product.is_out_of_stock}
@@ -399,10 +396,9 @@ export default function ProductInventory() {
     };
   });
 
-  
   useEffect(() => {
     if (productsData?.count !== undefined) {
-      setTotalData(productsData.count);
+      setTotalProducts(productsData.count);
     }
   }, [productsData?.count]);
 

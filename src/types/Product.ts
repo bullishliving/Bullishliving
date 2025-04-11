@@ -7,5 +7,7 @@ export type Variant =  {
 
 export default interface Product extends Omit<ProductType, 'variants'> {
   id: number;
-  variants: Variant[]
+  variants: Variant[];
+  sold: number;
+  revenue: number;
 }

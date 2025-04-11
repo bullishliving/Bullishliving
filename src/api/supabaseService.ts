@@ -9,6 +9,7 @@ import OutOfStockProduct from '@/types/OutOfStockProduct';
 import Order from '@/types/Order';
 import CartItem from '@/types/CartItem';
 import OrderStatusCount from '@/types/OrderStatusCount';
+import OrderResponse from '@/types/OrderResponse';
 
 type SelectPaginatedOptions = {
   columns?: string;
@@ -143,11 +144,19 @@ class SupabaseService {
     if (error) throw error;
   }
 
-  async fetchOrderStatusCounts() {
+  async getOrderStatusCounts() {
     const {data, error} = await createClient().rpc('get_order_counts_by_status');
 
     if (error) throw error;
     return data as OrderStatusCount[];
+  }
+
+  getOrders(limit: number, start?: number, end?: number, searchQuery?: string, searchColumn?: string, filters?:{ column: string; value: any }[],) {
+    return this.selectPaginated<OrderResponse>(SupabaseTables.ORDERS, { columns: "*", filters: filters, getCount: true, limit, start, end, searchQuery, searchColumn })
+  }
+
+  getOrder(orderId: number) {
+    return this.selectRow<OrderResponse>(SupabaseTables.ORDERS, orderId)
   }
 
   private async insert<T>(table: SupabaseTables, data: T) {

@@ -217,7 +217,7 @@ export default function Page() {
                 );
 
                 refreshBuyNow()
-                
+
                 router.push('/checkout?buynow');
               }} rounded="md">
                 Buy It Now <UiIcon icon="ArrowDiagonal" size="24" />

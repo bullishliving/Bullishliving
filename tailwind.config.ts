@@ -47,6 +47,18 @@ export default {
           500: '#FB4D04',
           600: '#fb4e04d5',
         },
+        warning: {
+          50: '#FFFAEB',
+          500: '#B54708'
+        },
+        success: {
+          50: '#ECFDF3',
+          500: '#027A48'
+        },
+        blue: {
+          50: '#F0F9FF',
+          500: '#2A19E7'
+        }
       },
       fontFamily: {
         obitron: ['var(--font-orbitron)'],

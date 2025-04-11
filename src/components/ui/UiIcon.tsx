@@ -12,6 +12,7 @@ import CaretRight from '@/assets/svg/caret-right.svg';
 import CaretRightBig from '@/assets/svg/caret-right-big.svg';
 import Cart from '@/assets/svg/cart.svg';
 import Close from '@/assets/svg/close.svg';
+import Copy from '@/assets/svg/copy.svg';
 import DropDownMenu from '@/assets/svg/drop-down-menu.svg';
 import Edit from '@/assets/svg/edit.svg';
 import Email from '@/assets/svg/email.svg';
@@ -20,6 +21,7 @@ import Hamburger from '@/assets/svg/hamburger.svg';
 import Instagram from '@/assets/svg/instagram.svg';
 import Itallic from '@/assets/svg/italic.svg';
 import Link from '@/assets/svg/link.svg';
+import Location from '@/assets/svg/location.svg';
 import Minus from '@/assets/svg/minus.svg';
 import NumberedList from '@/assets/svg/numbered-list.svg';
 import Search from '@/assets/svg/search.svg';
@@ -28,6 +30,7 @@ import Sort from '@/assets/svg/sort.svg';
 import Star from '@/assets/svg/star.svg';
 import TikTok from '@/assets/svg/tiktok.svg';
 import Trash from '@/assets/svg/trash.svg';
+import User from '@/assets/svg/user.svg';
 
 // These icons should be arranged alphabetically for easy sorting
 
@@ -46,6 +49,7 @@ const icons = {
   CaretRightBig,
   Cart,
   Close,
+  Copy,
   DropDownMenu,
   Edit,
   Email,
@@ -54,6 +58,7 @@ const icons = {
   Instagram,
   Itallic,
   Link,
+  Location,
   Minus,
   NumberedList,
   Search,
@@ -62,6 +67,7 @@ const icons = {
   Star,
   TikTok,
   Trash,
+  User
 };
 
 export type Icons = keyof typeof icons;
