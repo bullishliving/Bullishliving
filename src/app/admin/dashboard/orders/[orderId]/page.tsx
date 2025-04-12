@@ -3,60 +3,117 @@
 import { useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useQueryClient } from '@tanstack/react-query';
 
+
+import { Api } from '@/api/supabaseService';
 import useGetOrderQuery from '@/api/query/useGetOrderQuery';
 
-import UiTable, { Header } from '@/components/ui/UiTable';
 import showToast from '@/components/ui/UiToast';
+import UiButton from '@/components/ui/UiButton';
 import UiIcon from '@/components/ui/UiIcon';
 import UiLoader from '@/components/ui/UiLoader';
-import UiButton from '@/components/ui/UiButton';
-import UiPill from '@/components/ui/UiPill';
+import UiMobileDataList from '@/components/ui/UiMobileDataList';
+import UiPill, { PillVariant } from '@/components/ui/UiPill';
+import UiTable, { Header } from '@/components/ui/UiTable';
 
 import { OrderStatus } from '@/types/enums/OrderStatus';
+import useToggle from '@/hooks/useToggle';
 
 //---
 
 export default function Page() {
   const { orderId } = useParams();
+
   const router = useRouter();
+  const loading = useToggle();
+  const queryClient = useQueryClient()
 
   const {
-    query: { data: order, isLoading, error },
+    query: { data: order, isLoading, error } 
   } = useGetOrderQuery(Number(orderId));
 
-  function getStatusText(status: OrderStatus) {
-    if (status === OrderStatus.INDELIVERY) return 'in-delivery';
-    return status;
+  function getPillVariant(status: OrderStatus) : {variant: PillVariant, label: string} {
+    if(status === OrderStatus.INDELIVERY ) {
+      return { label: 'in-delivery', variant: 'neutral' };
+    } else if (status === OrderStatus.PENDING) {
+      return { label: OrderStatus.PENDING, variant: 'warning' };
+    }
+
+    return { label: OrderStatus.DELIVERED, variant: 'success' };
   }
+
+  const { label: OrderStatusLabel, variant: OrderPillVariant } = getPillVariant(order?.status || OrderStatus.PENDING)
 
   const copyToClipboard = async (text: string, message: string) => {
     try {
+      
       await navigator.clipboard.writeText(text);
       showToast(message, 'success');
     } catch (error) {
       console.log(error);
-    }
+    } 
   };
 
-  const itemsHeaders: Header[] = [
-    {
-      title: 'Item',
-      query: 'item',
+  const OrderStatusTransitions: Record<
+    OrderStatus,
+    { next?: OrderStatus; label?: string }
+  > = {
+    pending: {
+      label: 'Move to: In delivery',
+      next: OrderStatus.INDELIVERY,
     },
-    {
-      title: 'Quantity',
-      query: 'quantity',
+    inDelivery: {
+      label: 'Move to: Delivered',
+      next: OrderStatus.DELIVERED
     },
-    {
-      title: 'Price',
-      query: 'price',
-    },
-  ];
+    delivered: {}
+  };
+
+  const activeStatusTransition = OrderStatusTransitions[order?.status || OrderStatus.PENDING];
+
+  async function updateOrderStatus() {
+    try {
+      loading.on();
+      await Api.updateOrderStatus(
+        order?.id as number,
+        activeStatusTransition.next!
+      );
+      queryClient.invalidateQueries({ queryKey: ['order', 'orders', orderId] });
+      showToast('order status updated', 'success');
+    } catch (error) {
+      console.log(error);
+      showToast('error updating order status', 'error');
+    } finally {
+      loading.off();
+    }
+  }
+
+  const itemsHeaders: Header[] = useMemo(() => {
+    return [
+      {
+        title: 'Item',
+        query: 'item',
+      },
+      {
+        title: 'Quantity',
+        query: 'quantity',
+      },
+      {
+        title: 'Price',
+        query: 'price',
+      },
+    ];
+  }, []);
+
+  const mobileItemsHeaders = useMemo(() => {
+    return itemsHeaders.filter((header) => header.query !== 'item');
+  }, [itemsHeaders]);
 
   const itemsNode = useMemo(
     () =>
-      order?.items.map((item) => ({
+      order?.items.map((item) => (
+        {
         id: item.id,
         topNode: (
           <div className="flex items-center gap-3 pb-2 border-b">
@@ -102,9 +159,11 @@ export default function Page() {
         ),
         quantity: item.quantity,
         price: `₦${item.product_price.toLocaleString()}`,
-      })),
+      }
+    )),
     [order]
   );
+
   if (error) {
     console.error(error);
   }
@@ -127,14 +186,16 @@ export default function Page() {
           <h2 className="font-bold font-montserrat text-[40px]">
             #{order?.id}
           </h2>
-          <UiPill variant="warning">
-            {getStatusText(order?.status as OrderStatus)}
-          </UiPill>
+          <UiPill variant={OrderPillVariant}>{OrderStatusLabel}</UiPill>
         </div>
 
-        <div className="w-full md:w-[169px]">
-          <UiButton>Move to: In delivery</UiButton>
-        </div>
+        {order?.status !== OrderStatus.DELIVERED && (
+          <div className="w-full md:w-[169px]">
+            <UiButton onClick={updateOrderStatus} loading={loading.value}>
+              {activeStatusTransition.label}
+            </UiButton>
+          </div>
+        )}
       </div>
       <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
         <div className="p-4 bg-white border border-grey-300 rounded-lg w-full font-montserrat">
@@ -181,21 +242,26 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <div className="bg-white rounded-lg p-4 font-montserrat">
-        <div className="w-full flex justify-between mb-4">
-          <h3 className="font-bold text-secondary-500">
-            Items ({order?.items.length})
-          </h3>
-          <h3 className="font-bold text-secondary-500">
-            Total: ₦{order?.amount.toLocaleString()}
-          </h3>
-        </div>
-        <div>
+      {itemsNode && (
+        <div className="sm:bg-white rounded-lg sm:p-4 font-montserrat">
+          <div className="w-full flex justify-between mb-4">
+            <h3 className="font-bold text-secondary-500">
+              Items ({order?.items.length})
+            </h3>
+            <h3 className="font-bold text-secondary-500">
+              Total: ₦{order?.amount.toLocaleString()}
+            </h3>
+          </div>
           <div>
-            {itemsNode && <UiTable data={itemsNode} headers={itemsHeaders} />}
+            <div className="hidden sm:block">
+              <UiTable data={itemsNode} headers={itemsHeaders} />
+            </div>
+            <div className="sm:hidden">
+              <UiMobileDataList data={itemsNode} headers={mobileItemsHeaders} />
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }

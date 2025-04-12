@@ -6,12 +6,13 @@ import Link from 'next/link';
 
 import useProductQuery from '@/api/query/useProductsQuery';
 import useCategoriesQuery from '@/api/query/useCategoriesQuery';
+import NoSearchResult from '@/assets/svg/no-search-result.svg';
 
 import MobileProductsFilter from '@/components/products/MobileProductsFilter';
 import ProductCard from '@/components/products/ProductCard';
+import ProductListSkeleton from '@/components/ui/skeletons/ProductListSkeleton';
 import ProductsFilter from '@/components/products/ProductsFilter';
 import UiIcon from '@/components/ui/UiIcon';
-import UiLoader from '@/components/ui/UiLoader';
 import UiPaginator from '@/components/ui/UiPaginator';
 
 import useToggle from '@/hooks/useToggle';
@@ -54,6 +55,7 @@ export default function Page() {
 
   function clearFilter() {
     setSelectedCategoryIds([])
+    setPriceRange([2000, 300000]);
   }
 
   function handleSearchQuery(query: string) {
@@ -120,7 +122,7 @@ export default function Page() {
     }, [productsData?.count]);
 
     if(isLoading) {
-      return <UiLoader/>
+      return <ProductListSkeleton />;
     }
 
   return (
@@ -152,7 +154,7 @@ export default function Page() {
             </AnimatePresence>
           )}
 
-          <main className={``}>
+          <main className={`min-h-screen  w-full`}>
             <div className="flex gap-6 font-montserrat">
               {!isFilterVisible.value && (
                 <button
@@ -163,7 +165,7 @@ export default function Page() {
                   Filter
                 </button>
               )}
-              <div className="relative border border-grey-300 w-full h-[52px] rounded flex justify-center items-center">
+              <div className="relative border border-grey-300 min-w-full h-[52px] rounded flex justify-center items-center">
                 <div className="absolute top-4 left-4 stroke-tertiary-700">
                   <UiIcon icon="Search" size="20" />
                 </div>
@@ -175,20 +177,36 @@ export default function Page() {
                 />
               </div>
             </div>
-            <div
-              className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 mt-6 gap-x-6 gap-y-8 mb-8 ${isFilterVisible.value && 'md:grid-cols-2 lg:!grid-cols-3'}`}
-            >
-              {productsData?.data.map((product) => (
-                <Link key={product.id} href={`/products/${product.id}`}>
-                  <ProductCard product={product} />
-                </Link>
-              ))}
-            </div>
-            <UiPaginator
-              onPageChange={onPageChange}
-              currentPage={page}
-              totalPages={totalPages}
-            />
+            {productsData?.data && productsData?.data.length < 1 ? (
+              <div className=" border rounded-lg mt-6 flex justify-center items-center h-[400px]">
+                <div className="flex justify-center flex-col text-center">
+                  <div className='mx-auto'>
+                    <NoSearchResult />
+                  </div>
+                  <h3 className="font-black font-obitron text-2xl">
+                    No Search Result Found
+                  </h3>
+                  <p className='text-sm text-tertiary-700 font-montserrat mt-2'>Your current search result is not available</p>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <div
+                  className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 mt-6 gap-x-6 gap-y-8 mb-8 ${isFilterVisible.value && 'md:grid-cols-2 lg:!grid-cols-3'}`}
+                >
+                  {productsData?.data.map((product) => (
+                    <Link key={product.id} href={`/products/${product.id}`}>
+                      <ProductCard product={product} />
+                    </Link>
+                  ))}
+                </div>
+                <UiPaginator
+                  onPageChange={onPageChange}
+                  currentPage={page}
+                  totalPages={totalPages}
+                />
+              </div>
+            )}
           </main>
         </div>
       </div>

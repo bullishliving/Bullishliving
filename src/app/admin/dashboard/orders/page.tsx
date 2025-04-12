@@ -110,7 +110,7 @@ export default function Page() {
     },
   ], []);
 
-  const mobileProductHeaders = useMemo(() => {
+  const mobileOrdersHeaders = useMemo(() => {
     return ordersHeaders.filter((header) => header.query !== 'action');
   }, [ordersHeaders]);
 
@@ -132,17 +132,17 @@ export default function Page() {
           </div>
         ),
         bottomNode: (
-          <UiButton size="md" rounded="md" variant="tertiary-outlined">
-            View details
-          </UiButton>
+          <Link href={`./orders/${order.id}`}>
+            <UiButton size="md" rounded="md" variant="tertiary-outlined">
+              View details
+            </UiButton>
+          </Link>
         ),
       })),
     [orderdData]
   );
 
-  console.log(orderTableNode, ordersHeaders, mobileProductHeaders);
   
-
   useEffect(() => {
     if (orderdData?.count !== undefined) {
       setTotalOrders(orderdData.count);
@@ -203,7 +203,7 @@ export default function Page() {
                 <div className="md:hidden">
                   <UiMobileDataList
                     data={orderTableNode}
-                    headers={mobileProductHeaders}
+                    headers={mobileOrdersHeaders}
                   />
                 </div>
                 <div className="mt-4">

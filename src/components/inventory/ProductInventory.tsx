@@ -4,19 +4,16 @@ import Image from 'next/image';
 import { Api } from '@/api/supabaseService';
 import { useSetProductContext, initialProductState } from '@/app/context/SetProductContext';
 import useDeleteProductMutaion from '@/api/mutations/products/useDeleteProductMutation';
-import useProductQuery from '@/api/query/useProductsQuery';
+import useGetTotalPayInQuery from '@/api/query/useGetTotalPayInQuery';
 import useOutOfStockProductsQuery from '@/api/query/useOutOfStockProductsQuery';
+import useProductQuery from '@/api/query/useProductsQuery';
 
-import Product from '@/types/Product';
-import OutOfStockProduct from '@/types/OutOfStockProduct';
 
 import useToggle from '@/hooks/useToggle';
 import { usePagination } from '@/hooks/usePagination';
 
-import EditCostPrice from './EditCostPrice';
-import OutOfStockList from './OutOfStockList';
-import DeleteConfirmation from '../DeleteConfirmation';
-import RestockItem from './RestockItem';
+import OutOfStockProduct from '@/types/OutOfStockProduct';
+import Product from '@/types/Product';
 
 import SearchInput from '../ui/SearchInput';
 import showToast from '../ui/UiToast';
@@ -24,13 +21,20 @@ import UiAdminPaginator from '../ui/UiAdminPaginator';
 import UiDropDown, { DropDownData } from '../ui/UiDropDown';
 import UiFilter from '../ui/UiFilter';
 import UiIcon from '../ui/UiIcon';
+import UiLoader from '../ui/UiLoader';
+import UiMobileDataList from '../ui/UiMobileDataList';
 import UiSwith from '../ui/UiSwitch';
 import UiTable, { Header } from '../ui/UiTable';
 
 import AddProductModal from './AddProductModal';
-import UiMobileDataList from '../ui/UiMobileDataList';
-import UiLoader from '../ui/UiLoader';
 import AnalyticsCard from './AnalyticsCard';
+import DeleteConfirmation from '../DeleteConfirmation';
+import EditCostPrice from './EditCostPrice';
+import OutOfStockList from './OutOfStockList';
+import RestockItem from './RestockItem';
+import useGetTotalInventoryBalanceQuery from '@/api/query/useGetTotalInventoryBalanceQuery';
+
+//---
 
 export default function ProductInventory() {
   const { activeProduct, setActiveProduct, formData } = useSetProductContext();
@@ -66,13 +70,33 @@ export default function ProductInventory() {
 
   const { query: {data: outOfStockProducts, isLoading: isOutOfStockLoading} } = useOutOfStockProductsQuery();
 
+  const {
+    query: {
+      data: totalPayIn,
+      isLoading: isTotalPayinLoading,
+      isError: totalPayInError,
+    },
+  } = useGetTotalPayInQuery();
+  const {
+    query: {
+      data: totalInventoryBalance,
+      isLoading: isTotalInventoryBalanceLoading,
+      isError: totalInventoryBalanceError,
+    },
+  } = useGetTotalInventoryBalanceQuery();
+
   const isEditProductVisible = useToggle();
   const isDeleteConfirmVisible = useToggle();
   const isEditCostPriceVisible = useToggle();
   const isDeleteLoading = useToggle();
   const isRestockItemVisible = useToggle();
   const isOutOfStockListVisible = useToggle();
-  const isLoading = isOutOfStockLoading || isProductsLoading;
+  const isLoading =
+    isOutOfStockLoading ||
+    isProductsLoading ||
+    isTotalPayinLoading ||
+    isTotalInventoryBalanceLoading;
+  const isError = totalInventoryBalanceError || totalPayInError;
 
   function handleRestockItem(item: OutOfStockProduct) {
     setActiveRestockItem(item)
@@ -402,14 +426,25 @@ export default function ProductInventory() {
     }
   }, [productsData?.count]);
 
-    if (isLoading) {
-      return <UiLoader />;
-    }
+  if (isError) {
+    console.error('something went wrong')
+  }
+  
+  if (isLoading) {
+    return <UiLoader />;
+  }
 
   return (
     <div>
       <div className="grid md:grid-cols-3 gap-4 md:gap-6 mb-4">
-        <AnalyticsCard figure="₦1,200,980" title="Total Inventory Balance" />
+        <AnalyticsCard
+          figure={`₦${totalInventoryBalance?.toLocaleString()}`}
+          title="Total Inventory Balance"
+        />
+        <AnalyticsCard
+          figure={`₦${totalPayIn?.toLocaleString()}`}
+          title="Total Pay In"
+        />
         <AnalyticsCard
           figure={`${productsData?.count || 0}`}
           title="Total Inventory Number"

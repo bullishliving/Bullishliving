@@ -10,6 +10,7 @@ import Order from '@/types/Order';
 import CartItem from '@/types/CartItem';
 import OrderStatusCount from '@/types/OrderStatusCount';
 import OrderResponse from '@/types/OrderResponse';
+import { OrderStatus } from '@/types/enums/OrderStatus';
 
 type SelectPaginatedOptions = {
   columns?: string;
@@ -96,6 +97,14 @@ class SupabaseService {
     return data || []; 
   }
 
+  async getTotalInventoryBalance() {
+    const { data, error} = await createClient().rpc('get_total_inventory_balance');
+
+    if (error) throw error;
+
+    return data as number
+  }
+
   async updateStock(productId: number, stock: number, variantType: string | null, variantValue: string | null) {
     const { error } = await createClient().rpc('update_stock', {
       p_product_id: productId, 
@@ -157,6 +166,18 @@ class SupabaseService {
 
   getOrder(orderId: number) {
     return this.selectRow<OrderResponse>(SupabaseTables.ORDERS, orderId)
+  }
+
+  updateOrderStatus(orderId: number, status: OrderStatus) {
+    return this.update(SupabaseTables.ORDERS, orderId, { status: status })
+  }
+ 
+  async getTotalPayIn() {
+    const { data, error} = await createClient().rpc('get_total_pay_in');
+
+    if (error) throw error;
+
+    return data as number
   }
 
   private async insert<T>(table: SupabaseTables, data: T) {

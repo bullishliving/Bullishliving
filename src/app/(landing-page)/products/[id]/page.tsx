@@ -8,11 +8,11 @@ import DOMPurify from 'dompurify';
 
 import useGetProductQuery from '@/api/query/useGetProductQuery';
 
+import ProductDetailsSkeleton from '@/components/ui/skeletons/ProductDetailsSkeleton';
 import ProductVariant from '@/components/products/ProductVariant';
 import QuantityIncrementor from '@/components/products/QuantityIncrementor';
 import UiButton from '@/components/ui/UiButton';
 import UiIcon from '@/components/ui/UiIcon';
-import UiLoader from '@/components/ui/UiLoader';
 
 import { useCartStore } from '@/Store/CartStore';
 import useToggle from '@/hooks/useToggle';
@@ -24,7 +24,7 @@ import Product from '@/types/Product';
 export default function Page() {
   const { id } = useParams();
 
-  const { data: product, isLoading} = useGetProductQuery(Number(id));
+  const { data: product, isLoading } = useGetProductQuery(Number(id));
 
   const [activeVariant, setActiveVariant] = useState<string | null>(null);
   const [activeImgIndex, setActiveImgIndex] = useState(0);
@@ -119,7 +119,7 @@ export default function Page() {
   },[product?.variants])
 
   if(isLoading) {
-    return <UiLoader/>
+    return <ProductDetailsSkeleton />;
   }
 
   return (
