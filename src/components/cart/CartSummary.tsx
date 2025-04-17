@@ -71,7 +71,7 @@ export default function CartSummary({ onAction, loading, cartItems, label, deliv
           ₦{(totalDiscountedPrice + (deliveryFee ?? 0)).toLocaleString()}
         </p>
       </div>
-      <UiButton rounded="md" type="submit" loading={loading} onClick={onAction}>
+      <UiButton disabled={cartItems.length === 0} rounded="md" type="submit" loading={loading} onClick={onAction}>
         {label}
         <UiIcon icon="ArrowDiagonal" size="22" />
       </UiButton>
