@@ -1,5 +1,7 @@
 import Image from 'next/image';
 
+import BullishSinglet from '@/assets/images/bullish-singlet.png';
+
 import Product from '@/types/Product';
 
 interface Props {
@@ -8,12 +10,10 @@ interface Props {
 
 export default function ProductCard({ product }: Props) {
   return (
-    <div className="max-w-[302px] hover:shadow p-2 transition-shadow duration-200 ease-in">
+    <div className="max-w-[302px]">
       <div className="h-[165px] xs:h-[256px] lg:h-[363px] mb-3">
         <Image
-          width={300}
-          height={300}
-          src={product.images![0] as string}
+          src={BullishSinglet}
           alt={product.name}
           className="max-w-full h-full object-contain"
         />

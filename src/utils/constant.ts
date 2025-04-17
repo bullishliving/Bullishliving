@@ -1,5 +1,4 @@
 import { Option } from '@/components/ui/UiSelect';
-
 import Acitve1 from '@/assets/images/active-1.jpeg';
 import Acitve2 from '@/assets/images/active-2.jpeg';
 import Active3 from '@/assets/images/active-3.png';
@@ -49,65 +48,4 @@ export const roleOptions: Option[] = [
   },
 ];
 
-export const landingPageRoutes = [
-  {
-    label: 'All Products',
-    path: '/products',
-  },
-  {
-    label: 'Running Community',
-    path: '/#community',
-  },
-  {
-    label: 'Partner With Us',
-    path: '/partnership-details',
-  },
-  {
-    label: 'About Us ',
-    path: '/about-us',
-  },
-];
-
-export const adminRoutes = [
-  {
-    label: 'All Orders',
-    path: '/admin/dashboard/orders',
-  },
-  {
-    label: 'Inventory',
-    path: '/admin/dashboard',
-  },
-  {
-    label: 'Running Community',
-    path: '/admin/dashboard/community',
-  },
-];
-
-export const inputStyles =
-  'h-12 outline-none px-4 rounded-[8px] placeholder:text-sm placeholder:text-grey-700 border';
-
-  export const activeImages = [Acitve1, Acitve2, Active3, Active4, Active5, Active6];
-
-export const locationPrices = {
-  "Agege": 6000,
-  "Ajeromi-Ifelodun": 6000,
-  "Alimosho": 6000,
-  "Amuwo-Odofin": 6000,
-  "Apapa": 6000,
-  "Badagry": 6000,
-  "Epe": 3000,
-  "Eti-Osa": 3000,
-  "Ibeju-Lekki": 3000,
-  "Ifako-Ijaiye": 6000,
-  "Ikeja": 6000,
-  "Ikorodu": 6000,
-  "Kosofe": 6000,
-  "Lagos-Island": 3000,
-  "Lagos-Mainland": 6000,
-  "Mushin": 6000,
-  "Ojo": 6000,
-  "Oshodi-Isolo": 6000,
-  "Shomolu": 6000,
-  "Somolu": 6000,
-  "Surulere": 6000,
-};
+export const activeImages = [Acitve1, Acitve2, Active3, Active4, Active5, Active6];

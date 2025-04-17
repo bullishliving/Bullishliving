@@ -1,6 +1,5 @@
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import { landingPageRoutes } from '@/utils/constant';
 
 export default function LandingPageLayout({
   children,
@@ -9,7 +8,7 @@ export default function LandingPageLayout({
 }>) {
   return (
     <section>
-      <Navbar routes={landingPageRoutes} />
+      <Navbar />
       {children}
       <Footer />
     </section>

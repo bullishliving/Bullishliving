@@ -1,43 +1,41 @@
 'use client';
 
-import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 import BullishLogo from '@/assets/svg/logo.svg';
 
-import QueryProvider from '@/components/QueryProvider';
-
-import { useCartStore } from '@/Store/CartStore';
-
 import useToggle from '@/hooks/useToggle';
 
 import UiIcon from '../ui/UiIcon';
-import UiButton from '../ui/UiButton';
-
 import SearchPanel from './SearchPanel';
+
 import MobileNav from './MobileNav';
 import NavItem from './NavItem';
 
 // --
 
-interface Props {
-  routes: {
-    label: string;
-    path: string;
-  }[];
-}
-
-export default function Navbar({ routes }: Props) {
+export default function Navbar() {
   const isSearchPanelVisible = useToggle();
   const isMobileNavVisible = useToggle();
 
-  const pathname = usePathname();
-
-  const whiteRoutes = ['/products', '/cart', '/checkout'];
-  const isWhite = whiteRoutes.some((route) => pathname.startsWith(route));
-  const cartCount = useCartStore((state) => state.cartItems.length);
-  const refreshCartItems = useCartStore((state) => state.refreshCartItems);
+  const routes = [
+    {
+      label: 'All Products',
+      path: '',
+    },
+    {
+      label: 'Running Community',
+      path: '/#community',
+    },
+    {
+      label: 'Partner With Us',
+      path: '/partnership-details',
+    },
+    {
+      label: 'About Us',
+      path: '/about-us',
+    },
+  ];
 
   function closeNav() {
     isMobileNavVisible.off();
@@ -47,61 +45,44 @@ export default function Navbar({ routes }: Props) {
     isMobileNavVisible.toggle();
   }
 
-  useEffect(() => {
-    refreshCartItems();
-  }, [refreshCartItems]);
-
   return (
-    <nav
-      className={`${isWhite ? 'bg-white border-b border-gray-300' : 'bg-secondary-500'} py-4 px-4 md:px-6 md:py-8 2xl:p-8`}
-    >
+    <nav className="bg-secondary-500 py-4 px-4 md:px-6 md:py-8 2xl:p-8">
       <div className="relative max-w-[1280px] mx-auto flex justify-between items-center ">
         <Link href="/" className="w-10 h-[27px] md:w-14 md:h-[38px]">
           <BullishLogo />
         </Link>
-        <ul
-          className={`hidden  md:flex gap-3 items-center text-sm font-montserrat ${isWhite ? 'text-secondary-500' : 'text-white'} `}
-        >
+        <ul className="hidden text-white md:flex gap-3 items-center text-sm font-montserrat font-bold">
           {routes.map((route, index) => (
             <li className="relative flex items-center gap-3" key={index}>
               <NavItem {...route} />
               {index < routes.length - 1 && (
-                <div
-                  className={`w-1 h-1 rounded-full ${isWhite ? 'bg-secondary-500' : 'bg-white'}`}
-                ></div>
+                <div className="w-1 h-1 rounded-full bg-white"></div>
               )}
             </li>
           ))}
         </ul>
-        <div
-          className={`flex gap-6 items-center ${isWhite ? 'stroke-secondary-500' : 'stroke-white'}`}
-        >
+        <div className="stroke-white flex gap-6 items-center">
           <button onClick={() => isSearchPanelVisible.toggle()}>
             <UiIcon icon="Search" size="24" />
           </button>
-          <Link href="/cart" className="relative">
-            {cartCount > 0 && (
-              <div className="absolute -top-[21.3%] -right-[28.3%] w-5 h-5 rounded-full flex justify-center items-center text-white text-xs font-montserrat font-medium bg-danger-500 ">
-                {cartCount}
-              </div>
-            )}
+          <button className="relative">
+            <div className="absolute hidden -top-[21.3%] -right-[28.3%] w-5 h-5 rounded-full  justify-center items-center text-white text-xs font-montserrat font-medium bg-danger-500 ">
+              2
+            </div>
             <UiIcon icon="Cart" size="24" />
-          </Link>
+          </button>
           <button onClick={toggleMobileNav} className="md:hidden">
             <UiIcon icon="Hamburger" size="24" />
           </button>
         </div>
         {isSearchPanelVisible.value && (
-          <QueryProvider>
-            <SearchPanel onClose={() => isSearchPanelVisible.off()} />
-          </QueryProvider>
+          <SearchPanel onClose={() => isSearchPanelVisible.off()} />
         )}
       </div>
       <MobileNav
         routes={routes}
         isNavOpen={isMobileNavVisible.value}
         closeNav={closeNav}
-        bottomNode={<UiButton variant="secondary">View All Products</UiButton>}
       />
     </nav>
   );

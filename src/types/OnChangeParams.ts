@@ -1,4 +1,4 @@
 export default interface OnChangeParams {
   name: string;
-  value: string | undefined | File | null | boolean | string[] | File[];
+  value: string | undefined | File | null | boolean | string[];
 }

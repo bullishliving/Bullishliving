@@ -3,11 +3,7 @@
 import { useRef, useState } from 'react';
 import OutsideClickHandler from 'react-outside-click-handler';
 
-import useSearchProductsQuery from '@/api/query/useSearchProductsQuery';
-
 import UiIcon from '../ui/UiIcon';
-import ProductCard from '../products/ProductCard';
-import Link from 'next/link';
 
 // --
 
@@ -18,8 +14,6 @@ interface Props {
 export default function SearchPanel({ onClose }: Props) {
   const [searchQuery, setSearchQuery] = useState('');
 
-  const { query: { data: searchedProducts, error, isError } } = useSearchProductsQuery(searchQuery);
-
   const inputRef = useRef<HTMLInputElement>(null);
 
   function clearSearchQuery() {
@@ -27,14 +21,8 @@ export default function SearchPanel({ onClose }: Props) {
     inputRef.current?.focus();
   }
 
-  if (isError) {
-    console.error(error);
-
-    return <p>Opps! could not find anything</p>
-  }
-
   return (
-    <section className="absolute z-20 w-full top-[50px] md:top-[80px] max-h-[80vh] overflow-y-auto bg-white shadow-search-panel rounded-lg px-6 py-4 md:py-5">
+    <section className="absolute z-20 -bottom-[103px] md:-bottom-[112px] w-full bg-white shadow-search-panel rounded-lg px-6 py-4 md:py-5">
       <OutsideClickHandler onOutsideClick={onClose}>
         <div className="flex items-center gap-[10px]">
           <div className="stroke-tertiary-700">
@@ -54,19 +42,6 @@ export default function SearchPanel({ onClose }: Props) {
             <UiIcon icon="Close" size="16" />
           </button>
         </div>
-        {searchedProducts && (
-          <div className="product-grid grid gap-x-6 gap-y-8">
-            {searchedProducts.map((product) => (
-              <Link
-                onClick={onClose}
-                key={product.id}
-                href={`/products/${product.id}`}
-              >
-                <ProductCard product={product} />
-              </Link>
-            ))}
-          </div>
-        )}
       </OutsideClickHandler>
     </section>
   );

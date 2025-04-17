@@ -1,11 +1,12 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 import BullishLogo from '@/assets/svg/logo-dark.svg';
 
+import UiButton from '../ui/UiButton';
 import UiIcon from '../ui/UiIcon';
+import { usePathname } from 'next/navigation';
 
 interface Props {
   routes: {
@@ -14,11 +15,10 @@ interface Props {
     func?: VoidFunction;
   }[];
   isNavOpen: boolean;
-  bottomNode: React.ReactNode
   closeNav: VoidFunction;
 }
 
-export default function MobileNav({ routes, isNavOpen, bottomNode, closeNav }: Props) {
+export default function MobileNav({ routes, isNavOpen, closeNav }: Props) {
   const currentRoute = usePathname();
 
   function isActive(href: string) {
@@ -32,7 +32,7 @@ export default function MobileNav({ routes, isNavOpen, bottomNode, closeNav }: P
       }`}
     >
       <div>
-        <div className="flex items-center justify-between py-[18px] mb-6">
+        <div className="flex justify-between py-[18px] mb-6">
           <BullishLogo />
           <button
             onClick={closeNav}
@@ -56,8 +56,7 @@ export default function MobileNav({ routes, isNavOpen, bottomNode, closeNav }: P
           ))}
         </ul>
       </div>
-      {bottomNode}
-    
+      <UiButton variant="secondary">View All Products</UiButton>
     </nav>
   );
 }

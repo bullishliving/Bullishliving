@@ -36,7 +36,7 @@ export default function UiTextarea({
   }
 
   return (
-    <UiField label={label} error={error} variant={variant}>
+    <UiField label={label} error={error}>
       <textarea
         className={`flex text-left text-sm px-4 items-center w-full rounded font-normal font-montserrat ${variantClasses[variant]}`}
         placeholder={placeholder}

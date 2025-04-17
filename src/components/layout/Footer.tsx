@@ -9,9 +9,7 @@ import LogoDark from '@/assets/svg/logo-dark.svg';
 export default function Footer() {
   const pathname = usePathname();
 
-  const blackRoutes = ['/products', '/cart', '/checkout'];
-
-  const isBlackRoute = blackRoutes.some((route) => pathname.startsWith(route));
+  const isBlackRoute = pathname.includes('/products');
 
   const footerBg = isBlackRoute ? 'bg-secondary-500' : 'bg-primary-500';
 
