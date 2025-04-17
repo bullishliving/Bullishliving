@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { Api } from '@/api/supabaseService';
+// import { Api } from '@/api/supabaseService';
 
 import Logo from '@/assets/svg/logo.svg';
 
@@ -21,7 +21,7 @@ import UiSelect from '../ui/UiSelect';
 import UiTextarea from '../ui/UiTextarea';
 import showToast from '../ui/UiToast';
 
-// --
+// ---
 
 interface Props {
   isOpen: boolean;
@@ -84,12 +84,23 @@ export default function PartnerWithUs({ isOpen, onClose }: Props) {
   async function onSubmit() {
     try {
       loading.on();
-      await Api.addPartner(formData.value);
+      await fetch('/api/mail/partnership-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.value.name,
+          email: formData.value.email,
+          phone: formData.value.phone,
+          socialLinks: formData.value.socials,
+          role: formData.value.role,
+          reason: formData.value.why_collaborate,
+        }),
+      });  
       showToast('Application successful! 🎉', 'success');
       resetState();
     } catch (error) {
       showToast('oops, an error occured', 'error');
-      throw new Error(`An error occured when adding memeber ${error}`);
+      throw new Error(`An error occured when sending partnership request ${error}`);
     } finally {
       loading.off();
     }
@@ -120,7 +131,6 @@ export default function PartnerWithUs({ isOpen, onClose }: Props) {
               collaborate to inspire others and amplify the BullishLiving
               mindset. Fill out the form to get started!
             </p>
-
             <UiForm
               formData={formData.value}
               onSubmit={onSubmit}
