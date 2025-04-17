@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import useEmblaCarousel from 'embla-carousel-react';
 
 import UiIcon from './ui/UiIcon';
@@ -14,9 +14,10 @@ import {
   NextButton,
   usePrevNextButtons,
 } from './SliderArrowButtons';
+import Product from '@/types/Product';
 
 type PropType = {
-  slides: { name: string; price: number; img: StaticImageData }[];
+  slides: Product[];
 };
 
 const Slider: React.FC<PropType> = (props) => {
@@ -53,9 +54,11 @@ const Slider: React.FC<PropType> = (props) => {
                 {slides.map((slide, index) => (
                   <div className="embla__slide h-full" key={index}>
                     <Image
-                      src={slide.img}
+                      src={slide.images![0] as string}
                       alt={slide.name}
-                      className="object-cover h-full"
+                      width={1000}
+                      height={658}
+                      className="object-cover h-full w-full"
                     />
                   </div>
                 ))}
@@ -91,18 +94,6 @@ const Slider: React.FC<PropType> = (props) => {
               )}
             />
           ))}
-        </div>
-        <div className="md:hidden flex justify-between items-center w-full mt-[11px]">
-          <PrevButton
-            onClick={onPrevButtonClick}
-            disabled={prevBtnDisabled}
-            className=" w-14 h-14 rounded-full bg-secondary-500 flex justify-center items-center stroke-primary-500"
-          />
-          <NextButton
-            onClick={onNextButtonClick}
-            disabled={nextBtnDisabled}
-            className="w-14 h-14 rounded-full bg-secondary-500 flex justify-center items-center stroke-primary-500"
-          />
         </div>
       </div>
     </div>
