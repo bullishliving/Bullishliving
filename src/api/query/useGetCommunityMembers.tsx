@@ -18,10 +18,7 @@ export default function useGetCommunityMembers(props: {
 
   const start = (safePage - 1) * limit;
   const end = Math.min(start + limit - 1, total - 1);
-
-  console.log(page, limit, total);
   
-
   const query = useQuery({
     queryKey,
     queryFn: () =>

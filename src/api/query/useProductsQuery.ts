@@ -7,7 +7,7 @@ type ProductData = {
   count?: number;
 };
 
-export default function useProductQuery(props: {
+export default function useProductsQuery(props: {
   page: number;
   limit: number;
   total: number;
@@ -83,7 +83,6 @@ export default function useProductQuery(props: {
 
   function getProduct(productId: number) {
     if (!cachedProductsData) return;
-    console.log(productId);
 
     return cachedProductsData.data.find(({ id }) => id === productId);
   }

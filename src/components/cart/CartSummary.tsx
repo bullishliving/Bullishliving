@@ -13,7 +13,6 @@ interface Props {
 }
 
 export default function CartSummary({ onAction, loading, cartItems, label, deliveryFee }: Props) {
-  console.log(cartItems);
 
   const { totalDiscount, totalDiscountedPrice, totalPrice } = cartItems.reduce(
     (total, item) => {

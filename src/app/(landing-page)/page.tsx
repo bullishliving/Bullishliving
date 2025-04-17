@@ -7,7 +7,7 @@ import MoreThanALifestyle from '@/components/landing/MoreThanALifestyle';
 
 export default function Home() {
   return (
-    <div className="">
+    <div>
       <Hero />
       <TopProducts />
       <NewArrivals />

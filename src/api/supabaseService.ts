@@ -63,6 +63,16 @@ class SupabaseService {
     return this.insert(SupabaseTables.PRODUCTS, product)
   }
 
+  async searchProducts(searchQuery: string) {
+    const query =  createClient().from(SupabaseTables.PRODUCTS).select().order('created_at', { ascending: false }).textSearch('products_name_description', searchQuery, { type: "websearch" });
+
+    const { error, data } = await query;
+
+    if(error) throw error;
+
+    return data as Product[]
+  }
+
   getProducts( limit: number, start?: number, end?:number, searchQuery?: string, searchColumn?: string, minPrice?: number,
   maxPrice?: number,
   categoryIds?: number[], filters?:{ column: string; value: any }[],

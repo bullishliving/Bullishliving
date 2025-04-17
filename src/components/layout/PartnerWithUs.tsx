@@ -71,7 +71,6 @@ export default function PartnerWithUs({ isOpen, onClose }: Props) {
   function removeSocial(index: number) {
     const updatedSocials = [...socials];
     updatedSocials.splice(index, 1);
-    console.log(updatedSocials);
 
     setSocials(updatedSocials);
   }

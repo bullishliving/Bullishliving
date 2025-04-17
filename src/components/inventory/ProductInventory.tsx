@@ -6,7 +6,7 @@ import { useSetProductContext, initialProductState } from '@/app/context/SetProd
 import useDeleteProductMutaion from '@/api/mutations/products/useDeleteProductMutation';
 import useGetTotalPayInQuery from '@/api/query/useGetTotalPayInQuery';
 import useOutOfStockProductsQuery from '@/api/query/useOutOfStockProductsQuery';
-import useProductQuery from '@/api/query/useProductsQuery';
+import useProductsQuery from '@/api/query/useProductsQuery';
 
 
 import useToggle from '@/hooks/useToggle';
@@ -56,12 +56,12 @@ export default function ProductInventory() {
   const {
     query: { data: productsData, isLoading: isProductsLoading },
     reloadQuery,
-  } = useProductQuery({
+  } = useProductsQuery({
     limit,
     page,
     total: totalProducts || 0,
     searchQuery,
-    searchColumn: 'products_name_description'
+    searchColumn: 'products_name_description',
   });
 
   const {
