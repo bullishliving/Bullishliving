@@ -1,12 +1,14 @@
 import { NextResponse, NextRequest } from 'next/server';
+
+import CartItem from '@/types/CartItem';
+
 import { createClient } from "@/utils/supabase/supabaseClient";
 import {  NEXT_PUBLIC_PAYSTACK_KEY, PAYSTACK_SECRET_KEY } from '@/utils/privateKeys';
-import CartItem from '@/types/CartItem';
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { cartItems, userDetails } = body;
+    const { cartItems, userDetails, deliveryFee } = body;
 
     if (!cartItems?.length || !userDetails?.email) {
       return NextResponse.json({ error: "Missing cart items or user details" }, { status: 400 });
@@ -25,7 +27,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: `Failed to calculate amount: ${error?.message}` }, { status: 400 });
     }
 
-    const totalKoboAmount = amount * 100;
+    const totalKoboAmount = (amount + deliveryFee) * 100;
 
     const res = await fetch("https://api.paystack.co/transaction/initialize", {
       method: "POST",

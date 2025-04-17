@@ -11,7 +11,7 @@ type PaystackUser = {
   phone: string;
 }
 
-export default function usePayment(cartItems: CartItem[], user: PaystackUser) {  
+export default function usePayment(cartItems: CartItem[], user: PaystackUser, deliveryFee: number) {  
   const loading = useToggle();
     
   const handlePayment = async () => {
@@ -22,7 +22,8 @@ export default function usePayment(cartItems: CartItem[], user: PaystackUser) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         cartItems,
-        userDetails: user     
+        userDetails: user,
+        deliveryFee
       }),
     });
 

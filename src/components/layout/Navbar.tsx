@@ -11,8 +11,9 @@ import { useCartStore } from '@/Store/CartStore';
 import useToggle from '@/hooks/useToggle';
 
 import UiIcon from '../ui/UiIcon';
-import SearchPanel from './SearchPanel';
+import UiButton from '../ui/UiButton';
 
+import SearchPanel from './SearchPanel';
 import MobileNav from './MobileNav';
 import NavItem from './NavItem';
 
@@ -97,6 +98,7 @@ export default function Navbar({ routes }: Props) {
         routes={routes}
         isNavOpen={isMobileNavVisible.value}
         closeNav={closeNav}
+        bottomNode={<UiButton variant="secondary">View All Products</UiButton>}
       />
     </nav>
   );

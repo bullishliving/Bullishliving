@@ -8,3 +8,5 @@ export const PAYSTACK_KEY = process.env.PAYSTACK_KEY;
 export const NEXT_PUBLIC_PAYSTACK_KEY= process.env.NEXT_PUBLIC_PAYSTACK_KEY
 export const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
+export const EMAIL_PASS = process.env.EMAIL_PASS;
+export const EMAIL_USER = process.env.EMAIL_USER

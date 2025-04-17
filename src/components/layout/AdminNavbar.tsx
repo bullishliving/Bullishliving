@@ -8,7 +8,15 @@ import { logout } from '@/api/actions/auth';
 import BullishLogo from '@/assets/svg/logo.svg';
 import DummyAvatar from '@/assets/svg/avatar.svg';
 
+import useToggle from '@/hooks/useToggle';
+
+import UiDropDown from '../ui/UiDropDown';
+
 import UiIcon from '../ui/UiIcon';
+
+import MobileNav from './MobileNav';
+import UiButton from '../ui/UiButton';
+
 
 interface Props {
   routes: {
@@ -20,18 +28,32 @@ interface Props {
 export default function AdminNavbar({ routes }: Props) {
   const currentRoute = usePathname();
   const router = useRouter();
+  const isMobileNavVisible = useToggle();
 
+  function toggleMobileNav() {
+    isMobileNavVisible.toggle();
+  }
+  
   function isActive(href: string) {
     return currentRoute === href;
   }
 
-  const handleLogout = async () => {
+  const dropDownOptions = [
+    {
+      func: () => {
+        handleLogout()
+      },
+      label: 'Log out',
+    },
+  ];
+
+  async function handleLogout() {
     const result = await logout();
 
     if (result.success) {
       router.refresh();
     }
-  };
+  }
 
   return (
     <nav
@@ -56,20 +78,40 @@ export default function AdminNavbar({ routes }: Props) {
           ))}
         </ul>
 
-        {/* <button onClick={handleLogout}>logout</button> */}
-        <button className={`flex gap-3 items-center font-montserrat `}>
-          <DummyAvatar />
-          <div className="flex gap-4 items-center stroke-tertiary-700">
-            <div className="text-left">
-              <p className="text-secondary-300 text-xs font-bold mb-1">
-                BullishLiving
-              </p>
-              <p className="text-tertiary-700 text-xs">Admin</p>
-            </div>
-            <UiIcon icon="CaretDown" size="16" />
-          </div>
+        <button
+          onClick={toggleMobileNav}
+          className="md:hidden stroke-secondary-500"
+        >
+          <UiIcon icon="Hamburger" size="24" />
         </button>
+
+        <div className="hidden md:block">
+          <UiDropDown
+            options={dropDownOptions}
+            side="bottom"
+            trigger={
+              <button className={`flex gap-3 items-center font-montserrat `}>
+                <DummyAvatar />
+                <div className="flex gap-4 items-center stroke-tertiary-700">
+                  <div className="text-left">
+                    <p className="text-secondary-300 text-xs font-bold mb-1">
+                      BullishLiving
+                    </p>
+                    <p className="text-tertiary-700 text-xs">Admin</p>
+                  </div>
+                  <UiIcon icon="CaretDown" size="16" />
+                </div>
+              </button>
+            }
+          />
+        </div>
       </div>
+      <MobileNav
+        isNavOpen={isMobileNavVisible.value}
+        closeNav={() => isMobileNavVisible.off()}
+        routes={routes}
+        bottomNode={<UiButton variant='secondary' onClick={handleLogout}>Log out</UiButton>}
+      />
     </nav>
   );
 }

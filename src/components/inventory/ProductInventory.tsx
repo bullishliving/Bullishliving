@@ -436,7 +436,7 @@ export default function ProductInventory() {
 
   return (
     <div>
-      <div className="grid md:grid-cols-3 gap-4 md:gap-6 mb-4">
+      <div className="grid md:grid-cols-4 gap-4 md:gap-6 mb-4">
         <AnalyticsCard
           figure={`₦${totalInventoryBalance?.toLocaleString()}`}
           title="Total Inventory Balance"

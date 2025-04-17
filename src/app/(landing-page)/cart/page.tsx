@@ -112,6 +112,7 @@ export default function Page() {
             )}
           </main>
           <CartSummary
+            label="Checkout Now"
             onAction={() => {
               router.push('/checkout');
             }}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import moment from 'moment';
 import Link from 'next/link';
 
 import useGetOrderStatusCountsQuery from '@/api/query/useGetOrderStatusCountsQuery';
@@ -20,7 +21,7 @@ import { usePagination } from '@/hooks/usePagination';
 import { OrderStatus } from '@/types/enums/OrderStatus';
 
 import { formatDate } from '@/utils/helperFunctions';
-import UiDropDown from '@/components/ui/UiDropDown';
+import UiDropDown, { DropDownData } from '@/components/ui/UiDropDown';
 import UiIcon from '@/components/ui/UiIcon';
 
 //---
@@ -32,6 +33,10 @@ export default function Page() {
   const [limit, setLimit] = useState<number>(10);
   const [totalOrders, setTotalOrders] = useState<number | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState('');
+  const [dateRange, setDateRange] = useState('All time');
+  const [fromDate, setFromDate] = useState<string >('');
+  const [toDate, setToDate] = useState<string>('');
+  const now = moment();
 
   const {
     query: {
@@ -51,7 +56,7 @@ export default function Page() {
   } = usePagination({ dataLimit: limit, totalData: totalOrders || 0 });
 
   const {
-    query: { data: orderdData, error: ordersError,},
+    query: { data: orderdData, isLoading: isOrderDataLoading, error: ordersError,},
   } = useGetOrdersQuery({
     page,
     limit,
@@ -59,10 +64,64 @@ export default function Page() {
     filters: [{ column: 'status', value: activeStatus }],
     searchColumn: 'orders_id_customer',
     searchQuery,
+    toDate,
+    fromDate ,
+
   });
 
-  const isLoading = isOrderStatusLoading ;
+  const isLoading = isOrderStatusLoading || isOrderDataLoading ;
   const isError = orderStatusError || ordersError;
+
+  const dateRangeOptions: DropDownData[] = [
+    {
+      func: () => {
+        setDateRange('All time');
+        setFromDate('');
+        setToDate('');
+      },
+      label: 'All time',
+    },
+    {
+      label: 'Today',
+      func: () => {
+        setFromDate(now.startOf('day').toISOString());
+        setToDate(now.endOf('day').toISOString());
+        setDateRange('Today');
+      },
+    },
+    {
+      func: () => {
+        setFromDate(now.subtract(1, 'day').startOf('day').toISOString());
+        setToDate(now.endOf('day').toISOString());
+        setDateRange('Yesterday');
+      },
+      label: 'Yesterday',
+    },
+    {
+      func: () => {
+         setFromDate(now.startOf('week').toISOString());
+         setToDate(now.endOf('week').toISOString());
+        setDateRange('This week');
+      },
+      label: 'This week',
+    },
+    {
+      func: () => {
+        setDateRange('This Month');
+        setFromDate(now.startOf('month').toISOString());
+        setToDate(now.endOf('month').toISOString());
+      },
+      label: 'This Month',
+    },
+    {
+      func: () => {
+        setFromDate(now.startOf('year').toISOString());
+        setToDate(now.endOf('year').toISOString());
+        setDateRange('This year');
+      },
+      label: 'This year',
+    },
+  ];
 
   function getStatusLabel(status: OrderStatus) {
     if (status === OrderStatus.PENDING) {
@@ -180,13 +239,13 @@ export default function Page() {
                 />
               </div>
               <UiDropDown
-                options={[]}
+                options={dateRangeOptions}
                 align="start"
                 side="bottom"
                 trigger={
                   <div className="w-[116px] bg-transparent border border-grey-300 hover:bg-grey-100 h-10 rounded-lg flex gap-2 items-center justify-center font-bold text-sm">
                     <div className="flex gap-1 items-center stroke-secondary-500 px-2">
-                      <p className="text-xs"> This week</p>
+                      <p className="text-xs"> {dateRange}</p>
                       <UiIcon icon="CaretDown" size="16" />
                     </div>
                   </div>

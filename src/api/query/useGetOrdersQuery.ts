@@ -9,10 +9,13 @@ export default function useGetOrdersQuery(props: {
   searchQuery?: string;
   searchColumn?: string;
   filters?: { column: string; value: any }[];
+  toDate?: string;
+  fromDate?: string;
 }) {
-  const { limit, page, total, filters, searchColumn, searchQuery } = props;
 
-  const queryKey = ['orders', limit, page, total, filters, searchColumn, searchQuery];
+  const { limit, page, total, filters, searchColumn, searchQuery, fromDate, toDate } = props;
+
+  const queryKey = ['orders', limit, page, total, filters, searchColumn, searchQuery, fromDate, toDate];
 
   const maxPage = Math.ceil(total / limit);
   const safePage = Math.min(page, maxPage);
@@ -28,8 +31,15 @@ export default function useGetOrdersQuery(props: {
       end,
       searchQuery,
       searchColumn,
-      filters
-    )
+      filters,
+      toDate,
+      fromDate,
+      
+    ),
+
+    placeholderData: (previousData) => previousData,
+
+    refetchOnMount: fromDate || toDate ? 'always' : false
   });
 
   return { query };

@@ -112,8 +112,7 @@ export default function Page() {
 
   const itemsNode = useMemo(
     () =>
-      order?.items.map((item) => (
-        {
+      order?.items.map((item) => ({
         id: item.id,
         topNode: (
           <div className="flex items-center gap-3 pb-2 border-b">
@@ -158,9 +157,8 @@ export default function Page() {
           </div>
         ),
         quantity: item.quantity,
-        price: `₦${item.product_price.toLocaleString()}`,
-      }
-    )),
+        price: `₦${(item.product_discounted_price ? item.product_discounted_price : item.product_price).toLocaleString()}`,
+      })),
     [order]
   );
 
@@ -232,7 +230,7 @@ export default function Page() {
           </div>
           <div className="text-[#BFBFBF] text-sm mt-1 flex gap-2 items-center">
             <span>
-              {order?.city} {order?.state} {order?.country}
+              {order?.city} {order?.state} 
             </span>{' '}
             {order?.apartment && (
               <div className="flex items-center gap-2">

@@ -4,7 +4,6 @@ export default interface Order {
   customer: string;
   email: string;
   phone: string;
-  country: string;
   state: string;
   city: string | null;
   postal_code: string | null;

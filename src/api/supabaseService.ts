@@ -24,11 +24,17 @@ type SelectPaginatedOptions = {
   minPrice?: number;
   maxPrice?: number;
   categoryIds?: number[];
+  fromDate?: string; 
+  toDate?: string;
 };
 
 class SupabaseService {
   addCommunityMember(member: CommunityMember) {
     return this.insert(SupabaseTables.COMMUNITY, member);
+  }
+
+  getCommunityMembers(limit: number, start?: number, end?:number, searchQuery?: string, searchColumn?: string) {
+    return this.selectPaginated<CommunityMember>(SupabaseTables.COMMUNITY, {limit, columns: '*', searchColumn, searchQuery, start: start, end: end, getCount: true}, )
   }
 
   addPartner(partner: Partner) {
@@ -160,8 +166,8 @@ class SupabaseService {
     return data as OrderStatusCount[];
   }
 
-  getOrders(limit: number, start?: number, end?: number, searchQuery?: string, searchColumn?: string, filters?:{ column: string; value: any }[],) {
-    return this.selectPaginated<OrderResponse>(SupabaseTables.ORDERS, { columns: "*", filters: filters, getCount: true, limit, start, end, searchQuery, searchColumn })
+  getOrders(limit: number, start?: number, end?: number, searchQuery?: string, searchColumn?: string, filters?:{ column: string; value: any }[], toDate?: string, fromDate?: string) {
+    return this.selectPaginated<OrderResponse>(SupabaseTables.ORDERS, { columns: "*", filters: filters, getCount: true, limit, start, end, searchQuery, searchColumn, toDate: toDate, fromDate: fromDate })
   }
 
   getOrder(orderId: number) {
@@ -233,6 +239,14 @@ class SupabaseService {
 
     if (options.categoryIds && options.categoryIds.length > 0) {
       query = query.in("category_id", options.categoryIds);
+    }
+
+    if (options.fromDate) {
+      query = query.gte("created_at", options.fromDate);
+    }
+
+    if (options.toDate) {
+      query = query.lte("created_at", options.toDate); 
     }
 
     return query;

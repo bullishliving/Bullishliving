@@ -42,16 +42,12 @@ export const landingPageRoutes = [
 
 export const adminRoutes = [
   {
-    label: 'Transactions',
-    path: '/admin/dashboard',
-  },
-  {
     label: 'All Orders',
     path: '/admin/dashboard/orders',
   },
   {
     label: 'Inventory',
-    path: '/admin/dashboard/inventory',
+    path: '/admin/dashboard',
   },
   {
     label: 'Running Community',
@@ -61,3 +57,27 @@ export const adminRoutes = [
 
 export const inputStyles =
   'h-12 outline-none px-4 rounded-[8px] placeholder:text-sm placeholder:text-grey-700 border';
+
+export const locationPrices = {
+  "Agege": 6000,
+  "Ajeromi-Ifelodun": 6000,
+  "Alimosho": 6000,
+  "Amuwo-Odofin": 6000,
+  "Apapa": 6000,
+  "Badagry": 6000,
+  "Epe": 3000,
+  "Eti-Osa": 3000,
+  "Ibeju-Lekki": 3000,
+  "Ifako-Ijaiye": 6000,
+  "Ikeja": 6000,
+  "Ikorodu": 6000,
+  "Kosofe": 6000,
+  "Lagos-Island": 3000,
+  "Lagos-Mainland": 6000,
+  "Mushin": 6000,
+  "Ojo": 6000,
+  "Oshodi-Isolo": 6000,
+  "Shomolu": 6000,
+  "Somolu": 6000,
+  "Surulere": 6000,
+};

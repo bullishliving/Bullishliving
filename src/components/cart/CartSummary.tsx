@@ -6,14 +6,14 @@ import UiIcon from '../ui/UiIcon';
 
 interface Props {
   onAction?: VoidFunction;
+  label: string;
   cartItems: CartItem[]
   loading?: boolean;
+  deliveryFee?: number;
 }
 
-export default function CartSummary({ onAction, loading, cartItems }: Props) {
-
+export default function CartSummary({ onAction, loading, cartItems, label, deliveryFee }: Props) {
   console.log(cartItems);
-  
 
   const { totalDiscount, totalDiscountedPrice, totalPrice } = cartItems.reduce(
     (total, item) => {
@@ -56,15 +56,24 @@ export default function CartSummary({ onAction, loading, cartItems }: Props) {
             ₦{totalDiscount.toLocaleString()}
           </p>
         </div>
+        {deliveryFee && (
+          <div className="flex justify-between">
+            <p className="text-sm text-tertiary-700">Delivery fee</p>
+            <p className="font-bold test-base">
+              ₦{deliveryFee.toLocaleString()}
+            </p>
+          </div>
+        )}
       </div>
       <div className="flex justify-between mb-8">
         <p className="text-sm text-tertiary-700">Grand total</p>
         <p className="font-bold test-base">
-          ₦{totalDiscountedPrice.toLocaleString()}
+          ₦{(totalDiscountedPrice + (deliveryFee ?? 0)).toLocaleString()}
         </p>
       </div>
       <UiButton rounded="md" type="submit" loading={loading} onClick={onAction}>
-        Checkout Now <UiIcon icon="ArrowDiagonal" size="22" />
+        {label}
+        <UiIcon icon="ArrowDiagonal" size="22" />
       </UiButton>
     </aside>
   );

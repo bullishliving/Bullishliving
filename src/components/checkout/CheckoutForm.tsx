@@ -2,16 +2,23 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Country, State, City } from 'country-state-city';
+import NaijaStates from 'naija-state-local-government';
 
 import { Api } from '@/api/supabaseService';
 
-import CheckoutSchema from '@/utils/schemas/CheckoutSchema';
+import { locationPrices } from '@/utils/constant';
 
 import useObjectState from '@/hooks/useObjectState';
 import usePayment from '@/hooks/usePayment';
+import useToggle from '@/hooks/useToggle';
 
 import { useCartStore } from '@/Store/CartStore';
+
+import CartItem from '@/types/CartItem';
+
+import { CartHandler } from '@/utils/CartHandler';
+import CheckoutSchema from '@/utils/schemas/CheckoutSchema';
+
 import CartSummary from '../cart/CartSummary';
 
 import UiInput from '../ui/UiInput';
@@ -19,15 +26,12 @@ import UiSelect, { Option } from '../ui/UiSelect';
 
 import UiForm from '../ui/UiForm';
 import showToast from '../ui/UiToast';
-import CartItem from '@/types/CartItem';
-import { CartHandler } from '@/utils/CartHandler';
-import useToggle from '@/hooks/useToggle';
+
 
 export default function CheckoutForm() {
-  const [countries] = useState(Country.getAllCountries());
-  const [selectedCountryISO, setSelectedCountryISO] = useState<string>('');
-  const [selectedStateISO, setSelectedStateISO] = useState<string>('');
-
+  const [selectedState, setSelectedState] = useState<string>('');
+  const [deliveryFee, setDeliveryFee] = useState<number>(0);
+  
   const searchParams = useSearchParams();
   const router = useRouter();
   const loading = useToggle();
@@ -42,7 +46,6 @@ export default function CheckoutForm() {
     email: '',
     firstName: '',
     lastName: '',
-    country: '',
     state: '',
     city: '',
     postalCode: '',
@@ -56,37 +59,23 @@ export default function CheckoutForm() {
     first_name: formData.value.firstName,
     last_name: formData.value.firstName,
     phone: formData.value.phone,
-  });
-
-  const countryOptions: Option[] = useMemo(() => {
-    return countries.map((country) => ({
-      label: country.name,
-      value: country.name,
-    }));
-  }, [countries]);
+  }, deliveryFee);
 
   const stateOptions: Option[] = useMemo(() => {
-    return State.getStatesOfCountry(selectedCountryISO).map((state) => ({
-      label: state.name,
-      value: state.name,
+    return NaijaStates.states().map((state: string) => ({
+      label: state,
+      value: state,
     }));
-  }, [selectedCountryISO]);
+  }, []);
 
-  const cityOptions: Option[] = useMemo(() => {
-    return City.getCitiesOfState(selectedCountryISO, selectedStateISO).map(
-      (city) => ({ label: city.name, value: city.name })
-    );
-  }, [selectedCountryISO, selectedStateISO]);
+  const cityOptions : Option[] | null = useMemo(() => {
+    if(selectedState === '') return null
+    return NaijaStates.lgas(selectedState).lgas.map((lga: string) => ({
+      label: lga,
+      value: lga,
+    }));
 
-  function getSelectedCountry(name: string) {
-    return countries.find((country) => country.name === name);
-  }
-
-  function getSelectedState(name: string) {
-    return State.getStatesOfCountry(selectedCountryISO).find(
-      (state) => state.name === name
-    );
-  }
+  }, [selectedState]);
 
   function clearCart() {
     if(isBuyNow){
@@ -97,64 +86,87 @@ export default function CheckoutForm() {
       refreshCartItems()
     }
   }
+  
+  async function sendMail() {
+   await fetch('/api/mail/order-creation', {
+     method: 'POST',
+     headers: { 'Content-Type': 'application/json' },
+     body: JSON.stringify({
+       cartItems: cartItems,
+       customerDetails: {
+         name: `${formData.value.lastName} ${formData.value.firstName}`,
+         email: formData.value.email,
+         address: `${formData.value.address} ${formData.value.state} ${formData.value.city}`,
+       },
+     }),
+   });    
+  }
 
   async function handleSubmit() {
-    loading.on()
-    const [canFulfillResponse] = await Api.canFulfillOrder(itemsToProcess);
-    
-    if (!canFulfillResponse.can_fulfill) {
-      showToast('Not enough stock for at least one item', 'error');
-      return;
-    }
+    try {
+      loading.on();
+      const [canFulfillResponse] = await Api.canFulfillOrder(itemsToProcess);
 
-    const paystackConfig = await pay()
-    const formValue = formData.value;
+      if (!canFulfillResponse.can_fulfill) {
+        showToast('Not enough stock for at least one item', 'error');
+        return;
+      }
 
-    if(!paystackConfig) return;
-    
-    const handler = (window as any).PaystackPop?.setup({
-      ...paystackConfig,
-      key: paystackConfig.publicKey,
-      callback: () => {
-        try {
-            Api.createOrder({
-              address: formValue.address,
-              amount: paystackConfig.amount / 100,
-              apartment:
-                formValue.apartment === '' ? null : formValue.apartment,
-              customer: `${formValue.lastName} ${formValue.firstName}`,
-              email: formValue.email,
-              city: formValue.city === '' ? null : formValue.city,
-              country: formValue.country,
-              is_payment_verified: false,
-              items: itemsToProcess,
-              paystack_reference: paystackConfig.reference,
-              phone: formValue.phone,
-              postal_code:
-                formValue.postalCode === '' ? null : formValue.postalCode,
-              state: formValue.state,
-            }).then(() => {
-              Api.reduceStock(cartItems);
-              showToast('order created!', 'success');
-              formData.reset();
-              clearCart();
-              router.push('/products');
-            });
+      const paystackConfig = await pay();
+      const formValue = formData.value;
+
+      if (!paystackConfig) return;
+
+      const handler = (window as any).PaystackPop?.setup({
+        ...paystackConfig,
+        key: paystackConfig.publicKey,
+        callback: () => {
           
-        } catch (error) {
-          console.log(error);
-          showToast('error creating order', 'error');
-        } finally {
-          loading.off()
-        }
-        
-      },
-    });
+        Api.createOrder({
+          address: formValue.address,
+          amount: paystackConfig.amount / 100,
+          apartment:
+            formValue.apartment === '' ? null : formValue.apartment,
+          customer: `${formValue.lastName} ${formValue.firstName}`,
+          email: formValue.email,
+          city: formValue.city === '' ? null : formValue.city,
+          is_payment_verified: false,
+          items: itemsToProcess,
+          paystack_reference: paystackConfig.reference,
+          phone: formValue.phone,
+          postal_code:
+            formValue.postalCode === '' ? null : formValue.postalCode,
+          state: formValue.state,
+        }).then(() => {
+           Api.reduceStock(cartItems);
 
-    if (handler) {
-      handler.openIframe()
-    } else {
-      alert('Paystack SDK not loaded');
+          sendMail()
+
+          showToast('order created!', 'success');
+
+          formData.reset();
+
+          clearCart();
+
+          router.push('/products');
+        });
+        },
+        onClose: () => {
+          loading.off();
+        },
+      });
+
+      if (handler) {
+        handler.openIframe();
+      } else {
+        alert('Paystack SDK not loaded');
+      }
+    } catch (error) {
+      console.log(error);
+      showToast('error creating order', 'error');
+      
+    } finally {
+      loading.off()
     }
   }
 
@@ -168,6 +180,18 @@ export default function CheckoutForm() {
     script.async = true;
     document.body.appendChild(script);
   }, []);
+
+  useEffect(() => {
+    if (formData.value.state.toLocaleLowerCase() !== 'lagos') {
+      setDeliveryFee(9000);
+    } else if (formData.value.city !== '') {
+      setDeliveryFee(
+        locationPrices[
+          formData.value.city as keyof typeof locationPrices
+        ]
+      );
+    }
+  }, [formData.value.city, formData.value.state]);
 
   useEffect(() => {
     refreshBuyNow();
@@ -209,46 +233,28 @@ export default function CheckoutForm() {
                   error={errors.lastName}
                 />
               </div>
-              <UiSelect
-                name="country"
-                options={countryOptions}
-                onChange={(e) => {
-                  formData.set(e);
-                  setSelectedCountryISO(
-                    getSelectedCountry(e.value as string)?.isoCode || ''
-                  );
-                }}
-                value={formData.value.country}
-                label="Country"
-                placeholder="Select Region"
-                error={errors.country}
-                isSearchable
-              />
               <div className="grid  md:grid-cols-3 gap-6">
                 <UiSelect
                   name="state"
                   options={stateOptions}
                   onChange={(e) => {
                     formData.set(e);
-                    setSelectedStateISO(
-                      getSelectedState(e.value as string)?.isoCode || ''
-                    );
+                    setSelectedState(e.value as string);
                   }}
                   value={formData.value.state}
                   placeholder="Select state"
                   label="State"
-                  disabled={selectedCountryISO === ''}
                   error={errors.state}
                   isSearchable
                 />
                 <UiSelect
                   name="city"
-                  options={cityOptions}
+                  options={cityOptions || []}
                   onChange={formData.set}
                   value={formData.value.city}
                   label="City(Optional)"
                   placeholder="Select City"
-                  disabled={selectedStateISO === ''}
+                  disabled={selectedState === ''}
                   isSearchable
                 />
                 <UiInput
@@ -284,7 +290,7 @@ export default function CheckoutForm() {
               />
             </div>
           </main>
-          <CartSummary loading={loading.value} cartItems={itemsToProcess}/>
+          <CartSummary deliveryFee={deliveryFee} label='Proceed to Pay' loading={loading.value} cartItems={itemsToProcess} />
         </div>
       )}
     </UiForm>

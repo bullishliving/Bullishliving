@@ -7,16 +7,20 @@ import useAddCategoryMutation from "@/api/mutations/categories/useAddCategoryMut
 import useDeleteCategoryMutation from "@/api/mutations/categories/useDeleteCategoryMutation";
 
 import useObjectState from "@/hooks/useObjectState";
-import CreateCategorySchema from '@/utils/schemas/CreateCategorySchema';
-import showToast from "../ui/UiToast";
-import UiForm from "../ui/UiForm";
-import UiInput from "../ui/UiInput";
-import UiButton from "../ui/UiButton";
-import UiIcon from "../ui/UiIcon";
-import UiRadio from "../ui/UiRadio";
 
 import Category from "@/types/Category";
+
+import CreateCategorySchema from '@/utils/schemas/CreateCategorySchema';
+
+import showToast from "../ui/UiToast";
+import UiButton from "../ui/UiButton";
 import UiDropDown, { DropDownData } from "../ui/UiDropDown";
+import UiForm from "../ui/UiForm";
+import UiIcon from "../ui/UiIcon";
+import UiInput from "../ui/UiInput";
+import UiRadio from "../ui/UiRadio";
+
+//---
 
 interface Props {
   categories: Category[];
@@ -34,7 +38,6 @@ export default function ManageCategories({ categories,  handleActiveView, setAct
   const formData = useObjectState({
     name: ''
   });
-
 
   const categoryActionsOptions: DropDownData[] = [
     {
@@ -144,11 +147,13 @@ export default function ManageCategories({ categories,  handleActiveView, setAct
         <UiButton
           type="button"
           disabled={selectedCategoryId === ''}
-          onClick={() =>
+          onClick={() => {
             setProductData.set({
               name: 'category_id',
               value: selectedCategoryId,
-            })
+            });
+            showToast('category set', 'success');
+          }
           }
         >
           Save Changes
