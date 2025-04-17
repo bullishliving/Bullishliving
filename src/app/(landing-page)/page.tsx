@@ -1,9 +1,9 @@
 import JoinCommunity from '@/components/landing/JoinCommunity';
 import Hero from '@/components/landing/Hero';
-import MoreThanALifestyle from '@/components/landing/MoreThanALifestyle';
 import NewArrivals from '@/components/landing/NewArrivals';
 import TopProducts from '@/components/landing/TopProducts';
 import Unstoppable from '@/components/landing/Unstoppable';
+import MoreThanALifestyle from '@/components/landing/MoreThanALifestyle';
 
 export default function Home() {
   return (
@@ -11,7 +11,7 @@ export default function Home() {
       <Hero />
       <TopProducts />
       <NewArrivals />
-      <MoreThanALifestyle />
+      <MoreThanALifestyle/>
       <Unstoppable />
       <JoinCommunity />
     </div>
