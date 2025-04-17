@@ -95,18 +95,6 @@ const Slider: React.FC<PropType> = (props) => {
             />
           ))}
         </div>
-        <div className="md:hidden flex justify-between items-center w-full mt-[11px]">
-          <PrevButton
-            onClick={onPrevButtonClick}
-            disabled={prevBtnDisabled}
-            className=" w-14 h-14 rounded-full bg-secondary-500 flex justify-center items-center stroke-primary-500"
-          />
-          <NextButton
-            onClick={onNextButtonClick}
-            disabled={nextBtnDisabled}
-            className="w-14 h-14 rounded-full bg-secondary-500 flex justify-center items-center stroke-primary-500"
-          />
-        </div>
       </div>
     </div>
   );

@@ -77,7 +77,6 @@ export default function SetProductForm({ categories, onSetActiveView, closeModal
         await addProduct(formarttedProduct as Product);
         showToast('product successfully added!', 'success');
       } else {
-        console.log({ ...formarttedProduct, id: formData.value.id });
         showToast('product successfully updated!', 'success');
         await updateProduct({
           ...formarttedProduct,

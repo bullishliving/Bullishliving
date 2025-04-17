@@ -6,6 +6,8 @@ import Link from 'next/link';
 
 import BullishLogo from '@/assets/svg/logo.svg';
 
+import QueryProvider from '@/components/QueryProvider';
+
 import { useCartStore } from '@/Store/CartStore';
 
 import useToggle from '@/hooks/useToggle';
@@ -36,7 +38,6 @@ export default function Navbar({ routes }: Props) {
   const isWhite = whiteRoutes.some((route) => pathname.startsWith(route));
   const cartCount = useCartStore((state) => state.cartItems.length);
   const refreshCartItems = useCartStore((state) => state.refreshCartItems);
-
 
   function closeNav() {
     isMobileNavVisible.off();
@@ -91,7 +92,9 @@ export default function Navbar({ routes }: Props) {
           </button>
         </div>
         {isSearchPanelVisible.value && (
-          <SearchPanel onClose={() => isSearchPanelVisible.off()} />
+          <QueryProvider>
+            <SearchPanel onClose={() => isSearchPanelVisible.off()} />
+          </QueryProvider>
         )}
       </div>
       <MobileNav
