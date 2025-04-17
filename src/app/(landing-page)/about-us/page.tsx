@@ -1,6 +1,8 @@
 import Image from 'next/image';
-
-import GuySkating from '@/assets/images/guy-skating.png';
+import AboutImg1 from '@/assets/images/about-image-1.png';
+import AboutImg2 from '@/assets/images/about-image-2.png';
+import AboutImg3 from '@/assets/images/about-image-3.png';
+import AboutImg4 from '@/assets/images/about-image-4.png';
 
 import Community from '@/components/landing/JoinCommunity';
 import Unstoppable from '@/components/landing/Unstoppable';
@@ -10,6 +12,7 @@ export default function AboutUs() {
     {
       preTitle: 'Our Vision',
       title: 'Where Fashion Meets Fitness',
+      image: AboutImg1,
       node: (
         <p className="font-montserrat">
           Bold. Resilient. Unstoppable. Discover the story behind BullishLiving
@@ -21,6 +24,8 @@ export default function AboutUs() {
     {
       preTitle: 'Our story',
       title: 'Empowering Confidence, One Step at a Time',
+      image: AboutImg2,
+
       node: (
         <div className="flex flex-col gap-12 font-montserrat">
           <p>
@@ -41,6 +46,8 @@ export default function AboutUs() {
     {
       preTitle: 'What We Stand For',
       title: 'Driven by Resilience, Confidence, and Community',
+      image: AboutImg3,
+
       node: (
         <div className="flex flex-col gap-8 font-montserrat">
           <p>At BullishLiving, we believe in:</p>
@@ -63,6 +70,8 @@ export default function AboutUs() {
     {
       preTitle: ' What Drives Us',
       title: 'Our Values, Your Inspiration',
+      image: AboutImg4,
+
       node: (
         <div className="flex flex-col gap-8 font-montserrat">
           <p>
@@ -101,12 +110,12 @@ export default function AboutUs() {
           className={`px-4 py-16 md:py-24 md:px-6 2xl:px-8 ${isEvenSection(index) ? 'bg-secondary-500' : 'bg-primary-500'}`}
         >
           <div
-            className={`max-w-[1280px] mx-auto flex flex-col md:flex-row gap-4 ${!isEvenSection(index) && 'flex-row-reverse'}  md:justify-between md:items-center`}
+            className={`max-w-[1280px] mx-auto flex flex-col-reverse  gap-4 ${!isEvenSection(index) ? 'md:flex-row-reverse' : 'md:flex-row'}  md:justify-between md:items-center`}
           >
             <Image
-              src={GuySkating}
+              src={section.image}
               alt=""
-              className={`w-full sm:w-[343px] lg:w-[461px] h-[364px] md:h-[420px] lg:h-[490px] object-contain ${isEvenSection(index) && 'scale-x-[-1]'}`}
+              className={`w-full sm:w-[343px] lg:w-[461px] h-[364px] md:h-[420px] lg:h-[490px] object-contain`}
             />
             <div className="max-w-[661px]">
               <h2

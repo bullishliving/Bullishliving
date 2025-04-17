@@ -30,6 +30,7 @@ import Snapchat from '@/assets/svg/snapchat.svg';
 import Sort from '@/assets/svg/sort.svg';
 import Star from '@/assets/svg/star.svg';
 import TikTok from '@/assets/svg/tiktok.svg';
+import X from '@/assets/svg/twitter.svg';
 import Trash from '@/assets/svg/trash.svg';
 import User from '@/assets/svg/user.svg';
 
@@ -69,7 +70,8 @@ const icons = {
   Star,
   TikTok,
   Trash,
-  User
+  User,
+  X,
 };
 
 export type Icons = keyof typeof icons;

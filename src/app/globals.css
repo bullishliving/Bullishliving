@@ -7,6 +7,10 @@ html {
   overflow: auto;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 @layer utilities {
   .hide-number-spinners {
     -moz-appearance: textfield;
@@ -71,6 +75,7 @@ input:-webkit-autofill {
   transform: translateX(-50%);
 }
 
+/* top products carousel */
 .embla {
   max-width: 1280px;
   margin: auto;
@@ -107,16 +112,33 @@ input:-webkit-autofill {
   user-select: none;
 }
 
+/* active carousel */
+
+.active-carousel-div {
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0));
+}
+
+.active-carousel-container{
+  display: flex;
+  touch-action: pan-y pinch-zoom;
+  margin-left: calc(var(--slide-spacing) * -1);
+}
+
+.active-slide {
+  border: 1px solid red;
+  transform: translate3d(0, 0, 0);
+}
+
 .product-grid {
   grid-template-columns: repeat(4, 1fr);
 }
 
 .unstoppable {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)),
     url('../assets/images/boxer.gif');
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;
+  background-position: center; 
 }
 
 .community-bg-image {

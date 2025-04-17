@@ -69,12 +69,12 @@ const Slider: React.FC<PropType> = (props) => {
         <PrevButton
           onClick={onPrevButtonClick}
           disabled={prevBtnDisabled}
-          className="hidden md:flex absolute  z-20 top-1/2 left-[-2%] w-16 h-16 rounded-full bg-secondary-500  justify-center items-center stroke-primary-500"
+          className="hidden md:flex absolute z-20 top-1/2 left-[-2%] w-16 h-16 rounded-full bg-secondary-500  justify-center items-center stroke-primary-500"
         />
         <NextButton
           onClick={onNextButtonClick}
           disabled={nextBtnDisabled}
-          className="hidden md:flex absolute  z-30 top-1/2 right-[-2%] w-16 h-16 rounded-full bg-secondary-500  justify-center items-center stroke-primary-500"
+          className="hidden md:flex absolute z-30 top-1/2 right-[-2%] w-16 h-16 rounded-full bg-secondary-500  justify-center items-center stroke-primary-500"
         />
       </div>
       <div className="w-full mx-auto mt-4 text-center">

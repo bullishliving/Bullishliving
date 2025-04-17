@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 import { socials } from '@/utils/constant';
@@ -37,13 +36,18 @@ export default function Socials() {
       className="flex justify-center gap-10 mt-10"
     >
       {socials.map((social) => (
-        <motion.div variants={childVariants} key={social}>
-          <Link href="" className="flex items-center gap-3">
-            <UiIcon icon={social as Icons} size="33" />
+        <motion.div variants={childVariants} key={social.link}>
+          <a
+            href={social.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3"
+          >
+            <UiIcon icon={social.icon as Icons} size="33" />
             <p className="hidden md:block font-obitron font-black text-xl text-white">
-              {social}
+              {social.icon}
             </p>
-          </Link>
+          </a>
         </motion.div>
       ))}
     </motion.div>
