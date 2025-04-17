@@ -15,7 +15,6 @@ export default async function TopProducts() {
       .eq('is_featured', true);
 
     if (error || !data || data.length === 0) {
-      // Just don't render the section at all
       return null;
     }
 
