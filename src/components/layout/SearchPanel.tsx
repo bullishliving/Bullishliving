@@ -68,6 +68,6 @@ export default function SearchPanel({ onClose }: Props) {
           </div>
         )}
       </OutsideClickHandler>
-    </section>
+    </section>   
   );
 }
