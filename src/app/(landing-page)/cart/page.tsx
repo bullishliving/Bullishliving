@@ -47,7 +47,7 @@ export default function Page() {
             alt="product image"
             width={64}
             height={64}
-            className="w-16 h-16"
+            className="w-16 h-16 object-cover rounded-lg"
           />
           <div>
             <p className="text-sm text-secondary-500 font-bold mb-2">

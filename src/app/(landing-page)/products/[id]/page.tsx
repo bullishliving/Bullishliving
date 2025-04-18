@@ -28,7 +28,7 @@ export default function Page() {
 
   const [activeVariant, setActiveVariant] = useState<string | null>(null);
   const [activeImgIndex, setActiveImgIndex] = useState(0);
-  const [quantity, setQuantity] = useState(1)
+  const [quantity, setQuantity] = useState(1);
 
   const router = useRouter();
 
@@ -139,8 +139,8 @@ export default function Page() {
               src={product?.images![activeImgIndex] as string}
               width={544}
               height={547}
-              alt=""
-              className="max-h-[350px] md:max-h-[547px] mb-5"
+              alt="product main image"
+              className="max-h-[350px] md:max-h-[547px] mb-5 object-center object-cover"
             />
             <div className="flex items-center gap-4 justify-center">
               {product?.images!.map((image, index) => (
@@ -149,8 +149,8 @@ export default function Page() {
                     src={image as string}
                     width={64}
                     height={64}
-                    alt=""
-                    className={`w-14 h-14 md:w-16 md:h-16 object-cover ${activeImgIndex === index && 'outline outline-primary-500 rounded-[8px] transition-all duration-100 ease-in'}`}
+                    alt="product image"
+                    className={`w-14 h-14 md:w-16 md:h-16 object-cover rounded-[8px] ${activeImgIndex === index && 'outline outline-primary-500  transition-all duration-100 ease-in'}`}
                   />
                 </button>
               ))}
@@ -198,28 +198,33 @@ export default function Page() {
                 rounded="md"
                 variant="secondary-outlined"
                 onClick={() => {
-                  if(!product)  return;
+                  if (!product) return;
 
-                  CartHandler.addItem(buildCartItem(product, quantity, activeVariant));
+                  CartHandler.addItem(
+                    buildCartItem(product, quantity, activeVariant)
+                  );
 
                   refreshCartItems();
-              
-                  showToast('item added to cart!', 'success')
+
+                  showToast('item added to cart!', 'success');
                 }}
               >
                 Add To Cart <UiIcon icon="ArrowDiagonal" size="24" />
               </UiButton>
-              <UiButton onClick={() => {
-                if(!product) return;
+              <UiButton
+                onClick={() => {
+                  if (!product) return;
 
-                CartHandler.addBuyNowItem(
-                  buildCartItem(product, quantity, activeVariant)
-                );
+                  CartHandler.addBuyNowItem(
+                    buildCartItem(product, quantity, activeVariant)
+                  );
 
-                refreshBuyNow()
+                  refreshBuyNow();
 
-                router.push('/checkout?buynow');
-              }} rounded="md">
+                  router.push('/checkout?buynow');
+                }}
+                rounded="md"
+              >
                 Buy It Now <UiIcon icon="ArrowDiagonal" size="24" />
               </UiButton>
             </div>

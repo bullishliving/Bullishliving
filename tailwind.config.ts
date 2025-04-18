@@ -74,6 +74,9 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      backgroundImage: {
+        'grey-gradient': 'linear-gradient(253.85deg, #FFFFFF -51.43%, rgba(186, 184, 184, 0) 165.09%)'
+      }
     },
   },
   plugins: [typography],

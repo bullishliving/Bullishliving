@@ -309,7 +309,7 @@ export default function ProductInventory() {
             height={32}
             alt={product.name}
             src={product.images![0] as string}
-            className="w-8 h-8 rounded-lg"
+            className="w-8 h-8 rounded-lg object-cover"
           />
           <div>
             <p className="text-sm font-bold text-secondary-500 truncate w-full">
