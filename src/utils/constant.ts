@@ -63,6 +63,10 @@ export const landingPageRoutes = [
     path: '/partnership-details',
   },
   {
+    label: 'BullishLiving Health',
+    path: '/bullish-living-health',
+  },
+  {
     label: 'About Us ',
     path: '/about-us',
   },

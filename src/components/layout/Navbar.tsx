@@ -60,7 +60,7 @@ export default function Navbar({ routes }: Props) {
           <BullishLogo />
         </Link>
         <ul
-          className={`hidden  md:flex gap-3 items-center text-sm font-montserrat ${isWhite ? 'text-secondary-500' : 'text-white'} `}
+          className={`hidden lg:flex gap-3 items-center text-sm font-montserrat ${isWhite ? 'text-secondary-500' : 'text-white'} `}
         >
           {routes.map((route, index) => (
             <li className="relative flex items-center gap-3" key={index}>
@@ -87,7 +87,7 @@ export default function Navbar({ routes }: Props) {
             )}
             <UiIcon icon="Cart" size="24" />
           </Link>
-          <button onClick={toggleMobileNav} className="md:hidden">
+          <button onClick={toggleMobileNav} className="lg:hidden">
             <UiIcon icon="Hamburger" size="24" />
           </button>
         </div>

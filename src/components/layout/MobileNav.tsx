@@ -27,7 +27,7 @@ export default function MobileNav({ routes, isNavOpen, bottomNode, closeNav }: P
 
   return (
     <nav
-      className={`fixed z-40 md:hidden top-0 left-0 flex flex-col justify-between bg-primary-500 w-full h-screen px-4 pb-8 transition-transform ease-in-out duration-300 ${
+      className={`fixed z-40 lg:hidden top-0 left-0 flex flex-col justify-between bg-primary-500 w-full h-screen px-4 pb-8 transition-transform ease-in-out duration-300 ${
         isNavOpen ? 'translate-x-0' : 'translate-x-full'
       }`}
     >
