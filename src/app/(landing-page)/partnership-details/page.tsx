@@ -12,7 +12,7 @@ export default function Page() {
 
   return (
     <div>
-      <div className="bg-secondary-500 pt-10 md:pt-16 pb-16 xl:pb-[188px]">
+      <div className="bg-secondary-500 pt-[100px] md:pt-[125px] pb-16 xl:pb-[188px]">
         <div className="max-w-[865px] mx-auto px-4 md:px-6">
           <button
             onClick={() => router.back()}

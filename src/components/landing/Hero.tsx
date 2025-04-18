@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 import HeroImg from '@/assets/images/active-image.jpg';
@@ -13,7 +14,7 @@ import UiIcon from '../ui/UiIcon';
 
 export default function Hero() {
   return (
-    <section className="bg-secondary-500 p-4 md:px-6 2xl:px-8 pb-16 md:pb-20 pt-5 md:pt-6">
+    <section className="bg-secondary-500 p-4 md:px-6 2xl:px-8 pb-16 md:pb-20 pt-[80px] md:pt-[125px]">
       <div className="text-white max-w-[1280px] mx-auto h-full">
         <motion.div
           initial={{
@@ -46,14 +47,17 @@ export default function Hero() {
             <p className="text-white text-base md:text-lg mb-4 md:mb-6 font-montserrat">
               Inspiring strength & style to stay Ready for Whatever
             </p>
-            <button className="group flex items-center gap-3 group">
+            <Link
+              href="/products"
+              className="group flex items-center gap-3 group"
+            >
               <p className="text-primary-500 text-sm font-bold font-montserrat">
                 Shop Now
               </p>
               <div className="stroke-secondary-500 flex justify-center items-center bg-primary-500 rounded-full w-6 h-6 transition-transform duration-300 ease-in-out group-hover:rotate-[45deg]">
                 <UiIcon icon="ArrowDiagonal" size="24" />
               </div>
-            </button>
+            </Link>
           </FadeIn>
         </div>
       </div>

@@ -11,12 +11,14 @@ import UiIcon from "@/components/ui/UiIcon";
 
 import useObjectState from "@/hooks/useObjectState";
 
+//---
+
 export default function Page() {
   const formData = useObjectState({
     email: ''
   })
   return (
-    <section className="p-4 md:py-14 md:px-6 2xl:px-8 bg-secondary-500">
+    <section className="px-4 md:px-6 2xl:px-8 md:pb-14 pt-[80px] md:pt-[125px]  bg-secondary-500">
       <div className="max-w-[1280px] mx-auto flex flex-col md:flex-row gap-6 md:gap-16 items-center text-white pb-28">
         <div>
           <Image

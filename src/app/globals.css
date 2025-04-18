@@ -125,7 +125,6 @@ input:-webkit-autofill {
 }
 
 .active-slide {
-  border: 1px solid red;
   transform: translate3d(0, 0, 0);
 }
 

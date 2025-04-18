@@ -8,7 +8,7 @@ import QuantityIncrementor from '../products/QuantityIncrementor';
 import UiIcon from '../ui/UiIcon';
 import { useCartStore } from '@/Store/CartStore';
 
-interface Props {
+interface Props { 
   cartItem: CartItem;
 }
 
@@ -23,7 +23,7 @@ export default function MobileCartItem({ cartItem }: Props) {
           height={32}
           alt="product image"
           src={cartItem.product_image}
-          className="w-8 h-8"
+          className="w-8 h-8 object-cover rounded"
         />
         <div className="flex flex-col gap-2">
           <p className="text-sm text-secondary-500 font-bold mb-2">

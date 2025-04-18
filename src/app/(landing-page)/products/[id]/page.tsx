@@ -11,15 +11,19 @@ import useGetProductQuery from '@/api/query/useGetProductQuery';
 import ProductDetailsSkeleton from '@/components/ui/skeletons/ProductDetailsSkeleton';
 import ProductVariant from '@/components/products/ProductVariant';
 import QuantityIncrementor from '@/components/products/QuantityIncrementor';
+import showToast from '@/components/ui/UiToast';
 import UiButton from '@/components/ui/UiButton';
 import UiIcon from '@/components/ui/UiIcon';
 
-import { useCartStore } from '@/Store/CartStore';
 import useToggle from '@/hooks/useToggle';
 
-import { CartHandler } from '@/utils/CartHandler';
-import showToast from '@/components/ui/UiToast';
+import { useCartStore } from '@/Store/CartStore';
+
 import Product from '@/types/Product';
+
+import { CartHandler } from '@/utils/CartHandler';
+
+//--
 
 export default function Page() {
   const { id } = useParams();
@@ -123,7 +127,7 @@ export default function Page() {
   }
 
   return (
-    <section className="p-4 md:px-6 2xl:px-8 pb-16 md:pb-20 pt-5 md:pt-6">
+    <section className="p-4 md:px-6 2xl:px-8 pb-16 md:pb-20 pt-[80px] md:pt-[125px]">
       <div className="max-w-[1280px] mx-auto">
         <button
           onClick={() => router.back()}
@@ -140,7 +144,7 @@ export default function Page() {
               width={544}
               height={547}
               alt="product main image"
-              className="max-h-[350px] md:max-h-[547px] mb-5 object-center object-cover"
+              className="max-h-[350px] md:max-h-[547px] mb-5 object-center rounded-lg object-cover"
             />
             <div className="flex items-center gap-4 justify-center">
               {product?.images!.map((image, index) => (

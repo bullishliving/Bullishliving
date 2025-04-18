@@ -126,7 +126,7 @@ export default function Page() {
     }
 
   return (
-    <section className="bg-white p-4 md:px-6 2xl:px-8 pb-16 md:pb-20 pt-5 md:pt-8">
+    <section className="bg-white p-4 md:px-6 2xl:px-8 pb-16 md:pb-20 pt-[80px] md:pt-[125px]">
       <div className="max-w-[1280px] mx-auto h-full  font">
         <h2 className="font-obitron font-black text-2xl mb-6">All Products</h2>
         <div className="flex gap-6">
@@ -153,8 +153,7 @@ export default function Page() {
               </motion.aside>
             </AnimatePresence>
           )}
-
-          <main className={`min-h-screen  w-full`}>
+          <main className={`min-h-screen w-full flex-1`}>
             <div className="flex gap-6 font-montserrat">
               {!isFilterVisible.value && (
                 <button
@@ -165,7 +164,7 @@ export default function Page() {
                   Filter
                 </button>
               )}
-              <div className="relative border border-grey-300 min-w-full h-[52px] rounded flex justify-center items-center">
+              <div className="relative border border-grey-300 h-[52px] rounded flex justify-center items-center w-full">
                 <div className="absolute top-4 left-4 stroke-tertiary-700">
                   <UiIcon icon="Search" size="20" />
                 </div>

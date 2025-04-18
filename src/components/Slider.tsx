@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import useEmblaCarousel from 'embla-carousel-react';
 
 import UiIcon from './ui/UiIcon';
@@ -37,18 +38,21 @@ const Slider: React.FC<PropType> = (props) => {
   return (
     <div className="relative text-secondary-500">
       <div className="relative">
-        <div className="xs:max-h-[373px] sm:max-h-[480px] md:h-screen md:max-h-[658px] w-full rounded-md sm:rounded-3xl overflow-hidden bg-black">
+        <div className=" h-[373px] md:h-screen md:max-h-[658px] w-full rounded-md sm:rounded-3xl overflow-hidden bg-black">
           <Notch />
           <NotchMobile />
-          <button className="z-20 absolute top-4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group flex items-center gap-3 group">
+          <Link
+            href={`/products/${slides[selectedIndex].id}`}
+            className="z-20 absolute top-4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group flex items-center gap-3 group"
+          >
             <p className="text-secondary-500 text-sm font-bold font-montserrat">
               Buy Now
             </p>
             <div className="stroke-primary-500 flex justify-center items-center bg-secondary-500 rounded-full w-6 h-6 transition-transform duration-300 ease-in-out group-hover:rotate-[45deg]">
               <UiIcon icon="ArrowDiagonal" size="24" />
             </div>
-          </button>
-          <section className="embla  h-full">
+          </Link>
+          <section className="embla  h-full ">
             <div className="embla__viewport h-full" ref={emblaRef}>
               <div className="embla__container h-full">
                 {slides.map((slide, index) => (
