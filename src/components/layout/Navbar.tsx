@@ -53,7 +53,7 @@ export default function Navbar({ routes }: Props) {
 
   return (
     <nav
-      className={`${isWhite ? 'bg-white border-b border-gray-300' : 'bg-secondary-500'} py-4 px-4 md:px-6 md:py-8 2xl:p-8`}
+      className={`${isWhite ? 'bg-white border-b border-gray-300' : 'bg-secondary-500'} fixed z-50 w-full top-0 py-4 px-4 md:px-6 md:py-8 2xl:p-8`}
     >
       <div className="relative max-w-[1280px] mx-auto flex justify-between items-center ">
         <Link href="/" className="w-10 h-[27px] md:w-14 md:h-[38px]">

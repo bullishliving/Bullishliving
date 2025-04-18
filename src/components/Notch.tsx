@@ -4,7 +4,7 @@ export default function Notch() {
       viewBox="0 0 1140 84"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="notch w-full absolute top-[-4.4%] z-10 hidden md:block"
+      className="notch w-full absolute top-[-4.4%] z-10 hidden sm:block"
     >
       <path
         d="M17.525 24H404.527C416.415 24 426.052 34.745 426.052 48V59.5C426.052 72.755 435.688 83.5 447.577 83.5H694.217C706.105 83.5 715.742 72.755 715.742 59.5V48C715.742 34.745 725.363 24 737.25 24H1122.58C1127.66 24 1132.32 22.0357 1135.98 18.7508C1144.61 11.0044 1134.6 0 1123 0H17C5.40202 0 -4.57889 10.9981 4.06543 18.7304C7.7515 22.0276 12.4317 24 17.525 24Z"

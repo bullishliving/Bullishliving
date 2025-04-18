@@ -290,7 +290,12 @@ export default function CheckoutForm() {
               />
             </div>
           </main>
-          <CartSummary deliveryFee={deliveryFee} label='Proceed to Pay' loading={loading.value} cartItems={itemsToProcess} />
+          <CartSummary
+            deliveryFee={deliveryFee}
+            label="Proceed to Pay"
+            loading={loading.value}
+            cartItems={itemsToProcess}
+          />
         </div>
       )}
     </UiForm>

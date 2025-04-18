@@ -42,7 +42,7 @@ export default function CartSummary({ onAction, loading, cartItems, label, deliv
   );
 
   return (
-    <aside className="sticky top-6 md:col-span-1 md:border md:border-[#1212121F] rounded-[8px] h-fit md:p-4 pb-6 font-montserrat">
+    <aside className="sticky top-28 md:col-span-1 md:border md:border-[#1212121F] rounded-[8px] h-fit md:p-4 pb-6 font-montserrat">
       <h3 className="font-bold  pb-8">SUMMARY</h3>
       <div className="grid gap-6 pb-4 mb-6 border-b border-grey-300">
         <div className="flex justify-between">
