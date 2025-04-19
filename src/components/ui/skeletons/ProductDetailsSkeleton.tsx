@@ -7,7 +7,6 @@ export default function ProductDetailsSkeleton() {
       <div className="max-w-[1280px] mx-auto">
         <div className="flex flex-col gap-6 md:flex-row md:gap-[75px] w-full">
           <div className="max-w-[544px] w-full h-fit">
-            <Skeleton className="md:hidden h-[211px] rounded mb-6 w-full" />
             <Skeleton className="h-[350px] md:h-[470px] mb-5 rounded " />
             <div className="flex items-center gap-4 justify-center">
               <Skeleton className={`w-14 h-14 md:w-16 md:h-16 rounded`} />
@@ -17,7 +16,7 @@ export default function ProductDetailsSkeleton() {
             </div>
           </div>
           <div className="w-full">
-            <Skeleton className="hidden md:block h-[251px] rounded mb-6" />
+            <Skeleton className="h-[251px] rounded mb-6" />
             <div className="grid gap-4 mb-10">
               <Skeleton className="w-[154px] h-[72px] rounded" />
               <Skeleton className="w-[258px] h-[64px] rounded" />
