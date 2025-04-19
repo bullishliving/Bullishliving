@@ -144,7 +144,7 @@ export default function Page() {
               width={544}
               height={547}
               alt="product main image"
-              className="max-h-[350px] md:max-h-[547px] mb-5 object-center rounded-lg object-cover"
+              className="max-h-[450px] md:max-h-[630px] mb-5 object-center rounded-lg object-cover"
             />
             <div className="flex items-center gap-4 justify-center">
               {product?.images!.map((image, index) => (
