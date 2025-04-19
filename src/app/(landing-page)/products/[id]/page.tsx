@@ -87,15 +87,18 @@ export default function Page() {
           </button>
         )}
 
-        <div className='flex gap-2 items-center font-montserrat'>
-          <p className="text-lg md:text-2xl text-secondary-500 font-montserrat font-medium ">
+        <div className="flex gap-2 items-center font-montserrat">
+          <p className="text-lg md:text-2xl text-danger-400 font-montserrat font-medium ">
             ₦
             {(product?.discounted_price
               ? product.discounted_price
-              : product?.price)?.toLocaleString()}
+              : product?.price
+            )?.toLocaleString()}
           </p>
           {product?.discounted_price && (
-            <p className="line-through text-grey-800 ">₦{product.price.toLocaleString()}</p>
+            <p className="line-through text-grey-800 ">
+              ₦{product.price.toLocaleString()}
+            </p>
           )}
         </div>
       </div>
@@ -138,7 +141,6 @@ export default function Page() {
         </button>
         <div className="flex flex-col gap-6 md:flex-row md:gap-[75px] w-full">
           <div className="max-w-[544px] w-full h-fit">
-            <div className="md:hidden">{productDetails}</div>
             <Image
               src={product?.images![activeImgIndex] as string}
               width={544}
@@ -161,7 +163,7 @@ export default function Page() {
             </div>
           </div>
           <div className="w-full">
-            <div className="hidden md:block">{productDetails}</div>
+            <div className="">{productDetails}</div>
             <div className="grid gap-4 mb-10">
               <div>
                 <h3 className="font-black font-obitron capitalize text-secondary-500 text-sm mb-2">
