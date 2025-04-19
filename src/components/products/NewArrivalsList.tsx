@@ -23,7 +23,7 @@ export default async function NewArrivals() {
     const products = data as Product[];
 
     return (
-      <div className="product-grid grid gap-x-6 gap-y-8">
+      <div className="product-grid grid gap-x-2 md:gap-x-4 gap-y-6 md:gap-y-8">
         {products.map((product) => (
           <Link key={product.id} href={`/products/${product.id}`}>
             <ProductCard product={product} />

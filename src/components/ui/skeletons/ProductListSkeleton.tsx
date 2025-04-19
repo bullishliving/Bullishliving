@@ -2,7 +2,7 @@ import { Skeleton } from "../skeleton";
 
 export default function ProductListSkeleton() {
   return (
-    <section className="bg-white p-4 md:px-6 2xl:px-8 pb-16 md:pb-20 pt-5 md:pt-8">
+    <section className="bg-white px-4 md:pb-14 pt-[80px] md:pt-[125px] md:px-6 2xl:px-8">
       <div className="max-w-[1280px] mx-auto h-full ">
         <Skeleton className="w-[150px] h-[32px] rounded mb-6" />
         <div className="flex gap-6 ">
