@@ -179,19 +179,21 @@ export default function Page() {
             {productsData?.data && productsData?.data.length < 1 ? (
               <div className=" border rounded-lg mt-6 flex justify-center items-center h-[400px]">
                 <div className="flex justify-center flex-col text-center">
-                  <div className='mx-auto'>
+                  <div className="mx-auto">
                     <NoSearchResult />
                   </div>
                   <h3 className="font-black font-obitron text-2xl">
                     No Search Result Found
                   </h3>
-                  <p className='text-sm text-tertiary-700 font-montserrat mt-2'>Your current search result is not available</p>
+                  <p className="text-sm text-tertiary-700 font-montserrat mt-2">
+                    Your current search result is not available
+                  </p>
                 </div>
               </div>
             ) : (
               <div>
                 <div
-                  className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 mt-6 gap-x-6 gap-y-8 mb-8 ${isFilterVisible.value && 'md:grid-cols-2 lg:!grid-cols-3'}`}
+                  className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 mt-6 product-grid gap-x-2 md:gap-x-4 gap-y-6 md:gap-y-8 mb-8 ${isFilterVisible.value && 'md:grid-cols-2 lg:!grid-cols-3'}`}
                 >
                   {productsData?.data.map((product) => (
                     <Link key={product.id} href={`/products/${product.id}`}>

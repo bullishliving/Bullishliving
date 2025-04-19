@@ -3,7 +3,7 @@ import { Skeleton } from "../skeleton";
 
 export default function ProductDetailsSkeleton() {
   return (
-    <section className="p-4 md:px-6 2xl:px-8 pb-16 md:pb-20 pt-5 md:pt-6">
+    <section className="p-4 md:px-6 2xl:px-8 pb-16 md:pb-20 pt-[80px] md:pt-[125px]">
       <div className="max-w-[1280px] mx-auto">
         <div className="flex flex-col gap-6 md:flex-row md:gap-[75px] w-full">
           <div className="max-w-[544px] w-full h-fit">
