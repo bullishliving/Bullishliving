@@ -26,15 +26,20 @@ import UiSelect, { Option } from '../ui/UiSelect';
 
 import UiForm from '../ui/UiForm';
 import showToast from '../ui/UiToast';
+import UiButton from '../ui/UiButton';
 
 
 export default function CheckoutForm() {
   const [selectedState, setSelectedState] = useState<string>('');
   const [deliveryFee, setDeliveryFee] = useState<number>(0);
+  const [discountCode, setDiscountCode] = useState('');
+  const [storedDiscountCode, setStoredDiscountCode] = useState('');
+  const [discountPercentage, setDiscountPercentage] = useState<number>(0);
   
   const searchParams = useSearchParams();
   const router = useRouter();
   const loading = useToggle();
+  const isCouponLoading = useToggle();
 
   const isBuyNow = searchParams.has('buynow');
 
@@ -54,12 +59,16 @@ export default function CheckoutForm() {
     phone: '',
   });
 
+  function handleDiscountCodeChange(value: string) {
+    setDiscountCode(value)
+  };
+
   const { pay } = usePayment(itemsToProcess, {
     email: formData.value.email,
     first_name: formData.value.firstName,
     last_name: formData.value.firstName,
     phone: formData.value.phone,
-  }, deliveryFee);
+  }, deliveryFee, discountPercentage);
 
   const stateOptions: Option[] = useMemo(() => {
     return NaijaStates.states().map((state: string) => ({
@@ -102,6 +111,22 @@ export default function CheckoutForm() {
    });    
   }
 
+  async function getCoupon() {
+    try {
+      isCouponLoading.on()
+      const { amount } =  await Api.getCoupon(discountCode);
+      setDiscountPercentage(Number(amount))
+      setStoredDiscountCode(discountCode);
+      showToast('discount applied', 'success')
+      setDiscountCode('')
+    } catch (error) {
+      console.error(error);
+      showToast('error applying discount', 'error');
+    } finally {
+      isCouponLoading.off();
+    }
+  }
+
   async function handleSubmit() {
     try {
       loading.on();
@@ -117,6 +142,9 @@ export default function CheckoutForm() {
 
       if (!paystackConfig) return;
 
+      console.log(paystackConfig);
+      
+
       const handler = (window as any).PaystackPop?.setup({
         ...paystackConfig,
         key: paystackConfig.publicKey,
@@ -124,23 +152,23 @@ export default function CheckoutForm() {
           
         Api.createOrder({
           address: formValue.address,
-          amount: paystackConfig.amount / 100,
-          apartment:
-            formValue.apartment === '' ? null : formValue.apartment,
+          amount: paystackConfig.orderAmount,
+          delivery_fee: deliveryFee,
+          apartment: formValue.apartment || null,
           customer: `${formValue.lastName} ${formValue.firstName}`,
           email: formValue.email,
-          city: formValue.city === '' ? null : formValue.city,
+          city: formValue.city || null,
           is_payment_verified: false,
           items: itemsToProcess,
           paystack_reference: paystackConfig.reference,
           phone: formValue.phone,
-          postal_code:
-            formValue.postalCode === '' ? null : formValue.postalCode,
+          postal_code: formValue.postalCode || null,
           state: formValue.state,
+          discount_code: storedDiscountCode || null,
         }).then(() => {
-           Api.reduceStock(cartItems);
+          Api.reduceStock(cartItems);
 
-          sendMail()
+          sendMail();
 
           showToast('order created!', 'success');
 
@@ -290,12 +318,37 @@ export default function CheckoutForm() {
               />
             </div>
           </main>
-          <CartSummary
-            deliveryFee={deliveryFee}
-            label="Proceed to Pay"
-            loading={loading.value}
-            cartItems={itemsToProcess}
-          />
+          <div className="sticky top-16">
+            <CartSummary
+              deliveryFee={deliveryFee}
+              label="Proceed to Pay"
+              loading={loading.value}
+              discountPercent={discountPercentage}
+              cartItems={itemsToProcess}
+            />
+            <div className="md:border md:border-[#1212121F] mt-4 font-montserrat p-4 rounded-lg">
+              <h3 className="font-bold mb-2 text-sm">DISCOUNT CODE?</h3>
+              <div className="flex gap-2 items-center">
+                <input
+                  value={discountCode}
+                  onChange={(e) => handleDiscountCodeChange(e.target.value)}
+                  placeholder="Enter discount code"
+                  className="border border-grey-300 rounded-lg px-4 h-10 outline-none w-full placeholder:text-tertiary-700 placeholder:text-sm"
+                />
+                <div className="w-[130px]">
+                  <UiButton
+                    onClick={getCoupon}
+                    loading={isCouponLoading.value}
+                    size="sm"
+                    rounded="md"
+                    variant="primary-outlined"
+                  >
+                    Apply
+                  </UiButton>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </UiForm>

@@ -146,28 +146,39 @@ export default function Page() {
     status: status.status,
   }));
 
-  const ordersHeaders: Header[] = useMemo(() => [
-    {
-      title: 'ID',
-      query: 'orderId',
-    },
-    {
-      title: 'Customer',
-      query: 'customer',
-    },
-    {
-      title: 'Amount',
-      query: 'amount',
-    },
-    {
-      title: 'Order date',
-      query: 'orderDate',
-    },
-    {
-      title: 'Action',
-      query: 'action',
-    },
-  ], []);
+  const ordersHeaders: Header[] = useMemo(
+    () => [
+      {
+        title: 'ID',
+        query: 'orderId',
+      },
+      {
+        title: 'Customer',
+        query: 'customer',
+      },
+      {
+        title: 'Amount',
+        query: 'amount',
+      },
+      {
+        title: 'Delivery fee',
+        query: 'deliveryFee',
+      },
+      {
+        title: 'Discount code',
+        query: 'discountCode',
+      },
+      {
+        title: 'Order date',
+        query: 'orderDate',
+      },
+      {
+        title: 'Action',
+        query: 'action',
+      },
+    ],
+    []
+  );
 
   const mobileOrdersHeaders = useMemo(() => {
     return ordersHeaders.filter((header) => header.query !== 'action');
@@ -179,7 +190,9 @@ export default function Page() {
         id: `${order.id}`,
         orderId: <p>{`#${order.id}`}</p>,
         customer: <p className="capitalize">{order.customer}</p>,
-        amount: <p>{order.amount.toLocaleString()}</p>,
+        amount: <p>₦{order.amount.toLocaleString()}</p>,
+        deliveryFee: <p>₦{order.delivery_fee.toLocaleString()}</p>,
+        discountCode: order.discount_code || '--',
         orderDate: formatDate(order.created_at, 'DD-MM-YY, hh:mmA'),
         action: (
           <div className="max-w-28">

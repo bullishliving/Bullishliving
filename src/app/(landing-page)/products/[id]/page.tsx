@@ -68,7 +68,7 @@ export default function Page() {
   const productDetails = useMemo(() => {
     return (
       <div className="grid gap-4 mb-6">
-        <h2 className="text-secondary-500 font-obitron font-black text-[28px] sm:text-3xl md:text-[40px]">
+        <h2 className="text-secondary-500 font-obitron font-black text-[28px] capitalize sm:text-3xl md:text-[40px]">
           {product?.name}
         </h2>
         <p

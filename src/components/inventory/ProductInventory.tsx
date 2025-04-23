@@ -312,7 +312,7 @@ export default function ProductInventory() {
             className="w-8 h-8 rounded-lg object-cover"
           />
           <div>
-            <p className="text-sm font-bold text-secondary-500 truncate w-full">
+            <p className="text-sm font-bold capitalize text-secondary-500 truncate w-full">
               {product.name}
             </p>
             {product.variants.length > 0 && (
@@ -330,10 +330,10 @@ export default function ProductInventory() {
             height={40}
             alt={product.name}
             src={product.images![0] as string}
-            className="w-10 h-10 rounded-lg "
+            className="w-10 h-10 rounded-lg object-cover"
           />
           <div className="flex gap-2 items-center">
-            <p>{product.name}</p>{' '}
+            <p className="capitalize">{product.name}</p>{' '}
             {product.variants.length > 0 && (
               <span className="text-orange-400 text-xs rounded-full w-[25px] h-6 bg-orange-50 flex justify-center items-center">
                 V
@@ -438,11 +438,11 @@ export default function ProductInventory() {
     <div>
       <div className="grid md:grid-cols-4 gap-4 md:gap-6 mb-4">
         <AnalyticsCard
-          figure={`₦${totalInventoryBalance?.toLocaleString()}`}
+          figure={`₦${(totalInventoryBalance ?? 0)?.toLocaleString()}`}
           title="Total Inventory Balance"
         />
         <AnalyticsCard
-          figure={`₦${totalPayIn?.toLocaleString()}`}
+          figure={`₦${(totalPayIn ?? 0)?.toLocaleString()}`}
           title="Total Pay In"
         />
         <AnalyticsCard

@@ -12,11 +12,13 @@ const variantClasses = {
     'bg-primary-500 hover:bg-primary-600 text-secondary-500 stroke-secondary-500',
   'primary-text':
     'text-primary-500 hover:text-primary-600 font-bold stroke-primary-500 hover:stroke-primary-600',
-  'primary-outlined': 'border border-primary-500 text-secondary-500',
+  'primary-outlined':
+    'border border-primary-500 text-secondary-500 hover:bg-[#fff9ec]',
   secondary: 'bg-secondary-500  text-primary-500',
   'secondary-outlined':
     'bg-white text-secondary-500 border border-secondary-500 stroke-secondary-500 hover:bg-[#f6f6f6]',
-  'tertiary-outlined': 'bg-transparent border border-grey-300 hover:bg-grey-100',
+  'tertiary-outlined':
+    'bg-transparent border border-grey-300 hover:bg-grey-100',
   white: 'bg-white text-secondary-500 stroke-secondary-500',
   orange: 'bg-orange-500 hover:bg-orange-600 text-white stroke-white',
   danger: 'bg-danger-400 text-white hover:bg-danger-500',

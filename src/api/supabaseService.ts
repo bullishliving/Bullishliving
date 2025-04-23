@@ -11,6 +11,7 @@ import CartItem from '@/types/CartItem';
 import OrderStatusCount from '@/types/OrderStatusCount';
 import OrderResponse from '@/types/OrderResponse';
 import { OrderStatus } from '@/types/enums/OrderStatus';
+import Coupon from '@/types/Coupon';
 
 type SelectPaginatedOptions = {
   columns?: string;
@@ -155,17 +156,13 @@ class SupabaseService {
     if (error) {
       throw new Error(error.message);
     }
-
   }
 
   async verifyPayment(ref: string) {
      const {error} = await createClient().rpc('mark_order_as_verified', {
       order_reference: ref
     });
-
-    console.log(error);
     
-
     if (error) throw error;
   }
 
@@ -186,6 +183,30 @@ class SupabaseService {
 
   updateOrderStatus(orderId: number, status: OrderStatus) {
     return this.update(SupabaseTables.ORDERS, orderId, { status: status })
+  }
+
+  createCoupon(data: Coupon) {
+    return this.insert(SupabaseTables.DISCOUNT_CODES, data);
+  }
+
+  getCoupons() {
+    return this.select<Coupon>(SupabaseTables.DISCOUNT_CODES)
+  }
+
+  async getCoupon(couponName: string) {
+    const { data, error } = await createClient().from(SupabaseTables.DISCOUNT_CODES).select('*').eq('name', couponName).single();
+
+    if (error) throw error;
+
+    return data as Coupon;
+  }
+
+  updateCoupon(couponId: number, data: Coupon) {
+    return this.update(SupabaseTables.DISCOUNT_CODES, couponId, data)
+  }
+
+  deleteCoupon(couponId: number) {
+    return this.delete(SupabaseTables.DISCOUNT_CODES, couponId)
   }
  
   async getTotalPayIn() {
