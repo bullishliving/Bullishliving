@@ -18,7 +18,7 @@ export interface ProductType {
   stock_left: number;
   variants: ProductVariant[];
   is_out_of_stock: boolean;
-  is_featured: boolean;
+  is_top_product: boolean;
 }
 
 interface FormContextType {
@@ -49,7 +49,7 @@ export const initialProductState = {
   stock: null,
   variants: [],
   is_out_of_stock: false,
-  is_featured: false
+  is_top_product: false,
 };
 
 export function SetProductProvider({

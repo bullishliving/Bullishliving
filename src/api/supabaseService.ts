@@ -98,7 +98,7 @@ class SupabaseService {
   }
 
   toggleIsFeatured(id: number, data: boolean) {
-    return this.update(SupabaseTables.PRODUCTS, id, {is_featured: data})
+    return this.update(SupabaseTables.PRODUCTS, id, {is_top_product: data})
   }
 
   updateCostPrice(id: number, field: keyof Pick<Product, 'price' | 'discounted_price'>,  price: string) {

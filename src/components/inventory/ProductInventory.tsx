@@ -122,11 +122,11 @@ export default function ProductInventory() {
     }
   }
 
-  async function toggleIsFeatured(productId: number, value: boolean) {
+  async function toggleIsBestSeller(productId: number, value: boolean) {
     try {
       await Api.toggleIsFeatured(productId, value);
       showToast(
-        `${value ? 'Product added to collections' : 'Product removed from collections'}`,
+        `${value ? 'Product added to best sellers' : 'Product removed from best sellers'}`,
         'success'
       );
       reloadQuery();
@@ -178,7 +178,7 @@ export default function ProductInventory() {
               Number(b.discounted_price || b.price)
           );
       case 'Collections':
-        return productsData?.data.filter((product) => product.is_featured)
+        return productsData?.data.filter((product) => product.is_top_product);
       case 'Out of stock':
         return productsData?.data.filter((product) => product.is_out_of_stock)
 
@@ -226,16 +226,16 @@ export default function ProductInventory() {
     {
       label: (product: Product) => (
         <div
-          className={`flex items-center gap-2 ${product.is_featured ? 'stroke-primary-500 fill-primary-500' : 'stroke-tertiary-700 fill-white'}`}
+          className={`flex items-center gap-2 ${product.is_top_product ? 'stroke-primary-500 fill-primary-500' : 'stroke-tertiary-700 fill-white'}`}
         >
           <UiIcon icon="Star" size="24" />
           <p className="text-sm font-montserrat text-[#4F4F4F]">
-            Add to collections
+            {product.is_top_product ? 'Remove from' : 'Add to'} best sellers
           </p>
         </div>
       ),
       func: (productId, product: Product) => {
-        toggleIsFeatured(Number(productId), !product.is_featured);
+        toggleIsBestSeller(Number(productId), !product.is_top_product);
       },
     },
     {
@@ -401,8 +401,10 @@ export default function ProductInventory() {
             <UiIcon icon="Edit" size="24" />
           </button>
           <button
-            onClick={() => toggleIsFeatured(product.id, !product.is_featured)}
-            className={`${product.is_featured ? 'stroke-primary-500 fill-primary-500' : 'stroke-tertiary-700 fill-white'}`}
+            onClick={() =>
+              toggleIsBestSeller(product.id, !product.is_top_product)
+            }
+            className={`${product.is_top_product ? 'stroke-primary-500 fill-primary-500' : 'stroke-tertiary-700 fill-white'}`}
           >
             <UiIcon icon="Star" size="24" />
           </button>

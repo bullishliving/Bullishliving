@@ -13,6 +13,7 @@ import UiButton from '@/components/ui/UiButton';
 import UiDropDown, { DropDownData } from '@/components/ui/UiDropDown';
 import UiIcon from '@/components/ui/UiIcon';
 import UiLoader from '@/components/ui/UiLoader';
+import UiMobileDataList from '@/components/ui/UiMobileDataList';
 import UiTable,  { Header } from '@/components/ui/UiTable';
 
 import useToggle from '@/hooks/useToggle';
@@ -133,7 +134,17 @@ export default function Page() {
             <h3 className="font-bold text-secondary-500">All Coupons</h3>
           </div>
           {couponsTableNodes && (
-            <UiTable data={couponsTableNodes} headers={couponTableHeaders} />
+            <div>
+              <div className="hidden sm:block">
+                <UiTable
+                  data={couponsTableNodes}
+                  headers={couponTableHeaders}
+                />
+              </div>
+              <div className='sm:hidden'>
+                <UiMobileDataList data={couponsTableNodes} headers={couponTableHeaders} />
+              </div>
+            </div>
           )}
         </div>
       </div>
