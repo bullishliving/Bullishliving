@@ -83,7 +83,11 @@ export const adminRoutes = [
   },
   {
     label: 'Running Community',
-    path: '/admin/dashboard/community',
+    path: '/admin//community',
+  },
+  {
+    label: 'Coupons',
+    path: '/admin/dashboard/coupons',
   },
 ];
 

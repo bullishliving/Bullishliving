@@ -13,4 +13,6 @@ export default interface Order {
   paystack_reference: string;
   is_payment_verified: boolean
   amount: number;
+  delivery_fee: number;
+  discount_code?: string | null
 }

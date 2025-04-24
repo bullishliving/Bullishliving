@@ -122,11 +122,11 @@ export default function ProductInventory() {
     }
   }
 
-  async function toggleIsFeatured(productId: number, value: boolean) {
+  async function toggleIsBestSeller(productId: number, value: boolean) {
     try {
       await Api.toggleIsFeatured(productId, value);
       showToast(
-        `${value ? 'Product added to collections' : 'Product removed from collections'}`,
+        `${value ? 'Product added to best sellers' : 'Product removed from best sellers'}`,
         'success'
       );
       reloadQuery();
@@ -178,7 +178,7 @@ export default function ProductInventory() {
               Number(b.discounted_price || b.price)
           );
       case 'Collections':
-        return productsData?.data.filter((product) => product.is_featured)
+        return productsData?.data.filter((product) => product.is_top_product);
       case 'Out of stock':
         return productsData?.data.filter((product) => product.is_out_of_stock)
 
@@ -226,16 +226,16 @@ export default function ProductInventory() {
     {
       label: (product: Product) => (
         <div
-          className={`flex items-center gap-2 ${product.is_featured ? 'stroke-primary-500 fill-primary-500' : 'stroke-tertiary-700 fill-white'}`}
+          className={`flex items-center gap-2 ${product.is_top_product ? 'stroke-primary-500 fill-primary-500' : 'stroke-tertiary-700 fill-white'}`}
         >
           <UiIcon icon="Star" size="24" />
           <p className="text-sm font-montserrat text-[#4F4F4F]">
-            Add to collections
+            {product.is_top_product ? 'Remove from' : 'Add to'} best sellers
           </p>
         </div>
       ),
       func: (productId, product: Product) => {
-        toggleIsFeatured(Number(productId), !product.is_featured);
+        toggleIsBestSeller(Number(productId), !product.is_top_product);
       },
     },
     {
@@ -312,7 +312,7 @@ export default function ProductInventory() {
             className="w-8 h-8 rounded-lg object-cover"
           />
           <div>
-            <p className="text-sm font-bold text-secondary-500 truncate w-full">
+            <p className="text-sm font-bold capitalize text-secondary-500 truncate w-full">
               {product.name}
             </p>
             {product.variants.length > 0 && (
@@ -330,10 +330,10 @@ export default function ProductInventory() {
             height={40}
             alt={product.name}
             src={product.images![0] as string}
-            className="w-10 h-10 rounded-lg "
+            className="w-10 h-10 rounded-lg object-cover"
           />
           <div className="flex gap-2 items-center">
-            <p>{product.name}</p>{' '}
+            <p className="capitalize">{product.name}</p>{' '}
             {product.variants.length > 0 && (
               <span className="text-orange-400 text-xs rounded-full w-[25px] h-6 bg-orange-50 flex justify-center items-center">
                 V
@@ -401,8 +401,10 @@ export default function ProductInventory() {
             <UiIcon icon="Edit" size="24" />
           </button>
           <button
-            onClick={() => toggleIsFeatured(product.id, !product.is_featured)}
-            className={`${product.is_featured ? 'stroke-primary-500 fill-primary-500' : 'stroke-tertiary-700 fill-white'}`}
+            onClick={() =>
+              toggleIsBestSeller(product.id, !product.is_top_product)
+            }
+            className={`${product.is_top_product ? 'stroke-primary-500 fill-primary-500' : 'stroke-tertiary-700 fill-white'}`}
           >
             <UiIcon icon="Star" size="24" />
           </button>
@@ -438,11 +440,11 @@ export default function ProductInventory() {
     <div>
       <div className="grid md:grid-cols-4 gap-4 md:gap-6 mb-4">
         <AnalyticsCard
-          figure={`₦${totalInventoryBalance?.toLocaleString()}`}
+          figure={`₦${(totalInventoryBalance ?? 0)?.toLocaleString()}`}
           title="Total Inventory Balance"
         />
         <AnalyticsCard
-          figure={`₦${totalPayIn?.toLocaleString()}`}
+          figure={`₦${(totalPayIn ?? 0)?.toLocaleString()}`}
           title="Total Pay In"
         />
         <AnalyticsCard

@@ -90,7 +90,7 @@ export default function AdminNavbar({ routes }: Props) {
             options={dropDownOptions}
             side="bottom"
             trigger={
-              <button className={`flex gap-3 items-center font-montserrat `}>
+              <div className={`flex gap-3 items-center font-montserrat `}>
                 <DummyAvatar />
                 <div className="flex gap-4 items-center stroke-tertiary-700">
                   <div className="text-left">
@@ -101,7 +101,7 @@ export default function AdminNavbar({ routes }: Props) {
                   </div>
                   <UiIcon icon="CaretDown" size="16" />
                 </div>
-              </button>
+              </div>
             }
           />
         </div>
@@ -110,7 +110,11 @@ export default function AdminNavbar({ routes }: Props) {
         isNavOpen={isMobileNavVisible.value}
         closeNav={() => isMobileNavVisible.off()}
         routes={routes}
-        bottomNode={<UiButton variant='secondary' onClick={handleLogout}>Log out</UiButton>}
+        bottomNode={
+          <UiButton variant="secondary" onClick={handleLogout}>
+            Log out
+          </UiButton>
+        }
       />
     </nav>
   );

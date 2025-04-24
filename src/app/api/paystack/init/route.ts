@@ -8,7 +8,7 @@ import {  NEXT_PUBLIC_PAYSTACK_KEY, PAYSTACK_SECRET_KEY } from '@/utils/privateK
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { cartItems, userDetails, deliveryFee } = body;
+    const { cartItems, userDetails, deliveryFee, discountPercentage } = body;
 
     if (!cartItems?.length || !userDetails?.email) {
       return NextResponse.json({ error: "Missing cart items or user details" }, { status: 400 });
@@ -27,7 +27,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: `Failed to calculate amount: ${error?.message}` }, { status: 400 });
     }
 
-    const totalKoboAmount = (amount + deliveryFee) * 100;
+    const totalDisCountedAmount = amount * ((100 - discountPercentage) / 100);
+
+    const totalKoboAmount = (totalDisCountedAmount + deliveryFee) * 100;
 
     const res = await fetch("https://api.paystack.co/transaction/initialize", {
       method: "POST",
@@ -54,10 +56,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       reference: result.data.reference,
       authorization_url: result.data.authorization_url,
-      amount: totalKoboAmount,
+      amount: totalDisCountedAmount,
+      totalAmount: totalKoboAmount,
       publicKey: NEXT_PUBLIC_PAYSTACK_KEY, 
       email: userDetails.email,
       metadata: result.data.metadata,
+
     });
   } catch (err: any) {
     console.error("Unexpected Error:", err);

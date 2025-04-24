@@ -11,7 +11,7 @@ type PaystackUser = {
   phone: string;
 }
 
-export default function usePayment(cartItems: CartItem[], user: PaystackUser, deliveryFee: number) {  
+export default function usePayment(cartItems: CartItem[], user: PaystackUser, deliveryFee: number, discountPercentage?: number) {  
   const loading = useToggle();
     
   const handlePayment = async () => {
@@ -23,7 +23,8 @@ export default function usePayment(cartItems: CartItem[], user: PaystackUser, de
       body: JSON.stringify({
         cartItems,
         userDetails: user,
-        deliveryFee
+        deliveryFee,
+        discountPercentage
       }),
     });
 
@@ -46,7 +47,8 @@ export default function usePayment(cartItems: CartItem[], user: PaystackUser, de
     return  {
       reference: data.reference,
       email: data.email,
-      amount: data.amount,
+      amount: data.totalAmount,
+      orderAmount: data.amount,
       publicKey: data.publicKey,
       metadata: {
         reference: data.reference,

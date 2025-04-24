@@ -13,6 +13,7 @@ import CaretRightBig from '@/assets/svg/caret-right-big.svg';
 import Cart from '@/assets/svg/cart.svg';
 import Close from '@/assets/svg/close.svg';
 import Copy from '@/assets/svg/copy.svg';
+import Coupon from '@/assets/svg/coupon.svg';
 import DirectInbox from '@/assets/svg/direct-inbox.svg';
 import DropDownMenu from '@/assets/svg/drop-down-menu.svg';
 import Edit from '@/assets/svg/edit.svg';
@@ -52,6 +53,7 @@ const icons = {
   Cart,
   Close,
   Copy,
+  Coupon,
   DirectInbox,
   DropDownMenu,
   Edit,
