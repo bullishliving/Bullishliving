@@ -40,11 +40,10 @@ export default function SetProductForm({ categories, onSetActiveView, closeModal
     label: category.name,
     value: `${category.id}`
   })) || [];
-
+  
   async function onSubmit() {
     try {
       loading.on();
-
 
       const formattedVariants = formData.value.variants.map((variant) => ({
         ...variant,
@@ -99,9 +98,7 @@ export default function SetProductForm({ categories, onSetActiveView, closeModal
   return (
     <UiForm
       formData={formData.value}
-      schema={getAddProductSchema(
-        
-      )}
+      schema={getAddProductSchema()}
       onSubmit={onSubmit}
     >
       {({ errors }) => (

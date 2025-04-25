@@ -4,5 +4,6 @@ export enum SupabaseTables {
   CATEGORIES = 'categories',
   PRODUCTS = 'products',
   ORDERS = 'orders',
-  DISCOUNT_CODES = 'discount_codes'
+  DISCOUNT_CODES = 'discount_codes',
+  BANNERS = 'banners'
 }

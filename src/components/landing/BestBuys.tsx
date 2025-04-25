@@ -1,11 +1,11 @@
 import UiIcon from '../ui/UiIcon';
-import NewArrivalsList from '../products/NewArrivalsList';
+import BestBuysList from '../products/BestBuysList';
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/supabaseServer';
 import { SupabaseTables } from '@/types/enums/SupabaseTables';
 import Product from '@/types/Product';
 
-export default async function NewArrivals() {
+export default async function BestBuys() {
   const supabase = await createClient();
 
   try {
@@ -28,7 +28,7 @@ export default async function NewArrivals() {
         <div className="max-w-[1280px] mx-auto">
           <div className="flex justify-between mb-8 md:mb-10">
             <h3 className="font-obitron text-center md:text-left font-black text-[34px] leading-[44px] md:text-[40px] md:leading-[52px] text-secondary-500">
-              New Arrivals
+              Best Buys
             </h3>
 
             <Link
@@ -43,7 +43,7 @@ export default async function NewArrivals() {
               </div>
             </Link>
           </div>
-          <NewArrivalsList products={products} />
+          <BestBuysList products={products} />
           <button className="mt-[34px] mx-auto flex group md:hidden items-center gap-3 group">
             <p className="text-secondary-500 text-sm font-medium font-montserrat">
               View All

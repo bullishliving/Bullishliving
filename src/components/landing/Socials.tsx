@@ -33,7 +33,7 @@ export default function Socials() {
       initial="initial"
       whileInView="animate"
       viewport={{ once: true }}
-      className="flex justify-center gap-10 mt-10"
+      className="flex justify-center gap-10 flex-wrap mt-10"
     >
       {socials.map((social) => (
         <motion.div variants={childVariants} key={social.link}>
@@ -50,6 +50,14 @@ export default function Socials() {
           </a>
         </motion.div>
       ))}
+      <motion.div variants={childVariants}>
+        <a href="tel:08168828810" className="flex items-center gap-3">
+          <UiIcon icon="Phone" size="33" />
+          <p className="hidden md:block font-obitron font-black text-xl text-white">
+            Phone
+          </p>
+        </a>
+      </motion.div>
     </motion.div>
   );
 }

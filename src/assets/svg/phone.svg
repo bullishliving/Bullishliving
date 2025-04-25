@@ -1,0 +1,9 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- White circular background -->
+  <circle cx="16" cy="16" r="16" fill="white" />
+  
+  <!-- Scaled phone icon (18x18 centered in 32x32) -->
+  <g transform="translate(7,7) scale(1.125)"> <!-- 16 * 1.125 = 18 -->
+    <path d="M1 5V1H7V5L4.5 7.5L8.5 11.5L11 9H15V15H11C5.47715 15 1 10.5228 1 5Z" fill="#000000"/>
+  </g>
+</svg>

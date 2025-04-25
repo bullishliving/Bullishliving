@@ -26,7 +26,9 @@ import Link from '@/assets/svg/link.svg';
 import Location from '@/assets/svg/location.svg';
 import Minus from '@/assets/svg/minus.svg';
 import NumberedList from '@/assets/svg/numbered-list.svg';
+import Phone from '@/assets/svg/phone.svg';
 import Search from '@/assets/svg/search.svg';
+import SliderVertical from '@/assets/svg/slider-vertical.svg';
 import Snapchat from '@/assets/svg/snapchat.svg';
 import Sort from '@/assets/svg/sort.svg';
 import Star from '@/assets/svg/star.svg';
@@ -66,7 +68,9 @@ const icons = {
   Location,
   Minus,
   NumberedList,
+  Phone,
   Search,
+  SliderVertical,
   Snapchat,
   Sort,
   Star,

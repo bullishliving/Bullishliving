@@ -1,17 +1,22 @@
-import CommunityMember from '@/types/CommunityMember';
-import Partner from '@/types/Partner';
-import Category from '@/types/Category';
-import { createClient } from '@/utils/supabase/supabaseClient';
-import { SupabaseTables } from '@/types/enums/SupabaseTables';
 import { ProductType } from '@/app/context/SetProductContext';
-import Product from '@/types/Product';
-import OutOfStockProduct from '@/types/OutOfStockProduct';
-import Order from '@/types/Order';
-import CartItem from '@/types/CartItem';
-import OrderStatusCount from '@/types/OrderStatusCount';
-import OrderResponse from '@/types/OrderResponse';
+
 import { OrderStatus } from '@/types/enums/OrderStatus';
+import { SupabaseTables } from '@/types/enums/SupabaseTables';
+import Banner from '@/types/Banner';
+import CartItem from '@/types/CartItem';
+import Category from '@/types/Category';
+import CommunityMember from '@/types/CommunityMember';
 import Coupon from '@/types/Coupon';
+import Order from '@/types/Order';
+import OrderResponse from '@/types/OrderResponse';
+import OrderStatusCount from '@/types/OrderStatusCount';
+import OutOfStockProduct from '@/types/OutOfStockProduct';
+import Partner from '@/types/Partner';
+import Product from '@/types/Product';
+
+import { createClient } from '@/utils/supabase/supabaseClient';
+
+//--
 
 type SelectPaginatedOptions = {
   columns?: string;
@@ -207,6 +212,22 @@ class SupabaseService {
 
   deleteCoupon(couponId: number) {
     return this.delete(SupabaseTables.DISCOUNT_CODES, couponId)
+  }
+
+  addBanner(data: Banner) {
+    return this.insert(SupabaseTables.BANNERS, data)
+  }
+
+  getBanners() {
+    return this.select<Banner>(SupabaseTables.BANNERS)
+  }
+
+  updateBanner(bannerId: number, banner: Banner) {
+    return this.update(SupabaseTables.BANNERS, bannerId, banner)
+  }
+
+  deleteBanner(bannerId: number) {
+    return this.delete(SupabaseTables.BANNERS, bannerId)
   }
  
   async getTotalPayIn() {

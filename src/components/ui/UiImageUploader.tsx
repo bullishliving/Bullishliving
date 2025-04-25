@@ -13,12 +13,14 @@ interface Props {
   value: File[] | string[] | null;
   onChange: (event: { name: string; value: File[] | string[] }) => void;
   error?: string; 
+  acceptMultile?: boolean
 }
 
 export default function UiImageUploader({
   name,
   value,
   onChange,
+  acceptMultile= true,
   error
 }: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -106,7 +108,7 @@ export default function UiImageUploader({
       </div>
       <input
         ref={fileInputRef}
-        multiple={true}
+        multiple={acceptMultile}
         className="hidden"
         onChange={handleChange}
         accept="image/*"

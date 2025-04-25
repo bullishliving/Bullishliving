@@ -107,6 +107,7 @@ export default function Page() {
           options={couponsDropdownOptions}
           item={coupon}
           itemId={`${coupon.id}`}
+          side="bottom"
         />
       ),
     }));

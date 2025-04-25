@@ -19,7 +19,7 @@ export default function useUpdateCouponMutation() {
 
     onError: (error) => {
       console.error(error);
-      showToast('error updated coupon', 'error');
+      showToast('error updating coupon', 'error');
     },
   })
 
