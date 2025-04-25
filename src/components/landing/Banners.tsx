@@ -2,23 +2,22 @@ import { createClient } from '@/utils/supabase/supabaseServer';
 import AnimatedTitle from '../animations/AnimatedTitle';
 import FadeIn from '../animations/FadeIn';
 import Slider from '../Slider';
-import Product from '@/types/Product';
+import Banner from '@/types/Banner';
 import { SupabaseTables } from '@/types/enums/SupabaseTables';
 
-export default async function TopProducts() {
+export default async function Banners() {
   const supabase = await createClient();
 
   try {
     const { data, error } = await supabase
-      .from(SupabaseTables.PRODUCTS)
+      .from(SupabaseTables.BANNERS)
       .select('*')
-      .eq('is_featured', true);
 
     if (error || !data || data.length === 0) {
       return null;
     }
 
-    const topProducts = data as Product[];
+    const banners = data as Banner[];
 
     return (
       <section className="bg-primary-500 px-4 py-16 md:py-24 md:px-6 2xl:px-8">
@@ -38,7 +37,7 @@ export default async function TopProducts() {
               </p>
             </FadeIn>
           </div>
-          <Slider slides={topProducts} />
+          <Slider slides={banners} />
         </div>
       </section>
     );

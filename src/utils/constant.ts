@@ -89,6 +89,10 @@ export const adminRoutes = [
     label: 'Coupons',
     path: '/admin/dashboard/coupons',
   },
+  {
+    label: 'Banners',
+    path: '/admin/dashboard/banners',
+  },
 ];
 
 export const inputStyles =

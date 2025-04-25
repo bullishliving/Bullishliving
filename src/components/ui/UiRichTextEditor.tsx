@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+
 import { EditorContent, useEditor } from '@tiptap/react';
 import BulletList from '@tiptap/extension-bullet-list';
 import TextAlign from '@tiptap/extension-text-align';
@@ -23,6 +25,9 @@ interface Props {
 }
 
 export default function UiRichTextEditor({ name, onChange, value, error, label }: Props) {
+
+  console.log(value);
+  
   const editor = useEditor({
     content: value,
     onUpdate:({ editor } ) => {
@@ -62,6 +67,12 @@ export default function UiRichTextEditor({ name, onChange, value, error, label }
     immediatelyRender: false,
     shouldRerenderOnTransaction: false,
   });
+
+  useEffect(() => {
+    if (editor && value) {
+      editor.commands.setContent(value, false); 
+    }
+  }, [editor, value]);
 
   if (!editor) return null;
 

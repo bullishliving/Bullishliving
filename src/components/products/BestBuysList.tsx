@@ -7,7 +7,7 @@ interface Props {
   products: Product[];
 }
 
-export default async function NewArrivals({ products }:Props) {
+export default async function BestBuysList({ products }:Props) {
   return (
     <div className="product-grid grid gap-x-2 md:gap-x-4 gap-y-6 md:gap-y-8">
       {products.map((product) => (
