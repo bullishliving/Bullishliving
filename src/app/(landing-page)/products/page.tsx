@@ -46,7 +46,6 @@ export default function Page() {
     categoryIds: selectedCategoryIds,
     minPrice: priceRange[0],
     maxPrice: priceRange[1],
-    filters: [{ column: 'is_out_of_stock', value: false }],
     searchColumn: 'products_name_description',
     searchQuery,
   });
