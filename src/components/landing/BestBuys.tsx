@@ -10,7 +10,7 @@ export default async function BestBuys() {
 
   try {
     const { data, error } = await supabase
-      .from(SupabaseTables.PRODUCTS)
+      .from(SupabaseTables.AVAILABLE_PRODUCTS)
       .select('*')
       .eq('is_top_product', true);
 
