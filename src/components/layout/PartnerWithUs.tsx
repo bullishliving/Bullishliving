@@ -2,9 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-// import { Api } from '@/api/supabaseService';
-
 import Logo from '@/assets/svg/logo.svg';
 
 import useObjectState from '@/hooks/useObjectState';
@@ -80,6 +77,11 @@ export default function PartnerWithUs({ isOpen, onClose }: Props) {
     setSocials(['']);
   }
 
+  function closeModal() {
+    onClose()
+    resetState()
+  }
+
   async function onSubmit() {
     try {
       loading.on();
@@ -112,12 +114,12 @@ export default function PartnerWithUs({ isOpen, onClose }: Props) {
   return (
     <>
       {isOpen && (
-        <div className="fixed z-50  w-full h-full top-0 left-0 bg-secondary-500 text-white overflow-y-auto pb-8  md:px-6">
+        <div className="fixed z-[80] w-full h-full top-0 left-0 bg-secondary-500 text-white overflow-y-auto pb-8  md:px-6 ">
           <header className="flex justify-between items-center py-4 px-4 md:px-6 md:py-8 2xl:p-8 max-w-[1280px] mx-auto">
             <div className="w-10 h-[27px] md:w-14 md:h-[38px] fill-primary-500 stroke-primary-500">
               <Logo />
             </div>
-            <button onClick={onClose} className="stroke-white">
+            <button onClick={closeModal} className="stroke-white">
               <UiIcon icon="Close" size="32" />
             </button>
           </header>

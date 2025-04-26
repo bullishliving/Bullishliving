@@ -141,10 +141,7 @@ export default function CheckoutForm() {
       const formValue = formData.value;
 
       if (!paystackConfig) return;
-
-      console.log(paystackConfig);
       
-
       const handler = (window as any).PaystackPop?.setup({
         ...paystackConfig,
         key: paystackConfig.publicKey,
@@ -318,7 +315,7 @@ export default function CheckoutForm() {
               />
             </div>
           </main>
-          <div className="sticky top-16">
+          <div className="sticky top-28">
             <CartSummary
               deliveryFee={deliveryFee}
               label="Proceed to Pay"
@@ -326,7 +323,7 @@ export default function CheckoutForm() {
               discountPercent={discountPercentage}
               cartItems={itemsToProcess}
             />
-            <div className="md:border md:border-[#1212121F] mt-4 font-montserrat p-4 rounded-lg">
+            <div className="md:border md:border-[#1212121F] mt-4 font-montserrat md:p-4 rounded-lg">
               <h3 className="font-bold mb-2 text-sm">DISCOUNT CODE?</h3>
               <div className="flex gap-2 items-center">
                 <input

@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Api } from '../supabaseService';
 import Product from '@/types/Product';
+import { SupabaseTables } from '@/types/enums/SupabaseTables';
 
 type ProductData = {
   data: Product[];
@@ -9,6 +10,7 @@ type ProductData = {
 
 export default function useProductsQuery(props: {
   page: number;
+  table: SupabaseTables,
   limit: number;
   total: number;
   searchQuery?: string;
@@ -20,6 +22,7 @@ export default function useProductsQuery(props: {
 }) {
   const {
     limit,
+    table,
     page,
     total,
     searchColumn,
@@ -49,17 +52,14 @@ export default function useProductsQuery(props: {
 
   const start = (safePage - 1) * limit;
   const end = Math.min(start + limit - 1, total - 1);
-  console.log(page,
-    limit,
-    total,);
   
-
   const query = useQuery({
     queryKey,
     queryFn: async () => {
       try {
         const data = await Api.getProducts(
           limit,
+          table,
           start,
           end,
           searchQuery,

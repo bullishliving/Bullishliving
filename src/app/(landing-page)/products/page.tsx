@@ -18,6 +18,7 @@ import UiPaginator from '@/components/ui/UiPaginator';
 import useToggle from '@/hooks/useToggle';
 import { usePagination } from '@/hooks/usePagination';
 import { PriceRange } from '@/components/products/PriceFilter';
+import { SupabaseTables } from '@/types/enums/SupabaseTables';
 
 export default function Page() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -39,6 +40,7 @@ export default function Page() {
     query: { data: productsData, isLoading: isProductsLoading },
   } = useProductQuery({
     limit: 12,
+    table: SupabaseTables.AVAILABLE_PRODUCTS,
     page,
     total: totalData || 0,
     categoryIds: selectedCategoryIds,

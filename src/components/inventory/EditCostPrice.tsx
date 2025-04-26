@@ -1,8 +1,6 @@
 
 import { Api } from '@/api/supabaseService';
-import {
-  useSetProductContext,
-} from '@/app/context/SetProductContext';
+import { useSetProductStore } from '@/Store/ProductStore';
 
 import useObjectState from '@/hooks/useObjectState';
 import useToggle from '@/hooks/useToggle';
@@ -23,7 +21,7 @@ interface Props {
 }
 
 export default function EditCostPrice({ isOpen, onClose, reload }: Props) {
-  const { activeProduct } = useSetProductContext();
+  const { activeProduct } = useSetProductStore();
   const formData = useObjectState({
     costPrice: ''
   });

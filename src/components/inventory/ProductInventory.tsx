@@ -2,11 +2,11 @@ import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 
 import { Api } from '@/api/supabaseService';
-import { useSetProductContext, initialProductState } from '@/app/context/SetProductContext';
 import useDeleteProductMutaion from '@/api/mutations/products/useDeleteProductMutation';
 import useGetTotalPayInQuery from '@/api/query/useGetTotalPayInQuery';
 import useOutOfStockProductsQuery from '@/api/query/useOutOfStockProductsQuery';
 import useProductsQuery from '@/api/query/useProductsQuery';
+import { useSetProductStore } from '@/Store/ProductStore';
 
 
 import useToggle from '@/hooks/useToggle';
@@ -33,11 +33,12 @@ import EditCostPrice from './EditCostPrice';
 import OutOfStockList from './OutOfStockList';
 import RestockItem from './RestockItem';
 import useGetTotalInventoryBalanceQuery from '@/api/query/useGetTotalInventoryBalanceQuery';
+import { SupabaseTables } from '@/types/enums/SupabaseTables';
 
 //---
 
 export default function ProductInventory() {
-  const { activeProduct, setActiveProduct, formData } = useSetProductContext();
+  const { activeProduct, setActiveProduct } = useSetProductStore();
   const [limit, setLimit] = useState<number>(5);
   const [totalProducts, setTotalProducts] = useState<number | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState('');
@@ -58,6 +59,7 @@ export default function ProductInventory() {
     reloadQuery,
   } = useProductsQuery({
     limit,
+    table: SupabaseTables.PRODUCTS,
     page,
     total: totalProducts || 0,
     searchQuery,
@@ -555,7 +557,6 @@ export default function ProductInventory() {
           onClose={() => {
             isEditCostPriceVisible.off();
             setActiveProduct(undefined);
-            formData.setValue(initialProductState);
           }}
         />
       </div>

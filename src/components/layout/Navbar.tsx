@@ -69,7 +69,7 @@ export default function Navbar({ routes }: Props) {
         isWhite
           ? ` border-b border-gray-300 ${scrolled ? 'bg-white/90 backdrop-blur-lg' : 'bg-white'}`
           : `${scrolled ? 'bg-secondary-500/90 backdrop-blur-lg' : 'bg-secondary-500'}`
-      } fixed z-[100] w-full top-0 py-4 px-4 md:px-6 md:py-8 2xl:p-8`}
+      } fixed z-[60] w-full top-0 py-4 px-4 md:px-6 md:py-8 2xl:p-8`}
     >
       <div className="relative max-w-[1280px] mx-auto flex justify-between items-center ">
         <Link href="/" className="w-10 h-[27px] md:w-14 md:h-[38px]">

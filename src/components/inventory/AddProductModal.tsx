@@ -6,8 +6,7 @@ import UiIcon from '../ui/UiIcon';
 
 import SetProductForm from './SetProductForm';
 import useCategoriesQuery from '@/api/query/useCategoriesQuery';
-import { initialProductState, useSetProductContext } from '@/app/context/SetProductContext'
-
+import { useSetProductStore } from '@/Store/ProductStore';
 const SetProductVariantForm = dynamic(() => import('./SetProductVariantForm'));
 const MangeCategories = dynamic(() => import('./ManageCategories'));
 const EditCategories = dynamic(() => import('./EditCategory'));
@@ -23,7 +22,7 @@ export default function AddProductModal({ isOpen, onClose }: Props) {
   
   const { query: { data: categories } } = useCategoriesQuery();
 
-  const { formData,  setActiveVariantIndex } = useSetProductContext();
+  const { activeProduct, setActiveVariantIndex } = useSetProductStore();
 
   function handleActiveView(index: number) {
     setActiveView(index)
@@ -35,13 +34,12 @@ export default function AddProductModal({ isOpen, onClose }: Props) {
 
   function closeModal() {
     onClose();
-    formData.setValue(initialProductState);
     setActiveView(0)
   }
 
   const views = [
     {
-      title: `${formData.value.id ? 'Edit' : 'Add'} Product`,
+      title: `${activeProduct ? 'Edit' : 'Add'} Product`,
       node: (
         <SetProductForm
           closeModal={closeModal}

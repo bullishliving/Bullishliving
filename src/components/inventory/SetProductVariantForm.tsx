@@ -5,7 +5,8 @@ import { useState } from 'react';
 import UiButton from '../ui/UiButton';
 
 import ProductVariantFormItem from './ProductVariantFormItem';
-import { useSetProductContext } from '@/app/context/SetProductContext';
+import { useSetProductStore } from '@/Store/ProductStore';
+import { useSetProductForm } from '@/hooks/useSetProductForm';
 import showToast from '../ui/UiToast';
 
 export type ProductVariant = {
@@ -14,7 +15,8 @@ export type ProductVariant = {
 };
 
 export default function SetProductVariantForm() {
-  const { formData, activeVariant, activeVariantIndex } = useSetProductContext();
+  const { activeVariant, activeVariantIndex } = useSetProductStore();
+  const formData = useSetProductForm();
   const [variants, setVariants] = useState<ProductVariant[]>([
     (activeVariantIndex !== null && formData.value.variants[activeVariantIndex]) || {
       type: '',

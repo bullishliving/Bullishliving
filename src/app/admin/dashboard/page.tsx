@@ -1,6 +1,5 @@
 'use client';
 
-import { SetProductProvider } from '@/app/context/SetProductContext';
 
 import AddProductModal from '@/components/inventory/AddProductModal';
 import AdminBasePage from '@/components/layout/AdminBasePage';
@@ -35,13 +34,11 @@ export default function Page() {
         </div>
       }
     >
-      <SetProductProvider>
         <ProductInventory />
         <AddProductModal
           isOpen={isAddProductVisible.value}
           onClose={hideAddProduct}
         />
-      </SetProductProvider>
     </AdminBasePage>
   );
 }
