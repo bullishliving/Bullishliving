@@ -1,14 +1,18 @@
-import { useSetProductContext } from '@/app/context/SetProductContext';
+import { useSetProductStore } from '@/Store/ProductStore';
+import { useSetProductForm } from '@/hooks/useSetProductForm';
 
 import UiIcon from '../ui/UiIcon';
 import { useMemo } from 'react';
 
 interface Props {
-  showVariantForm: VoidFunction
+  showVariantForm: VoidFunction;
 }
 
 export default function ProductVariantList({ showVariantForm }:Props ) {
-  const { formData, setActiveVariant, setActiveVariantIndex } = useSetProductContext();
+  const { setActiveVariant, setActiveVariantIndex } =
+    useSetProductStore();
+
+  const formData = useSetProductForm();
 
   function removeVariant(variantIndex: number) {
     formData.setValue((prevState) => ({

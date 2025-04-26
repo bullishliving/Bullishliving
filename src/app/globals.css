@@ -43,24 +43,83 @@ input[type='number'] {
   appearance: textfield !important;
 }
 
-input:-webkit-autofill {
-  background-color: transparent;
-  box-shadow: 0 0 0px 1000px transparent inset;
-  -webkit-text-fill-color: inherit;
-
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus {
+/* Default autofill styles */
+/* === INPUTS inside .light variant === */
+.light input:-webkit-autofill,
+.light input:-webkit-autofill:hover,
+.light input:-webkit-autofill:focus,
+.light input:-webkit-autofill:active {
+  -webkit-text-fill-color: black !important;
+  background-color: transparent !important;
+  box-shadow: 0 0 0px 1000px transparent inset !important;
   transition: background-color 5000s ease-in-out 0s;
-  -webkit-text-fill-color: inherit;
-
 }
 
-input:-webkit-autofill {
-  background-color: transparent;
-  -webkit-text-fill-color: inherit;
+/* === INPUTS inside .dark variant === */
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark input:-webkit-autofill:active {
+  -webkit-text-fill-color: white !important;
+  background-color: transparent !important;
+  box-shadow: 0 0 0px 1000px transparent inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-box-shadow: 0 0 0 30px #141414 inset !important;
+}
+
+/* === INPUTS inside .transparent variant === */
+.transparent input:-webkit-autofill,
+.transparent input:-webkit-autofill:hover,
+.transparent input:-webkit-autofill:focus,
+.transparent input:-webkit-autofill:active {
+  -webkit-text-fill-color: white !important;
+  background-color: transparent !important;
+  box-shadow: 0 0 0px 1000px transparent inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* === PhoneInput === */
+.PhoneInput input:-webkit-autofill,
+.PhoneInput input:-webkit-autofill:hover,
+.PhoneInput input:-webkit-autofill:focus,
+.PhoneInput input:-webkit-autofill:active {
+  -webkit-text-fill-color: white !important;
+  background-color: transparent !important;
+  box-shadow: 0 0 0px 1000px transparent inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* === PhoneInput inside .light variant === */
+.PhoneInput.light input:-webkit-autofill,
+.PhoneInput.light input:-webkit-autofill:hover,
+.PhoneInput.light input:-webkit-autofill:focus,
+.PhoneInput.light input:-webkit-autofill:active {
+  -webkit-text-fill-color: black !important;
+  background-color: transparent !important;
+  box-shadow: 0 0 0px 1000px transparent inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* === PhoneInput inside .dark variant === */
+.PhoneInput.dark input:-webkit-autofill,
+.PhoneInput.dark input:-webkit-autofill:hover,
+.PhoneInput.dark input:-webkit-autofill:focus,
+.PhoneInput.dark input:-webkit-autofill:active {
+  -webkit-text-fill-color: white !important;
+  background-color: transparent !important;
+  box-shadow: 0 0 0px 1000px transparent inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* === PhoneInput inside .transparent variant === */
+.PhoneInput.transparent input:-webkit-autofill,
+.PhoneInput.transparent input:-webkit-autofill:hover,
+.PhoneInput.transparent input:-webkit-autofill:focus,
+.PhoneInput.transparent input:-webkit-autofill:active {
+  -webkit-text-fill-color: white !important;
+  background-color: transparent !important;
+  box-shadow: 0 0 0px 1000px transparent inset !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 /* admin nav indicator */
@@ -159,7 +218,6 @@ input:-webkit-autofill {
   font-size: 14px;
   line-height: 20px;
   padding-left: 10px;
-  color: white;
 }
 
 .phone-input .PhoneInputInput {

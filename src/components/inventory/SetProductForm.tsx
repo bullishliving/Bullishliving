@@ -3,12 +3,16 @@ import DOMPurify from "dompurify";
 import useAddProductMutation from "@/api/mutations/products/useAddProductMutation";
 import useUpdateProductMutation from "@/api/mutations/products/useUpdateProductMutation";
 
-import { useSetProductContext } from '@/app/context/SetProductContext';
+import useToggle from "@/hooks/useToggle";
+import { useSetProductForm } from "@/hooks/useSetProductForm";
 
 import Category from '@/types/Category';
+import Product from '@/types/Product';
+
 import cloudinaryInstance from '@/utils/Cloudinary';
-import useToggle from "@/hooks/useToggle";
 import getAddProductSchema from "@/utils/schemas/AddProductSchema";
+
+import showToast from "../ui/UiToast";
 import UiButton from '../ui/UiButton';
 import UiForm from '../ui/UiForm';
 import UiIcon from '../ui/UiIcon';
@@ -18,8 +22,6 @@ import UiRichTextEditor from '../ui/UiRichTextEditor';
 import UiSelect, { Option } from '../ui/UiSelect';
 
 import ProductVariantList from './ProductVariantList';
-import showToast from "../ui/UiToast";
-import Product from "@/types/Product";
 
 //---
 
@@ -30,11 +32,14 @@ interface Props {
 }
 
 export default function SetProductForm({ categories, onSetActiveView, closeModal }: Props) {
-  const { formData } = useSetProductContext();
+  const formData = useSetProductForm()
+  
   const { mutation: {mutateAsync: addProduct, isPending: isAddProductPening} } = useAddProductMutation();
   const { mutation: {mutateAsync: updateProduct, isPending: isUpdateProductPending}, setProduct } = useUpdateProductMutation();
+
   const loading = useToggle();
-  const isAddProductLoading = loading.value || isAddProductPening || isUpdateProductPending;
+
+  const isAddProductLoading = loading.value || isAddProductPening || isUpdateProductPending;  
   
   const formattedCategories: Option[] = categories?.map((category) => ({
     label: category.name,
@@ -45,7 +50,7 @@ export default function SetProductForm({ categories, onSetActiveView, closeModal
     try {
       loading.on();
 
-      const formattedVariants = formData.value.variants.map((variant) => ({
+      const formattedVariants = formData.value?.variants.map((variant) => ({
         ...variant,
         values: variant.values.map((value) => ({
           ...value,
@@ -95,6 +100,8 @@ export default function SetProductForm({ categories, onSetActiveView, closeModal
     
   }
 
+
+
   return (
     <UiForm
       formData={formData.value}
@@ -125,6 +132,7 @@ export default function SetProductForm({ categories, onSetActiveView, closeModal
             value={formData.value.description}
             label="Description"
             error={errors.description}
+
           />
           <UiSelect
             name="category_id"

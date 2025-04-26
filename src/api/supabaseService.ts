@@ -1,4 +1,4 @@
-import { ProductType } from '@/app/context/SetProductContext';
+import ProductRequest from '@/types/ProductRequest';
 
 import { OrderStatus } from '@/types/enums/OrderStatus';
 import { SupabaseTables } from '@/types/enums/SupabaseTables';
@@ -65,7 +65,7 @@ class SupabaseService {
     return this.delete(SupabaseTables.CATEGORIES, id)
   }
 
-  addProduct(product: ProductType) {
+  addProduct(product: ProductRequest) {
     return this.insert(SupabaseTables.PRODUCTS, product)
   }
 
@@ -79,11 +79,11 @@ class SupabaseService {
     return data as Product[]
   }
 
-  getProducts( limit: number, start?: number, end?:number, searchQuery?: string, searchColumn?: string, minPrice?: number,
-  maxPrice?: number,
-  categoryIds?: number[], filters?:{ column: string; value: any }[],
-){
-    return this.selectPaginated<Product>(SupabaseTables.PRODUCTS, {columns: "*", filters: filters, getCount: true, limit, start, end, searchQuery, searchColumn, minPrice, categoryIds, maxPrice})
+  getProducts( limit: number, table: SupabaseTables, start?: number, end?:number, searchQuery?: string, searchColumn?: string, minPrice?: number,
+    maxPrice?: number,
+    categoryIds?: number[], filters?:{ column: string; value: any }[],
+  ){
+    return this.selectPaginated<Product>(table, {columns: "*", filters: filters, getCount: true, limit, start, end, searchQuery, searchColumn, minPrice, categoryIds, maxPrice})
   }
 
   getProduct(productId: number) {

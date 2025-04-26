@@ -14,7 +14,7 @@ type CartState = {
   clearBuyNow: VoidFunction
 };
 
-export const useCartStore = create<CartState>((set, ) => ({
+export const useCartStore = create<CartState>((set ) => ({
   cartItems: [],
 
   buyNowItem: null,

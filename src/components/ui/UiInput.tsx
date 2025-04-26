@@ -105,7 +105,7 @@ export default function UiInput({
               country="NG"
               defaultCountry="NG"
               placeholder="Enter phone number"
-              className={`phone-input ${variant} flex-1`}
+              className={`phone-input ${variant} flex-1 ${variant === 'light' ? 'text-secondary-500' : 'text-white'} `}
               disabled={disabled}
               value={`${value || ''}`}
               onChange={handlePhoneChange}
@@ -113,7 +113,7 @@ export default function UiInput({
           </div>
         ) : (
           <input
-            className={`hide-number-spinners flex-1 outline-none  placeholder:text-sm placeholder:font-normal text-base font-semibold h-full bg-transparent ${variant === 'light' ? 'text-secondary-500' : 'text-white'} ${prefixNode ? 'pl-0' : ''}  ${placeholderStyle}`}
+            className={`hide-number-spinners flex-1 outline-none  placeholder:text-sm placeholder:font-normal text-base font-semibold h-full bg-transparent ${variant} ${variant === 'light' ? 'text-secondary-500' : 'text-white'} ${prefixNode ? 'pl-0' : ''}  ${placeholderStyle}`}
             placeholder={placeholder}
             type={inputType}
             value={value || ''}

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { useSetProductContext } from '@/app/context/SetProductContext';
+import { useSetProductForm } from '@/hooks/useSetProductForm';
 import useAddCategoryMutation from "@/api/mutations/categories/useAddCategoryMutation";
 import useDeleteCategoryMutation from "@/api/mutations/categories/useDeleteCategoryMutation";
 
@@ -33,7 +33,7 @@ export default function ManageCategories({ categories,  handleActiveView, setAct
   const { mutation: {mutateAsync: addCategory, isPending: isAddCategoryLoading } } = useAddCategoryMutation();
   const { mutation: {mutateAsync: deleteCategory } } = useDeleteCategoryMutation();
 
-  const { formData: setProductData } = useSetProductContext();
+  const productFormData = useSetProductForm();
   
   const formData = useObjectState({
     name: ''
@@ -148,7 +148,7 @@ export default function ManageCategories({ categories,  handleActiveView, setAct
           type="button"
           disabled={selectedCategoryId === ''}
           onClick={() => {
-            setProductData.set({
+            productFormData.set({
               name: 'category_id',
               value: selectedCategoryId,
             });

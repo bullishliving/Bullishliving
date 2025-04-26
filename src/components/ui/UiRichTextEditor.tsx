@@ -1,19 +1,15 @@
 'use client';
 
 import { useEffect } from 'react';
-
 import { EditorContent, useEditor } from '@tiptap/react';
 import BulletList from '@tiptap/extension-bullet-list';
 import TextAlign from '@tiptap/extension-text-align';
-
 import Link from '@tiptap/extension-link';
 import StarterKit from '@tiptap/starter-kit';
 import { Color } from '@tiptap/extension-color';
 import ListItem from '@tiptap/extension-list-item';
 import TextStyle from '@tiptap/extension-text-style';
-
 import UiField from './UiField';
-
 import UiRichTextEditorToolBar from './UiRichTextEditorToolBar';
 
 interface Props {
@@ -21,17 +17,21 @@ interface Props {
   value: string;
   onChange: (event: { name: string; value: string }) => void;
   error?: string;
-  label: string
+  label: string;
 }
 
-export default function UiRichTextEditor({ name, onChange, value, error, label }: Props) {
-
-  console.log(value);
-  
+export default function UiRichTextEditor({
+  name,
+  onChange,
+  value,
+  error,
+  label,
+}: Props) {
   const editor = useEditor({
     content: value,
-    onUpdate:({ editor } ) => {
-      onChange({name: name, value: editor.getHTML()})
+    onUpdate: ({ editor }) => {
+      const html = editor.getHTML();
+      onChange({ name: name, value: html });
     },
     editorProps: {
       attributes: {
@@ -64,22 +64,31 @@ export default function UiRichTextEditor({ name, onChange, value, error, label }
         types: ['heading', 'paragraph'],
       }),
     ],
-    immediatelyRender: false,
-    shouldRerenderOnTransaction: false,
   });
 
+  // Sync editor content when value changes
   useEffect(() => {
-    if (editor && value) {
-      editor.commands.setContent(value, false); 
+    if (editor && value !== editor.getHTML()) {
+      editor.commands.setContent(value, false); // false prevents adding to history
     }
-  }, [editor, value]);
+  }, [value, editor]);
 
-  if (!editor) return null;
+  if (!editor) {
+    return (
+      <UiField label={label} error={error}>
+        <div
+          className={`border rounded-2xl p-4 max-w-full ${error ? 'border-danger-400' : 'border-grey-400'}`}
+        >
+          Loading editor...
+        </div>
+      </UiField>
+    );
+  }
 
   return (
     <UiField label={label} error={error}>
       <div
-        className={`border rounded-2xl  p-4 max-w-full ${error ? 'border-danger-400' : 'border-grey-400 '}`}
+        className={`border rounded-2xl p-4 max-w-full ${error ? 'border-danger-400' : 'border-grey-400'}`}
       >
         <UiRichTextEditorToolBar editor={editor} />
         <div className="h-[200px] overflow-y-auto !outline-none">
