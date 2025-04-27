@@ -16,7 +16,7 @@ export default function Footer() {
   const footerBg = isBlackRoute ? 'bg-secondary-500' : 'bg-primary-500';
 
   return (
-    <footer className={`py-16 ${footerBg}`}>
+    <footer className={`py-10 ${footerBg}`}>
       <div className="flex flex-col items-center justify-center">
         <Link href="/" className="w-10 h-[27px]">
           {isBlackRoute ? <Logo /> : <LogoDark />}

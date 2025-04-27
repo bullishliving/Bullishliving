@@ -24,11 +24,11 @@ export default async function BestBuys() {
     const products = data as Product[];
 
     return (
-      <section className="px-4 py-16 md:py-24 md:px-6 2xl:px-8">
+      <section className="px-4 py-10 md:py-24 md:px-6 2xl:px-8">
         <div className="max-w-[1280px] mx-auto">
           <div className="flex justify-between mb-8 md:mb-10">
-            <h3 className="font-obitron text-center md:text-left font-black text-[34px] leading-[44px] md:text-[40px] md:leading-[52px] text-secondary-500">
-              Best Buys
+            <h3 className="font-obitron text-center md:text-left font-black text-xl leading-[44px] md:text-4xl md:leading-[52px] text-secondary-500">
+              Must Haves
             </h3>
 
             <Link

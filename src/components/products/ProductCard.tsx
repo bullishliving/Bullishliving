@@ -25,7 +25,7 @@ export default function ProductCard({ product }: Props) {
         {isOutOfStock && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded">
             <p className="text-white text-2xl font-bold font-montserrat">
-              Out of Stock
+              out of stock
             </p>
           </div>
         )}
