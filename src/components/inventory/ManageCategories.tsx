@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 
-import { useSetProductForm } from '@/hooks/useSetProductForm';
 import useAddCategoryMutation from "@/api/mutations/categories/useAddCategoryMutation";
 import useDeleteCategoryMutation from "@/api/mutations/categories/useDeleteCategoryMutation";
 
@@ -19,21 +18,24 @@ import UiForm from "../ui/UiForm";
 import UiIcon from "../ui/UiIcon";
 import UiInput from "../ui/UiInput";
 import UiRadio from "../ui/UiRadio";
+import UseObjectStateReturn from '@/types/UseObjectStateReturn';
+import ProductRequest from '@/types/ProductRequest';
+import Product from '@/types/Product';
 
 //---
 
 interface Props {
   categories: Category[];
+  productFormData: UseObjectStateReturn<ProductRequest | Product>;
   handleActiveView: (index: number) => void;
   setActiveCategoryId: (categoryId: string) => void;
 }
 
-export default function ManageCategories({ categories,  handleActiveView, setActiveCategoryId }: Props) {
+export default function ManageCategories({ categories, productFormData, handleActiveView, setActiveCategoryId }: Props) {
   const [selectedCategoryId, setSelectedCategoryId] = useState('')
   const { mutation: {mutateAsync: addCategory, isPending: isAddCategoryLoading } } = useAddCategoryMutation();
   const { mutation: {mutateAsync: deleteCategory } } = useDeleteCategoryMutation();
 
-  const productFormData = useSetProductForm();
   
   const formData = useObjectState({
     name: ''

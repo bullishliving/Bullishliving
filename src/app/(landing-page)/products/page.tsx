@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import useProductQuery from '@/api/query/useProductsQuery';
 import useCategoriesQuery from '@/api/query/useCategoriesQuery';
@@ -40,7 +40,7 @@ export default function Page() {
     query: { data: productsData, isLoading: isProductsLoading },
   } = useProductQuery({
     limit: 12,
-    table: SupabaseTables.AVAILABLE_PRODUCTS,
+    table: SupabaseTables.PRODUCTS,
     page,
     total: totalData || 0,
     categoryIds: selectedCategoryIds,
@@ -53,6 +53,7 @@ export default function Page() {
   const { query: { data: categories, isLoading: isCategoryLoading } } = useCategoriesQuery();
 
   const isLoading = isProductsLoading || isCategoryLoading;
+  const router = useRouter();
 
   function clearFilter() {
     setSelectedCategoryIds([])
@@ -117,7 +118,7 @@ export default function Page() {
   }, [isMobile]);
 
     useEffect(() => {
-        if (productsData?.count !== undefined) {
+      if (productsData?.count !== undefined) {
         setTotalData(productsData.count);
       }
     }, [productsData?.count]);
@@ -196,11 +197,19 @@ export default function Page() {
                 <div
                   className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 mt-6 product-grid gap-x-2 md:gap-x-4 gap-y-6 md:gap-y-8 mb-8 ${isFilterVisible.value && 'md:grid-cols-2 lg:!grid-cols-3'}`}
                 >
-                  {productsData?.data.map((product) => (
-                    <Link key={product.id} href={`/products/${product.id}`}>
-                      <ProductCard product={product} />
-                    </Link>
-                  ))}
+                  {productsData?.data.map((product) => {
+                    const isOutOfStock = product.stock_left === 0 || product.is_out_of_stock
+                    return (
+                      <button
+                        className={`text-left ${isOutOfStock && 'cursor-not-allowed'}`}
+                        key={product.id}
+                        onClick={() => router.push(`/products/${product.id}`)}
+                        disabled={isOutOfStock}
+                      >
+                        <ProductCard product={product} />
+                      </button>
+                    );
+                  })}
                 </div>
                 <UiPaginator
                   onPageChange={onPageChange}

@@ -4,11 +4,10 @@ import useAddProductMutation from "@/api/mutations/products/useAddProductMutatio
 import useUpdateProductMutation from "@/api/mutations/products/useUpdateProductMutation";
 
 import useToggle from "@/hooks/useToggle";
-import { useSetProductForm } from "@/hooks/useSetProductForm";
 
 import Category from '@/types/Category';
 import Product from '@/types/Product';
-
+import UseObjectStateReturn from "@/types/UseObjectStateReturn";
 import cloudinaryInstance from '@/utils/Cloudinary';
 import getAddProductSchema from "@/utils/schemas/AddProductSchema";
 
@@ -22,20 +21,23 @@ import UiRichTextEditor from '../ui/UiRichTextEditor';
 import UiSelect, { Option } from '../ui/UiSelect';
 
 import ProductVariantList from './ProductVariantList';
+import ProductRequest from "@/types/ProductRequest";
+import { useInventoryStore } from "@/Store/InventoryStore";
 
 //---
 
 interface Props {
   categories: Category[];
+  productFormData: UseObjectStateReturn<ProductRequest | Product>;
   onSetActiveView: (index: number) => void;
   closeModal: VoidFunction;
 }
 
-export default function SetProductForm({ categories, onSetActiveView, closeModal }: Props) {
-  const formData = useSetProductForm()
-  
+export default function SetProductForm({ categories, productFormData, onSetActiveView, closeModal }: Props) {
   const { mutation: {mutateAsync: addProduct, isPending: isAddProductPening} } = useAddProductMutation();
   const { mutation: {mutateAsync: updateProduct, isPending: isUpdateProductPending}, setProduct } = useUpdateProductMutation();
+    const { activeProduct } = useInventoryStore();
+  
 
   const loading = useToggle();
 
@@ -50,43 +52,55 @@ export default function SetProductForm({ categories, onSetActiveView, closeModal
     try {
       loading.on();
 
-      const formattedVariants = formData.value?.variants.map((variant) => ({
-        ...variant,
-        values: variant.values.map((value) => ({
-          ...value,
-          stock: Number(value.stock) || 0,
-        })),
-      }));
+      const formattedVariants = productFormData.value?.variants.map(
+        (variant) => ({
+          ...variant,
+          values: variant.values.map((value) => ({
+            ...value,
+            stock: Number(value.stock) || 0,
+          })),
+        })
+      );
 
       let formarttedProduct = {
-        ...formData.value,
-        description: DOMPurify.sanitize(formData.value.description),
-        price: Number(formData.value.price),
-        discounted_price: formData.value.discounted_price ? Number(formData.value.discounted_price): null,
-        stock: formData.value.variants.length > 0 ? null : Number(formData.value.stock),
-        variants: formattedVariants
-      }
+        ...productFormData.value,
+        description: DOMPurify.sanitize(productFormData.value.description),
+        price: Number(productFormData.value.price),
+        discounted_price: productFormData.value.discounted_price
+          ? Number(productFormData.value.discounted_price)
+          : null,
+        stock:
+          productFormData.value.variants.length > 0
+            ? null
+            : Number(productFormData.value.stock),
+        variants: formattedVariants,
+      };
 
       if (
-        formData.value.images &&
-        formData.value.images?.every((image) => image instanceof File)
+        productFormData.value.images &&
+        productFormData.value.images?.every((image) => image instanceof File)
       ) {
-        const urls = await cloudinaryInstance.uploadMultiple(formData.value.images)
+        const urls = await cloudinaryInstance.uploadMultiple(
+          productFormData.value.images
+        );
         formarttedProduct = {
           ...formarttedProduct,
-          images: urls
-        }
+          images: urls,
+        };
       }
-      if (!formData.value?.id) {
+      if (!productFormData.value?.id) {
         await addProduct(formarttedProduct as Product);
         showToast('product successfully added!', 'success');
       } else {
         showToast('product successfully updated!', 'success');
         await updateProduct({
           ...formarttedProduct,
-          id: formData.value.id,
+          id: productFormData.value.id,
         } as Product);
-        setProduct({ ...formarttedProduct, id: formData.value.id } as Product);
+        setProduct({
+          ...formarttedProduct,
+          id: productFormData.value.id,
+        } as Product);
       }
       
       closeModal()
@@ -100,11 +114,9 @@ export default function SetProductForm({ categories, onSetActiveView, closeModal
     
   }
 
-
-
   return (
     <UiForm
-      formData={formData.value}
+      formData={productFormData.value}
       schema={getAddProductSchema()}
       onSubmit={onSubmit}
     >
@@ -113,35 +125,34 @@ export default function SetProductForm({ categories, onSetActiveView, closeModal
           {errors.stock}
           <UiImageUploader
             name="images"
-            onChange={formData.set}
-            value={formData.value.images}
+            onChange={productFormData.set}
+            value={productFormData.value.images}
             error={errors.images}
           />
           <UiInput
             name="name"
             label="Product Name"
             placeholder="Enter name"
-            onChange={formData.set}
-            value={formData.value.name}
+            onChange={productFormData.set}
+            value={productFormData.value.name}
             roundedVariant="xl"
             error={errors.name}
           />
           <UiRichTextEditor
             name="description"
-            onChange={formData.set}
-            value={formData.value.description}
+            onChange={productFormData.set}
+            value={productFormData.value.description}
             label="Description"
             error={errors.description}
-
           />
           <UiSelect
             name="category_id"
             placeholder="Select Category"
             label="Category"
             roundedVariant="lg"
-            onChange={formData.set}
+            onChange={productFormData.set}
             options={formattedCategories}
-            value={formData.value.category_id}
+            value={productFormData.value.category_id}
             error={errors.category_id}
             isSearchable
             bottomNode={
@@ -162,8 +173,8 @@ export default function SetProductForm({ categories, onSetActiveView, closeModal
             name="price"
             label="Amount"
             placeholder="Enter Amount"
-            onChange={formData.set}
-            value={formData.value.price}
+            onChange={productFormData.set}
+            value={productFormData.value.price}
             roundedVariant="xl"
             error={errors.price}
           />
@@ -171,26 +182,31 @@ export default function SetProductForm({ categories, onSetActiveView, closeModal
             name="discounted_price"
             label="Discount price(Optional)"
             placeholder="Enter discounted price"
-            onChange={formData.set}
-            value={formData.value.discounted_price}
+            onChange={productFormData.set}
+            value={productFormData.value.discounted_price}
             roundedVariant="xl"
             error={errors.discounted_price}
           />
-          {formData.value.variants.length < 1 && (
+          {productFormData.value.variants.length < 1 && (
             <UiInput
               name="stock"
               label="Stock"
               placeholder="Total Number In Stock"
-              onChange={formData.set}
-              value={formData.value.stock}
+              onChange={productFormData.set}
+              value={productFormData.value.stock}
               roundedVariant="xl"
               error={errors.stock}
             />
           )}
 
-          <ProductVariantList showVariantForm={() => onSetActiveView(1)} />
+          <ProductVariantList
+            productFormData={productFormData}
+            showVariantForm={() => onSetActiveView(1)}
+          />
           <div className="mt-4">
-            <UiButton loading={isAddProductLoading}>Create product</UiButton>
+            <UiButton loading={isAddProductLoading}>
+              {activeProduct ? 'Edit' : 'Create'} product
+            </UiButton>
           </div>
         </div>
       )}

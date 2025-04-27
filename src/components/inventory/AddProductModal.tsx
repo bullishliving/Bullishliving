@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
 import UiModal from '../ui/UiModal';
@@ -6,7 +6,11 @@ import UiIcon from '../ui/UiIcon';
 
 import SetProductForm from './SetProductForm';
 import useCategoriesQuery from '@/api/query/useCategoriesQuery';
-import { useSetProductStore } from '@/Store/ProductStore';
+import { initialProductState, useInventoryStore } from '@/Store/InventoryStore';
+import useObjectState from '@/hooks/useObjectState';
+import ProductRequest from '@/types/ProductRequest';
+import Product from '@/types/Product';
+
 const SetProductVariantForm = dynamic(() => import('./SetProductVariantForm'));
 const MangeCategories = dynamic(() => import('./ManageCategories'));
 const EditCategories = dynamic(() => import('./EditCategory'));
@@ -19,10 +23,13 @@ interface Props {
 export default function AddProductModal({ isOpen, onClose }: Props) {
   const [activeView, setActiveView] = useState(0);
   const [activeCategoryId, setActiveCategoryId] = useState<string>('');
+  const { activeProduct, setActiveVariantIndex } = useInventoryStore();
+
+  const productFormData = useObjectState<ProductRequest | Product>(
+    activeProduct || initialProductState
+  );
   
   const { query: { data: categories } } = useCategoriesQuery();
-
-  const { activeProduct, setActiveVariantIndex } = useSetProductStore();
 
   function handleActiveView(index: number) {
     setActiveView(index)
@@ -34,7 +41,8 @@ export default function AddProductModal({ isOpen, onClose }: Props) {
 
   function closeModal() {
     onClose();
-    setActiveView(0)
+    setActiveView(0);
+    productFormData.reset();
   }
 
   const views = [
@@ -45,12 +53,13 @@ export default function AddProductModal({ isOpen, onClose }: Props) {
           closeModal={closeModal}
           categories={categories || []}
           onSetActiveView={handleActiveView}
+          productFormData={productFormData}
         />
       ),
     },
     {
-      title: `${false ? 'Edit' : 'Product'} Variant`,
-      node: <SetProductVariantForm />,
+      title: `${activeProduct ? 'Edit' : 'Product'} Variant`,
+      node: <SetProductVariantForm productFormData={productFormData} />,
       startNode: (
         <button
           onClick={() => {
@@ -70,6 +79,7 @@ export default function AddProductModal({ isOpen, onClose }: Props) {
           categories={categories || []}
           handleActiveView={handleActiveView}
           setActiveCategoryId={handleActiveCategoryId}
+          productFormData={productFormData}
         />
       ),
       startNode: (
@@ -94,6 +104,15 @@ export default function AddProductModal({ isOpen, onClose }: Props) {
       ),
     },
   ];
+
+  useEffect(() => {
+    if (activeProduct) {
+      productFormData.setValue(activeProduct);
+    } else {
+      productFormData.reset();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeProduct]);
 
   return (
     <UiModal

@@ -90,7 +90,7 @@ export default function UiInput({
   return (
     <UiField label={label} error={error} variant={variant}>
       <div
-        className={`relative flex items-center w-full !bg-transparent text-sm font-normal font-montserrat ${variant !== 'transparent' && `h-[52px] px-4 ${roundedClasses[roundedVariant]}`} ${variantClasses[variant]} ${validationStyle}`}
+        className={`relative flex items-center w-full overflow-hidden !bg-transparent text-sm font-normal font-montserrat ${variant !== 'transparent' && `h-[52px] px-4 ${roundedClasses[roundedVariant]}`} ${variantClasses[variant]} ${validationStyle}`}
       >
         {prefixNode && (
           <div className="pl-2  text-gray-500 text-sm flex items-center">
