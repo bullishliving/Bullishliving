@@ -10,7 +10,7 @@ export default function JoinCommunity() {
   return (
     <section
       id="community"
-      className="bg-secondary-500 px-4 py-16 md:py-24 md:px-6 2xl:px-8"
+      className="bg-secondary-500 px-4 py-10 md:py-24 md:px-6 2xl:px-8"
     >
       <div className="max-w-[1280px] mx-auto">
         <h2 className="font-obitron font-black text-center text-[34px] leading-[40px] md:text-[40px] md:leading-[52px] text-primary-500 mb-2 md:mb-4">

@@ -14,7 +14,7 @@ import UiIcon from '../ui/UiIcon';
 
 export default function Hero() {
   return (
-    <section className="bg-secondary-500 p-4 md:px-6 2xl:px-8 pb-16 md:pb-20 pt-[80px] md:pt-[125px]">
+    <section className="bg-secondary-500 p-4 md:px-6 2xl:px-8 pb-10 md:pb-20 pt-[80px] md:pt-[125px]">
       <div className="text-white max-w-[1280px] mx-auto h-full">
         <motion.div
           initial={{

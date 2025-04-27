@@ -22,7 +22,7 @@ export default function SectionBanner({
 }: Props) {
   return (
     <section className=" unstoppable">
-      <div className="relative max-w-[1280px] h-[80vh] lg:h-screen px-4 py-16 md:py-24 md:px-6 2xl:px-8 mx-auto flex justify-center items-center">
+      <div className="relative max-w-[1280px] h-[60vh] lg:h-screen px-4 py-10 md:py-24 md:px-6 2xl:px-8 mx-auto flex justify-center items-center">
         <div
           className={`${textAlign === 'center' ? 'text-center' : 'text-left md:text-center'}`}
         >

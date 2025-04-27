@@ -78,6 +78,7 @@ export default function UiSelect({
     return error && '!border-danger-500';
   }, [error]);
 
+
   const placeholderStyle = useMemo(() => {
     return variant === 'dark' ? 'text-grey-600' : 'text-grey-700';
   }, [variant]);

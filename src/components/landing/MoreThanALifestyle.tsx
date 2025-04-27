@@ -9,7 +9,7 @@ import ActiveSlider from './ActiveCarousel/Slider';
 export default function MoreThanALifestyle() {
   const duplicatedImages = [...activeImages, ...activeImages];
   return (
-    <section className="px-4 py-16 lg:py-24 md:px-6 2xl:px-8 bg-secondary-500">
+    <section className="px-4 py-10 lg:py-24 md:px-6 2xl:px-8 bg-secondary-500">
       <div className="max-w-[1280px] overflow-visible mx-auto">
         <div className=" flex flex-col lg:flex-row  gap-4 justify-between mb-6 md:mb-8">
           <div className="mt-auto lg:max-w-[638px]">

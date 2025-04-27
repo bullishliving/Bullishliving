@@ -17,7 +17,8 @@ import UiForm from '../ui/UiForm';
 import UiIcon from '../ui/UiIcon';
 import UiImageUploader from '../ui/UiImageUploader';
 import UiInput from '../ui/UiInput';
-import UiRichTextEditor from '../ui/UiRichTextEditor';
+// import UiRichTextEditor from '../ui/UiRichTextEditor';
+import UiTextarea from "../ui/UiTextarea";
 import UiSelect, { Option } from '../ui/UiSelect';
 
 import ProductVariantList from './ProductVariantList';
@@ -36,8 +37,7 @@ interface Props {
 export default function SetProductForm({ categories, productFormData, onSetActiveView, closeModal }: Props) {
   const { mutation: {mutateAsync: addProduct, isPending: isAddProductPening} } = useAddProductMutation();
   const { mutation: {mutateAsync: updateProduct, isPending: isUpdateProductPending}, setProduct } = useUpdateProductMutation();
-    const { activeProduct } = useInventoryStore();
-  
+  const { activeProduct } = useInventoryStore();
 
   const loading = useToggle();
 
@@ -90,9 +90,7 @@ export default function SetProductForm({ categories, productFormData, onSetActiv
       }
       if (!productFormData.value?.id) {
         await addProduct(formarttedProduct as Product);
-        showToast('product successfully added!', 'success');
       } else {
-        showToast('product successfully updated!', 'success');
         await updateProduct({
           ...formarttedProduct,
           id: productFormData.value.id,
@@ -102,6 +100,7 @@ export default function SetProductForm({ categories, productFormData, onSetActiv
           id: productFormData.value.id,
         } as Product);
       }
+      showToast('done!', 'success');
       
       closeModal()
 
@@ -138,13 +137,23 @@ export default function SetProductForm({ categories, productFormData, onSetActiv
             roundedVariant="xl"
             error={errors.name}
           />
-          <UiRichTextEditor
+          <UiTextarea
+            name="description"
+            onChange={productFormData.set}
+            value={productFormData.value.description}
+            variant="light"
+            roundedVariant="xl"
+            label="Description"
+            placeholder="enter product description"
+            error={errors.description}
+          />
+          {/* <UiRichTextEditor
             name="description"
             onChange={productFormData.set}
             value={productFormData.value.description}
             label="Description"
             error={errors.description}
-          />
+          /> */}
           <UiSelect
             name="category_id"
             placeholder="Select Category"
@@ -205,7 +214,7 @@ export default function SetProductForm({ categories, productFormData, onSetActiv
           />
           <div className="mt-4">
             <UiButton loading={isAddProductLoading}>
-              {activeProduct ? 'Edit' : 'Create'} product
+              {activeProduct ? 'Save' : 'Create'} product
             </UiButton>
           </div>
         </div>
