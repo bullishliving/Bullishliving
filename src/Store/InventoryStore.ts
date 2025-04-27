@@ -35,7 +35,7 @@ interface SetProductStore {
   setIsEdit: (isEdit: boolean) => void;
 }
 
-export const useSetProductStore = create<SetProductStore>((set) => ({
+export const useInventoryStore = create<SetProductStore>((set) => ({
   activeVariant: null,
   setActiveVariant: (variant) => set({ activeVariant: variant }),
   activeVariantIndex: null,

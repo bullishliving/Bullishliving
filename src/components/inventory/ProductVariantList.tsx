@@ -1,29 +1,32 @@
-import { useSetProductStore } from '@/Store/ProductStore';
-import { useSetProductForm } from '@/hooks/useSetProductForm';
+import { useInventoryStore } from '@/Store/InventoryStore';
 
 import UiIcon from '../ui/UiIcon';
 import { useMemo } from 'react';
+import UseObjectStateReturn from '@/types/UseObjectStateReturn';
+import ProductRequest from '@/types/ProductRequest';
+import Product from '@/types/Product';
 
 interface Props {
   showVariantForm: VoidFunction;
+    productFormData: UseObjectStateReturn<ProductRequest | Product>;
+  
 }
 
-export default function ProductVariantList({ showVariantForm }:Props ) {
-  const { setActiveVariant, setActiveVariantIndex } =
-    useSetProductStore();
-
-  const formData = useSetProductForm();
+export default function ProductVariantList({ showVariantForm, productFormData }:Props ) {
+  const { setActiveVariant, setActiveVariantIndex } = useInventoryStore();
 
   function removeVariant(variantIndex: number) {
-    formData.setValue((prevState) => ({
+    productFormData.setValue((prevState) => ({
       ...prevState,
-      variants: prevState.variants.filter((__, index) => variantIndex !== index),
+      variants: prevState.variants.filter(
+        (__, index) => variantIndex !== index
+      ),
     }));
   }
 
-  const isVariantEmpty = useMemo(()=> {
-    return formData.value.variants.length === 0
-  }, [formData]) 
+  const isVariantEmpty = useMemo(() => {
+    return productFormData.value.variants.length === 0;
+  }, [productFormData]); 
 
   return (
     <div>
@@ -33,7 +36,7 @@ export default function ProductVariantList({ showVariantForm }:Props ) {
       <div className="border border-grey-400 rounded-[16px] p-4">
         {!isVariantEmpty && (
           <div className="grid gap-4 mb-4">
-            {formData.value.variants.map((variant, index) => (
+            {productFormData.value.variants.map((variant, index) => (
               <div
                 key={index}
                 className="p-4 rounded-md bg-[#F4F4F4] flex justify-between items-center"

@@ -6,7 +6,7 @@ import useDeleteProductMutaion from '@/api/mutations/products/useDeleteProductMu
 import useGetTotalPayInQuery from '@/api/query/useGetTotalPayInQuery';
 import useOutOfStockProductsQuery from '@/api/query/useOutOfStockProductsQuery';
 import useProductsQuery from '@/api/query/useProductsQuery';
-import { useSetProductStore } from '@/Store/ProductStore';
+import { useInventoryStore } from '@/Store/InventoryStore';
 
 import useToggle from '@/hooks/useToggle';
 import { usePagination } from '@/hooks/usePagination';
@@ -37,7 +37,7 @@ import { SupabaseTables } from '@/types/enums/SupabaseTables';
 //---
 
 export default function ProductInventory() {
-  const { activeProduct, setActiveProduct } = useSetProductStore();
+  const { activeProduct, setActiveProduct } = useInventoryStore();
   const [limit, setLimit] = useState<number>(5);
   const [totalProducts, setTotalProducts] = useState<number | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState('');

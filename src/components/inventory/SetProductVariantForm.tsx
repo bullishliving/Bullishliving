@@ -5,20 +5,26 @@ import { useState } from 'react';
 import UiButton from '../ui/UiButton';
 
 import ProductVariantFormItem from './ProductVariantFormItem';
-import { useSetProductStore } from '@/Store/ProductStore';
-import { useSetProductForm } from '@/hooks/useSetProductForm';
+import { useInventoryStore } from '@/Store/InventoryStore';
 import showToast from '../ui/UiToast';
+import UseObjectStateReturn from '@/types/UseObjectStateReturn';
+import ProductRequest from '@/types/ProductRequest';
+import Product from '@/types/Product';
+
+interface Props {
+  productFormData: UseObjectStateReturn<ProductRequest | Product>;
+}
 
 export type ProductVariant = {
   type: string;
   values: { value: string; stock: string | number }[];
 };
 
-export default function SetProductVariantForm() {
-  const { activeVariant, activeVariantIndex } = useSetProductStore();
-  const formData = useSetProductForm();
+export default function SetProductVariantForm({ productFormData }: Props) {
+  const { activeVariant, activeVariantIndex } = useInventoryStore();
   const [variants, setVariants] = useState<ProductVariant[]>([
-    (activeVariantIndex !== null && formData.value.variants[activeVariantIndex]) || {
+    (activeVariantIndex !== null &&
+      productFormData.value.variants[activeVariantIndex]) || {
       type: '',
       values: [{ value: '', stock: '' }],
     },
@@ -27,28 +33,25 @@ export default function SetProductVariantForm() {
   function editVariant() {
     if(activeVariantIndex === null) return;
 
-    formData.setValue((prevState) => ({
+    productFormData.setValue((prevState) => ({
       ...prevState,
-      variants: prevState.variants.map(
-        (variant, index) => index === activeVariantIndex ? variants[0] : variant
+      variants: prevState.variants.map((variant, index) =>
+        index === activeVariantIndex ? variants[0] : variant
       ),
     }));
-
   }
-
+  
   function saveVariant() {
     if(activeVariantIndex !== null){
       editVariant()
     } else{
-      formData.setValue((prevState) => ({
+      productFormData.setValue((prevState) => ({
         ...prevState,
         variants: [...prevState.variants, ...variants],
       }));
     }
     showToast('variants saved', 'success');
   }
-
-
 
   function handleTypeChange(
     variantIndex: number,
@@ -159,6 +162,7 @@ export default function SetProductVariantForm() {
         </div>
         {!activeVariant && (
           <button
+            type='button'
             onClick={addVariant}
             className="font-montserrat font-bold text-base text-primary-500 w-fit text-left mt-4"
           >
@@ -166,7 +170,7 @@ export default function SetProductVariantForm() {
           </button>
         )}
       </div>
-      <UiButton onClick={saveVariant}>Save Product Variant</UiButton>
+      <UiButton type='button' onClick={saveVariant}>Save Product Variant</UiButton>
     </div>
   );
 }
