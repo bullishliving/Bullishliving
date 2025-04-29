@@ -13,10 +13,10 @@ export default function Footer() {
       <div className="max-w-[1280px] mx-auto">
         <div className="flex flex-col md:flex-row justify-between gap-16 pb-8 border-b border-secondary-500">
           <div>
-            <Link href="/">
+            <Link  href="/">
               <LogoFull />
             </Link>
-            <p className="font-montserrat text-sm test-second mt-4">
+            <p className="font-montserrat text-sm test-second mt-3 md:mt-4">
               Ready for whatever
             </p>
             <div className="flex gap-10 mt-6">
@@ -55,9 +55,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <p
-          className={`mt-6 font-montserrat text-sm text-secondary-500`}
-        >
+        <p className={`mt-6 font-montserrat text-sm text-secondary-500`}>
           © {date.getFullYear()}, BullishLiving Essentials
         </p>
       </div>
