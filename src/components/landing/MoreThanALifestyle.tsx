@@ -31,26 +31,34 @@ export default function MoreThanALifestyle() {
                 Capture the moment, tag us on social media, and get featured!
                 💪🔥 #BullishLiving
               </p>
-              <button className="hidden group md:flex items-center gap-3 group mt-4">
+              <a
+                href="https://snapchat.com/t/Zulm5L1S"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden group md:flex items-center gap-3 group mt-4"
+              >
                 <p className="text-primary-500 text-sm font-bold font-montserrat">
                   Try Out Custom Lens Now
                 </p>
                 <div className="stroke-secondary-500 flex justify-center items-center bg-primary-500 rounded-full w-6 h-6 transition-transform duration-300 ease-in-out group-hover:rotate-[45deg]">
                   <UiIcon icon="ArrowDiagonal" size="24" />
                 </div>
-              </button>
+              </a>
             </div>
           </FadeIn>
         </div>
         <ActiveSlider slides={duplicatedImages} />
-        <button className="group flex justify-center w-full md:hidden items-center gap-3 group mt-10">
+          <a
+            href="https://snapchat.com/t/Zulm5L1S"
+            target="_blank"
+            rel="noopener noreferrer"className="group flex justify-center w-full md:hidden items-center gap-3 group mt-10">
           <p className="text-primary-500 text-sm font-bold font-montserrat">
             Try Out Custom Lens Now
           </p>
           <div className="stroke-secondary-500 flex justify-center items-center bg-primary-500 rounded-full w-6 h-6 transition-transform duration-300 ease-in-out group-hover:rotate-[45deg]">
             <UiIcon icon="ArrowDiagonal" size="24" />
           </div>
-        </button>
+        </a>
       </div>
     </section>
   );

@@ -1,6 +1,3 @@
-'use client';
-
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 import LogoFull from '@/assets/svg/logo-full.svg';
@@ -9,16 +6,10 @@ import { footerSocials } from '@/utils/constant';
 import UiIcon, { Icons } from '../ui/UiIcon';
 
 export default function Footer() {
-  const pathname = usePathname();
-
-  const blackRoutes = ['/products', '/cart', '/checkout'];
-
-  const isBlackRoute = blackRoutes.some((route) => pathname.startsWith(route));
-
-  const footerBg = isBlackRoute ? 'bg-secondary-500' : 'bg-primary-500';
+  const date = new Date()
 
   return (
-    <footer className={`py-10 md:py-16 p-4 md:px-6 2xl:px-8 ${footerBg}`}>
+    <footer className={`py-10 md:py-16 p-4 md:px-6 2xl:px-8 bg-primary-500`}>
       <div className="max-w-[1280px] mx-auto">
         <div className="flex flex-col md:flex-row justify-between gap-16 pb-8 border-b border-secondary-500">
           <div>
@@ -65,9 +56,9 @@ export default function Footer() {
         </div>
 
         <p
-          className={`mt-6 font-montserrat text-sm ${isBlackRoute ? 'text-white' : 'text-secondary-500'}`}
+          className={`mt-6 font-montserrat text-sm text-secondary-500`}
         >
-          © 2024, BullishLiving Essentials
+          © {date.getFullYear()}, BullishLiving Essentials
         </p>
       </div>
     </footer>
