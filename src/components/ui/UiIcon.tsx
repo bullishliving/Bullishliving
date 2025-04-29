@@ -26,6 +26,7 @@ import InstagramDark from '@/assets/svg/instagram-dark.svg';
 import Itallic from '@/assets/svg/italic.svg';
 import Link from '@/assets/svg/link.svg';
 import Location from '@/assets/svg/location.svg';
+import LogoFull from '@/assets/svg/logo-full.svg';
 import Minus from '@/assets/svg/minus.svg';
 import NumberedList from '@/assets/svg/numbered-list.svg';
 import Phone from '@/assets/svg/phone.svg';
@@ -72,6 +73,7 @@ const icons = {
   Itallic,
   Link,
   Location,
+  LogoFull,
   Minus,
   NumberedList,
   Phone,
