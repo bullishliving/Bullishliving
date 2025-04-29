@@ -18,9 +18,11 @@ import DirectInbox from '@/assets/svg/direct-inbox.svg';
 import DropDownMenu from '@/assets/svg/drop-down-menu.svg';
 import Edit from '@/assets/svg/edit.svg';
 import Email from '@/assets/svg/email.svg';
+import EmailDark from '@/assets/svg/email-dark.svg';
 import Filter from '@/assets/svg/filter.svg';
 import Hamburger from '@/assets/svg/hamburger.svg';
 import Instagram from '@/assets/svg/instagram.svg';
+import InstagramDark from '@/assets/svg/instagram-dark.svg';
 import Itallic from '@/assets/svg/italic.svg';
 import Link from '@/assets/svg/link.svg';
 import Location from '@/assets/svg/location.svg';
@@ -30,9 +32,11 @@ import Phone from '@/assets/svg/phone.svg';
 import Search from '@/assets/svg/search.svg';
 import SliderVertical from '@/assets/svg/slider-vertical.svg';
 import Snapchat from '@/assets/svg/snapchat.svg';
+import SnapchatDark from '@/assets/svg/snapchat-dark.svg';
 import Sort from '@/assets/svg/sort.svg';
 import Star from '@/assets/svg/star.svg';
 import TikTok from '@/assets/svg/tiktok.svg';
+import TikTokDark from '@/assets/svg/tiktok-dark.svg';
 import X from '@/assets/svg/twitter.svg';
 import Trash from '@/assets/svg/trash.svg';
 import User from '@/assets/svg/user.svg';
@@ -60,9 +64,11 @@ const icons = {
   DropDownMenu,
   Edit,
   Email,
+  EmailDark,
   Filter,
   Hamburger,
   Instagram,
+  InstagramDark,
   Itallic,
   Link,
   Location,
@@ -72,9 +78,11 @@ const icons = {
   Search,
   SliderVertical,
   Snapchat,
+  SnapchatDark,
   Sort,
   Star,
   TikTok,
+  TikTokDark,
   Trash,
   User,
   X,

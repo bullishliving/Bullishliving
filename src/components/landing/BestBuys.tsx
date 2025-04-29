@@ -44,14 +44,17 @@ export default async function BestBuys() {
             </Link>
           </div>
           <BestBuysList products={products} />
-          <button className="mt-[34px] mx-auto flex group md:hidden items-center gap-3 group">
+          <Link
+            href="/products"
+            className="mt-[34px] mx-auto w-fit flex justify-center group md:hidden items-center gap-3 group"
+          >
             <p className="text-secondary-500 text-sm font-medium font-montserrat">
               View All
             </p>
             <div className="stroke-primary-500 flex justify-center items-center bg-secondary-500 rounded-full w-6 h-6 transition-transform duration-300 ease-in-out group-hover:rotate-[45deg]">
               <UiIcon icon="ArrowDiagonal" size="24" />
             </div>
-          </button>
+          </Link>
         </div>
       </section>
     );

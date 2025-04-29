@@ -1,4 +1,5 @@
 'use client';
+
 import AnimatedTitle from '../animations/AnimatedTitle';
 import FadeIn from '../animations/FadeIn';
 import JoinCommunityForm from './JoinCommunityForm';

@@ -4,19 +4,19 @@ import Image from "next/image";
 
 import BullishLivingHealthyImage from '@/assets/images/bullishliving-healthy-meal.png';
 
-import UiForm from "@/components/ui/UiForm";
-import UiInput from "@/components/ui/UiInput";
-import UiButton from "@/components/ui/UiButton";
-import UiIcon from "@/components/ui/UiIcon";
+// import UiForm from "@/components/ui/UiForm";
+// import UiInput from "@/components/ui/UiInput";
+// import UiButton from "@/components/ui/UiButton";
+// import UiIcon from "@/components/ui/UiIcon";
 
-import useObjectState from "@/hooks/useObjectState";
+// import useObjectState from "@/hooks/useObjectState";
 
 //---
 
 export default function Page() {
-  const formData = useObjectState({
-    email: ''
-  })
+  // const formData = useObjectState({
+  //   email: ''
+  // })
   return (
     <section className="px-4 md:px-6 2xl:px-8 md:pb-14 pt-[80px] md:pt-[125px]  bg-secondary-500">
       <div className="max-w-[1280px] mx-auto flex flex-col md:flex-row gap-6 md:gap-16 items-center text-white pb-28">
@@ -38,7 +38,8 @@ export default function Page() {
             designed to keep you performing at your peak.Enter your email below
             to receive your free PDF!
           </p>
-          <div className="p-[1.5px] rounded-2xl bg-grey-gradient">
+          <p className="font-obitron font-black text-4xl md:text-5xl text-primary-500 opacity-30">Coming Soon...</p>
+          {/* <div className="p-[1.5px] rounded-2xl bg-grey-gradient">
             <div className="bg-secondary-500 py-6 px-4 rounded-[14px]">
               <UiForm formData={formData.value} onSubmit={() => {}}>
                 {({}) => (
@@ -57,7 +58,7 @@ export default function Page() {
                 )}
               </UiForm>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

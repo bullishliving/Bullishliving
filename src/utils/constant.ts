@@ -30,6 +30,25 @@ export const socials = [
   },
 ]
 
+export const footerSocials = [
+  {
+    icon: 'InstagramDark',
+    link: 'https://www.instagram.com/bullishlivingactive?igsh=MXVoczZiOGppaDZ0cg=='
+  },
+  {
+    icon: 'SnapchatDark',
+    link: 'https://snapchat.com/t/6GPrnoYP'
+  },
+  {
+    icon: 'TikTokDark',
+    link: 'https://www.tiktok.com/@bullishliving?_t=ZM-8usJzwYIDaA&_r=1'
+  },
+  {
+    icon: 'EmailDark',
+    link: 'mailto:Info@bullishliving.com'
+  },
+]
+
 export const roleOptions: Option[] = [
   {
     label: 'Trainer',
@@ -64,7 +83,7 @@ export const landingPageRoutes = [
   },
   {
     label: 'BullishLiving Health',
-    path: '/bullish-living-health',
+    path: '/bullishliving-health',
   },
   {
     label: 'About Us ',
