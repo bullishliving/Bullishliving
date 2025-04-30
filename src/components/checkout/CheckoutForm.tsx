@@ -46,6 +46,9 @@ export default function CheckoutForm() {
   const { cartItems, buyNowItem, refreshBuyNow, refreshCartItems } = useCartStore();
 
   const itemsToProcess = isBuyNow ? ([buyNowItem || {}] as CartItem[]) : cartItems;
+
+  console.log(itemsToProcess);
+  
     
   const formData = useObjectState({
     email: '',
@@ -101,7 +104,7 @@ export default function CheckoutForm() {
      method: 'POST',
      headers: { 'Content-Type': 'application/json' },
      body: JSON.stringify({
-       cartItems: cartItems,
+       cartItems: itemsToProcess,
        customerDetails: {
          name: `${formData.value.lastName} ${formData.value.firstName}`,
          email: formData.value.email,
