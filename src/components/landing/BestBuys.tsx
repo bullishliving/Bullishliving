@@ -27,9 +27,13 @@ export default async function BestBuys() {
       <section className="px-4 py-10 md:py-24 md:px-6 2xl:px-8">
         <div className="max-w-[1280px] mx-auto">
           <div className="flex justify-between mb-8 md:mb-10">
-            <h3 className="font-obitron text-center md:text-left font-black text-xl leading-[44px] md:text-4xl md:leading-[52px] text-secondary-500">
-              Must Haves
-            </h3>
+            <div>
+              {' '}
+              <h3 className="font-obitron text-center md:text-left font-black text-[34px] leading-[44px] md:text-[40px] md:leading-[52px] text-secondary-500">
+                Must Haves
+              </h3>
+              <p className='font-montserrat mt-2 text-center md:text-left'>Pairs well with every routine, it’s your go-to.</p>
+            </div>
 
             <Link
               href="/products"
