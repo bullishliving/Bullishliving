@@ -46,7 +46,7 @@ export async function sendOrderDetails({ cartItems, customerDetails}: EmailProps
   }))
 
   return await transporter.sendMail({
-    from: 'Info@bullishliving.com',
+    from: '"Bullishliving" <Info@bullishliving.com>',
     to: customerDetails.email,
     subject: 'Your Bullishliving Order',
     html: template
@@ -57,7 +57,7 @@ export async function sendPartnershipDetails({ email, name, phone, reason, role,
   const template = await render(PartnershipRequestTemplate({email, name, phone, reason, role, socialLinks}))
 
   return await  transporter.sendMail({
-    from: 'Info@bullishliving.com',
+    from: '"Bullishliving" <Info@bullishliving.com>',
     to:'Info@bullishliving.com',
     subject: 'New Partnership request',
     replyTo: email,
