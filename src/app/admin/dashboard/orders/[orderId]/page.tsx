@@ -45,11 +45,11 @@ export default function Page() {
 
   const { label: OrderStatusLabel, variant: OrderPillVariant } = getPillVariant(order?.status || OrderStatus.PENDING)
 
-  const copyToClipboard = async (text: string, message: string) => {
+  const copyDeliveryDetails = async () => {
     try {
       
-      await navigator.clipboard.writeText(text);
-      showToast(message, 'success');
+      await navigator.clipboard.writeText(`${order?.customer} ${order?.phone} ${order?.state} ${order?.city || ''} ${order?.address} ${order?.apartment || ''}`);
+      showToast('order details copied', 'success');
     } catch (error) {
       console.log(error);
     } 
@@ -121,7 +121,7 @@ export default function Page() {
               height={32}
               alt={item.product_name}
               src={item.product_image}
-              className="w-8 h-8 rounded-lg"
+              className="w-8 h-8 rounded-lg  object-cover"
             />
             <div>
               <p className="text-sm font-bold text-secondary-500 truncate w-full">
@@ -142,7 +142,7 @@ export default function Page() {
               src={item.product_image}
               width={40}
               height={40}
-              className="w-10 h-10"
+              className="w-10 h-10 rounded object-cover"
             />
             <div>
               <p className="text-secondary-500 font-bold text-sm mb-2">
@@ -204,13 +204,6 @@ export default function Page() {
           <p className="text-sm text-tertiary-700 mt-2">{order?.customer}</p>
           <div className="text-sm text-tertiary-700 mt-2 flex flex-wrap gap-2">
             <span>{order?.email}</span> |<span>{order?.phone}</span>
-            <button
-              onClick={() =>
-                copyToClipboard(order?.phone as string, 'phone number copied!')
-              }
-            >
-              <UiIcon icon="Copy" size="20" />
-            </button>
           </div>
         </div>
         <div className="p-4 rounded-lg w-full font-montserrat bg-secondary-500">
@@ -220,17 +213,10 @@ export default function Page() {
           </h3>
           <div className="text-[#BFBFBF] text-sm flex flex-wrap gap-2 mt-2">
             <p>{order?.address}</p>
-            <button
-              onClick={() =>
-                copyToClipboard(order?.address as string, 'Address copied!')
-              }
-            >
-              <UiIcon icon="Copy" size="20" />
-            </button>
           </div>
           <div className="text-[#BFBFBF] text-sm mt-1 flex gap-2 items-center">
             <span>
-              {order?.city} {order?.state} 
+              {order?.city} {order?.state}
             </span>{' '}
             {order?.apartment && (
               <div className="flex items-center gap-2">
@@ -239,6 +225,12 @@ export default function Page() {
             )}
           </div>
         </div>
+      </div>
+      <div className="w-[150px] mb-8 stroke-black fill-black">
+        <UiButton onClick={copyDeliveryDetails}>
+          {' '}
+          Copy details <UiIcon icon="Copy" size="20" />{' '}
+        </UiButton>
       </div>
       {itemsNode && (
         <div className="sm:bg-white rounded-lg sm:p-4 font-montserrat">

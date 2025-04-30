@@ -224,6 +224,7 @@ export default function Page() {
       {isMobile && isFilterVisible.value && (
         <AnimatePresence>
           <MobileProductsFilter
+            clearFilter={clearFilter}
             isVisible={isFilterVisible.value}
             categories={categories || []}
             selectedCategories={selectedCategoryIds}

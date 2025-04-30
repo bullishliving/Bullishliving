@@ -9,10 +9,11 @@ import PriceFilter from './PriceFilter';
 import UiIcon from '../ui/UiIcon';
 import UiCheckbox from '../ui/UiCheckbox';
 import Category from '@/types/Category';
-import UiButton from '../ui/UiButton';
+// import UiButton from '../ui/UiButton';
 
 interface Props {
   onHideFilter: VoidFunction;
+  clearFilter: VoidFunction;
   onCategoryValueChange: (categoryId: number) => void;
   categories: Category[];
   selectedCategories: number[];
@@ -28,6 +29,7 @@ export default function MobileProductsFilter({
   onCategoryValueChange,
   setPriceRnage,
   onHideFilter,
+  clearFilter
 }: Props) {
   const filterVariant = {
     hidden: { opacity: 0 },
@@ -43,7 +45,7 @@ export default function MobileProductsFilter({
       initial="hidden"
       animate="visible"
       variants={filterVariant}
-      className={`fixed md:hidden z-40 top-0 left-0 flex flex-col justify-between gap-4 bg-white w-full min-h-screen px-4 pb-8 transition-transform ease-in-out duration-300`}
+      className={`fixed md:hidden z-[70] top-0 left-0 flex flex-col justify-between gap-4 bg-white w-full min-h-screen px-4 pb-8 transition-transform ease-in-out duration-300`}
     >
       <div>
         <div className="flex items-center justify-between py-4 mb-4">
@@ -59,13 +61,19 @@ export default function MobileProductsFilter({
         </div>
         <div className="flex justify-between items-center font-montserrat mb-[26px]">
           <p className="font-bold text-lg text-secondary-500 ">Filters</p>
-          <button className="underline font-montserrat text-grey-700 text-sm font-bold ">
+          <button
+            onClick={clearFilter}
+            className="underline font-montserrat text-grey-700 text-sm font-bold "
+          >
             Clear all
           </button>
         </div>
         <div className="grid gap-4">
           <CollpasibleWrapper title="Price" initialOpen>
-            <PriceFilter priceRange={priceRange} setPriceRange={setPriceRnage} />
+            <PriceFilter
+              priceRange={priceRange}
+              setPriceRange={setPriceRnage}
+            />
           </CollpasibleWrapper>
           <CollpasibleWrapper title="Category">
             <div className="grid gap-4">
@@ -86,9 +94,9 @@ export default function MobileProductsFilter({
           </CollpasibleWrapper>
         </div>
       </div>
-      <div className="shrink-0">
-        <UiButton>Apply Filters</UiButton>
-      </div>
+      {/* <div className="shrink-0">
+        <UiButton onClick={onHideFilter}>Apply Filters</UiButton>
+      </div> */}
     </motion.div>
   );
 }
