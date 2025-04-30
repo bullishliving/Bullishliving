@@ -280,9 +280,10 @@ export default function CheckoutForm() {
                   options={cityOptions || []}
                   onChange={formData.set}
                   value={formData.value.city}
-                  label="City(Optional)"
+                  label="City"
                   placeholder="Select City"
                   disabled={selectedState === ''}
+                  error={errors.city}
                   isSearchable
                 />
                 <UiInput

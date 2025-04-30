@@ -7,8 +7,8 @@ import UiField from './UiField';
 import UiIcon from './UiIcon';
 
 const variantClasses = {
-  dark: 'border bg-secondary-500 !border-grey-500',
-  light: 'border !border-grey-300 bg-white',
+  dark: 'border bg-secondary-500 border-grey-500',
+  light: 'border border-grey-300 bg-white',
   transparent: 'border-b border-grey-500 text-white pb-4',
 };
 
@@ -117,7 +117,7 @@ export default function UiSelect({
             {displayText}
           </div>
           <div
-            className={`transition-transform ease-in-out duration-300 stroke-black ${variant === 'light' ? 'stroke-secondary-500' : 'stroke-[#717171]'}  ${optionsAreVisible ? 'rotate-180' : 'rotate-0'} `}
+            className={`transition-transform ease-in-out duration-300 stroke-black ${variant === 'light' ? 'stroke-secondary-500' : '!stroke-[#717171]'}  ${optionsAreVisible ? 'rotate-180' : 'rotate-0'} `}
           >
             <UiIcon icon="CaretDown" size="16" />
           </div>
