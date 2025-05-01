@@ -11,14 +11,16 @@ export default function Footer() {
   return (
     <footer className={`py-10 md:py-16 p-4 md:px-6 2xl:px-8 bg-primary-500`}>
       <div className="max-w-[1280px] mx-auto">
-        <div className="flex flex-col-reverse md:flex-row justify-between gap-16 pb-8 border-b border-secondary-500">
-          <div>
-            <Link  href="/">
-              <LogoFull />
-            </Link>
-            <p className="font-montserrat text-sm test-second mt-3 md:mt-4">
-              Ready for whatever
-            </p>
+        <div className="flex flex-col-reverse md:flex-row justify-between gap-4 md:gap-16 pb-8 border-b border-secondary-500">
+          <div className="flex flex-col-reverse md:flex-col gap-10 md:gap-6">
+            <div>
+              <Link href="/">
+                <LogoFull />
+              </Link>
+              <p className="font-montserrat text-sm test-second mt-3 md:mt-4">
+                Ready for whatever
+              </p>
+            </div>
             <div className="flex gap-10 mt-6">
               {footerSocials.map((social) => (
                 <a
@@ -28,7 +30,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-3"
                 >
-                  <UiIcon icon={social.icon as Icons} size="32" />
+                  <UiIcon icon={social.icon as Icons} size="33" />
                 </a>
               ))}
             </div>
