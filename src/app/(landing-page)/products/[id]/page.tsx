@@ -40,8 +40,6 @@ export default function Page() {
 
   const isDescExpanded = useToggle();
 
-  
-
   const shouldTruncate = product && product?.description.length > 160;
 
   const displayedDesc =
@@ -168,12 +166,12 @@ export default function Page() {
           </button>
           <button
             onClick={handleShare}
-            className="border border-gray-500 rounded-full w-10 h-10 flex justify-center items-center"
+            className="border border-primary-500 rounded-full w-10 h-10 bg-[#fff9ec] flex justify-center items-center"
           >
             <UiIcon icon="Share" size="24" />
           </button>
         </div>
-    
+
         <div className="flex flex-col gap-6 md:flex-row md:gap-[75px] w-full">
           <div className="max-w-[544px] w-full h-fit">
             <Image
