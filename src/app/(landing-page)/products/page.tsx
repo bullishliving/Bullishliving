@@ -37,7 +37,7 @@ export default function Page() {
   });
 
   const {
-    query: { data: productsData, isLoading: isProductsLoading },
+    query: { data: productsData, isLoading: isProductsLoading, isFetched },
   } = useProductQuery({
     limit: 12,
     table: SupabaseTables.PRODUCTS,
@@ -98,9 +98,6 @@ export default function Page() {
       transition: { duration: 0.1, ease: 'easeOut' },
     },
   };
-
-  console.log(selectedCategoryIds);
-  
 
   useEffect(() => {
     function checkScreenSize() {
@@ -178,7 +175,9 @@ export default function Page() {
                 />
               </div>
             </div>
-            {productsData?.data && productsData?.data.length < 1 ? (
+            {productsData?.data &&
+            productsData?.data.length < 1 &&
+            isFetched ? (
               <div className=" border rounded-lg mt-6 flex justify-center items-center h-[400px]">
                 <div className="flex justify-center flex-col text-center">
                   <div className="mx-auto">
@@ -198,7 +197,8 @@ export default function Page() {
                   className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 mt-6 product-grid gap-x-2 md:gap-x-4 gap-y-6 md:gap-y-8 mb-8 ${isFilterVisible.value && 'md:grid-cols-2 lg:!grid-cols-3'}`}
                 >
                   {productsData?.data.map((product) => {
-                    const isOutOfStock = product.stock_left === 0 || product.is_out_of_stock
+                    const isOutOfStock =
+                      product.stock_left === 0 || product.is_out_of_stock;
                     return (
                       <button
                         className={`text-left ${isOutOfStock && 'cursor-not-allowed'}`}
