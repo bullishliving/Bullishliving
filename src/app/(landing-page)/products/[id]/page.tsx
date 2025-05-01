@@ -173,7 +173,7 @@ export default function Page() {
             <UiIcon icon="Share" size="24" />
           </button>
         </div>
-
+    
         <div className="flex flex-col gap-6 md:flex-row md:gap-[75px] w-full">
           <div className="max-w-[544px] w-full h-fit">
             <Image
