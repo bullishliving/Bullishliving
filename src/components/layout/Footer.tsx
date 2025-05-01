@@ -6,12 +6,12 @@ import { footerSocials } from '@/utils/constant';
 import UiIcon, { Icons } from '../ui/UiIcon';
 
 export default function Footer() {
-  const date = new Date()
+  const date = new Date();
 
   return (
     <footer className={`py-10 md:py-16 p-4 md:px-6 2xl:px-8 bg-primary-500`}>
       <div className="max-w-[1280px] mx-auto">
-        <div className="flex flex-col md:flex-row justify-between gap-16 pb-8 border-b border-secondary-500">
+        <div className="flex flex-col-reverse md:flex-row justify-between gap-16 pb-8 border-b border-secondary-500">
           <div>
             <Link  href="/">
               <LogoFull />

@@ -31,6 +31,7 @@ import Minus from '@/assets/svg/minus.svg';
 import NumberedList from '@/assets/svg/numbered-list.svg';
 import Phone from '@/assets/svg/phone.svg';
 import Search from '@/assets/svg/search.svg';
+import Share from '@/assets/svg/share.svg';
 import SliderVertical from '@/assets/svg/slider-vertical.svg';
 import Snapchat from '@/assets/svg/snapchat.svg';
 import SnapchatDark from '@/assets/svg/snapchat-dark.svg';
@@ -78,6 +79,7 @@ const icons = {
   NumberedList,
   Phone,
   Search,
+  Share,
   SliderVertical,
   Snapchat,
   SnapchatDark,

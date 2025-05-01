@@ -40,12 +40,38 @@ export default function Page() {
 
   const isDescExpanded = useToggle();
 
+  
+
   const shouldTruncate = product && product?.description.length > 160;
 
   const displayedDesc =
     isDescExpanded.value || !shouldTruncate
       ? product?.description
       : product?.description.slice(0, 160) + '...';
+
+  async function handleShare() {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          text: 'check out this product',
+          title: `${product?.name}`,
+          url: `https://bullishliving-git-dev-bullishlivings-projects.vercel.app/products${product?.id}`,
+        });
+      } catch (error) {
+        console.error('Share failed:', error);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(
+          `https://bullishliving-git-dev-bullishlivings-projects.vercel.app/products${product?.id}`
+        );
+        showToast('link copied!', 'success');
+      } catch (err) {
+        console.log(err);
+        showToast('failed to copy link', 'error');
+      }
+    }
+  }
 
   function buildCartItem(
     product: Product,
@@ -119,7 +145,7 @@ export default function Page() {
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     if(product?.variants) {
       setActiveVariant(product?.variants[0]?.values[0]?.value);
     }
@@ -132,13 +158,22 @@ export default function Page() {
   return (
     <section className="p-4 md:px-6 2xl:px-8 pb-16 md:pb-20 pt-[80px] md:pt-[125px]">
       <div className="max-w-[1280px] mx-auto">
-        <button
-          onClick={() => router.back()}
-          className="stroke-secondary-500 mb-8 md:flex items-center gap-2 text-secondary-500 text-sm font-montserrat font-bold"
-        >
-          <UiIcon icon="ArrowLeft" size="24" />
-          Back
-        </button>
+        <div className="mb-8 flex justify-between">
+          <button
+            onClick={() => router.back()}
+            className="stroke-secondary-500  md:flex items-center gap-2 text-secondary-500 text-sm font-montserrat font-bold"
+          >
+            <UiIcon icon="ArrowLeft" size="24" />
+            Back
+          </button>
+          <button
+            onClick={handleShare}
+            className="border border-gray-500 rounded-full w-10 h-10 flex justify-center items-center"
+          >
+            <UiIcon icon="Share" size="24" />
+          </button>
+        </div>
+    
         <div className="flex flex-col gap-6 md:flex-row md:gap-[75px] w-full">
           <div className="max-w-[544px] w-full h-fit">
             <Image
