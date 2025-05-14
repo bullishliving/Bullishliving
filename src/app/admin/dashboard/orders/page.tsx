@@ -12,17 +12,17 @@ import OrderStatusFilter from '@/components/OrderStatusFilter';
 import SearchInput from '@/components/ui/SearchInput';
 import UiAdminPaginator from '@/components/ui/UiAdminPaginator';
 import UiButton from '@/components/ui/UiButton';
+import UiDropDown, { DropDownData } from '@/components/ui/UiDropDown';
+import UiIcon from '@/components/ui/UiIcon';
 import UiLoader from '@/components/ui/UiLoader';
-import UiTable, { Header } from '@/components/ui/UiTable';
 import UiMobileDataList from '@/components/ui/UiMobileDataList';
+import UiTable, { Header } from '@/components/ui/UiTable';
 
 import { usePagination } from '@/hooks/usePagination';
 
 import { OrderStatus } from '@/types/enums/OrderStatus';
 
 import { formatDate } from '@/utils/helperFunctions';
-import UiDropDown, { DropDownData } from '@/components/ui/UiDropDown';
-import UiIcon from '@/components/ui/UiIcon';
 
 //---
 

@@ -27,7 +27,7 @@ export default function Page() {
 
   const router = useRouter();
   const loading = useToggle();
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   const {
     query: { data: order, isLoading, error } 
@@ -47,7 +47,6 @@ export default function Page() {
 
   const copyDeliveryDetails = async () => {
     try {
-      
       await navigator.clipboard.writeText(`${order?.customer} ${order?.phone} ${order?.state} ${order?.city || ''} ${order?.address} ${order?.apartment || ''}`);
       showToast('order details copied', 'success');
     } catch (error) {

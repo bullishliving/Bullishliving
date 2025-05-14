@@ -22,7 +22,7 @@ interface Props {
   isOpen: boolean;
   onClose: VoidFunction;
   coupon?: Coupon;
-  clearActiveCoupon: VoidFunction
+  clearActiveCoupon?: VoidFunction
 }
 
 export default function SetCoupon({ isOpen, onClose, clearActiveCoupon, coupon }: Props) {
@@ -30,6 +30,9 @@ export default function SetCoupon({ isOpen, onClose, clearActiveCoupon, coupon }
     coupon || {
       name: '',
       amount: '',
+      assignee_email: '',
+      assignee_name: '',
+      commission_percentage: '',
     }
   );
   
@@ -42,7 +45,7 @@ export default function SetCoupon({ isOpen, onClose, clearActiveCoupon, coupon }
   const isPending = isCreatePending || isUpdatePending;
 
   function closeModal() {
-    clearActiveCoupon()    
+    clearActiveCoupon?.()
     formData.reset();
     onClose();
   }
@@ -90,19 +93,47 @@ export default function SetCoupon({ isOpen, onClose, clearActiveCoupon, coupon }
               roundedVariant="xl"
               onChange={formData.set}
               value={formData.value.name}
-              placeholder="Enter coupon name"
-              label="Name"
+              placeholder="Enter Coupon Code"
+              label="Coupon Code"
               error={errors.name}
             />
             <UiInput
               name="amount"
               onChange={formData.set}
               value={formData.value.amount}
-              placeholder="Enter coupon amount"
+              placeholder="Enter percentage"
               roundedVariant="xl"
               type="number"
-              label="Amount"
+              label="Discount percentage"
               error={errors.amount}
+            />
+            <UiInput
+              name="assignee_name"
+              onChange={formData.set}
+              value={formData.value.assignee_name}
+              placeholder="Enter influencer’s name"
+              roundedVariant="xl"
+              label="Assigned to : Influencer’s name"
+              error={errors.assignee_name}
+            />
+            <UiInput
+              name="assignee_email"
+              onChange={formData.set}
+              value={formData.value.assignee_email}
+              placeholder="Enter influencer’s email address"
+              roundedVariant="xl"
+              label="Influencer’s email address"
+              error={errors.assignee_email}
+            />
+            <UiInput
+              name="commission_percentage"
+              onChange={formData.set}
+              type="number"
+              value={formData.value.commission_percentage}
+              placeholder="Enter influencer’s email address"
+              roundedVariant="xl"
+              label="Commission percentage"
+              error={errors.commission_percentage}
             />
             <div className="mt-3">
               <UiButton loading={isPending}>

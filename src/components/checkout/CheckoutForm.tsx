@@ -117,7 +117,7 @@ export default function CheckoutForm() {
   async function getCoupon() {
     try {
       isCouponLoading.on()
-      const { amount } =  await Api.getCoupon(discountCode);
+      const { amount } = await Api.getCouponViaName(discountCode);
       setDiscountPercentage(Number(amount))
       setStoredDiscountCode(discountCode);
       showToast('discount applied', 'success')

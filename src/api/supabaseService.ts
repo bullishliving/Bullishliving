@@ -15,6 +15,7 @@ import Partner from '@/types/Partner';
 import Product from '@/types/Product';
 
 import { createClient } from '@/utils/supabase/supabaseClient';
+import CouponUsageData from '@/types/CouponUsageData';
 
 //--
 
@@ -104,6 +105,10 @@ class SupabaseService {
 
   toggleIsFeatured(id: number, data: boolean) {
     return this.update(SupabaseTables.PRODUCTS, id, {is_top_product: data})
+  }
+
+  toggleCouponStatus(id: number, data: boolean) {
+    return this.update(SupabaseTables.DISCOUNT_CODES, id, { is_active: data })
   }
 
   updateCostPrice(id: number, field: keyof Pick<Product, 'price' | 'discounted_price'>,  price: string) {
@@ -198,7 +203,11 @@ class SupabaseService {
     return this.select<Coupon>(SupabaseTables.DISCOUNT_CODES)
   }
 
-  async getCoupon(couponName: string) {
+  getCoupon(couponId: number) {
+    return this.selectRow<Coupon>(SupabaseTables.DISCOUNT_CODES, couponId)
+  }
+
+  async getCouponViaName(couponName: string) {
     const { data, error } = await createClient().from(SupabaseTables.DISCOUNT_CODES).select('*').eq('name', couponName).single();
 
     if (error) throw error;
@@ -212,6 +221,26 @@ class SupabaseService {
 
   deleteCoupon(couponId: number) {
     return this.delete(SupabaseTables.DISCOUNT_CODES, couponId)
+  }
+
+  async getCouponUsageData(couponId: number) {
+    const { data, error } = await createClient().from(SupabaseTables.DISCOUNT_CODE_USAGE).select('*').eq('discount_code_id', couponId);
+
+    if(error) throw error;
+
+    return data as CouponUsageData[]
+  }
+
+  getCoupnUsage(filters?:{ column: string; value: any }[]) {
+    return this.selectPaginated(SupabaseTables.DISCOUNT_CODE_USAGE, { filters })
+  }
+
+  async getMonthlyCommission(couponId: number) {
+    const { data, error } = await createClient().rpc('get_current_month_commission', { code_id: couponId});
+
+    if (error) throw error;
+
+    return data as number;
   }
 
   addBanner(data: Banner) {
