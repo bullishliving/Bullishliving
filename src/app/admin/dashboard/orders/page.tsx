@@ -34,7 +34,7 @@ export default function Page() {
   const [totalOrders, setTotalOrders] = useState<number | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState('');
   const [dateRange, setDateRange] = useState('All time');
-  const [fromDate, setFromDate] = useState<string >('');
+  const [fromDate, setFromDate] = useState<string>('');
   const [toDate, setToDate] = useState<string>('');
   const now = moment();
 
@@ -65,8 +65,7 @@ export default function Page() {
     searchColumn: 'orders_id_customer',
     searchQuery,
     toDate,
-    fromDate ,
-
+    fromDate 
   });
 
   const isLoading = isOrderStatusLoading || isOrderDataLoading ;
@@ -214,7 +213,6 @@ export default function Page() {
     [orderdData]
   );
 
-  
   useEffect(() => {
     if (orderdData?.count !== undefined) {
       setTotalOrders(orderdData.count);

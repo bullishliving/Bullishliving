@@ -3,9 +3,11 @@
 import { useMemo } from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 import useGetCouponsQuery from '@/api/query/useGetCouponsQuery';
 import useDeleteCouponMutation from '@/api/mutations/coupon/useDeleteCouponMutation';
+import useGetTotalCommissionGenerated from '@/api/query/useGetTotalCommisionGenerated';
 
 import AdminBasePage from '@/components/layout/AdminBasePage';
 import AnalyticsCard from '@/components/inventory/AnalyticsCard';
@@ -31,17 +33,21 @@ export default function Page() {
   const [activeCoupon, setActiveCoupon] = useState<Coupon | null>(null);
 
   const {
-    query: { data: coupons, isLoading, refetch: refetchCoupons },
+    query: { data: coupons, isLoading: isCouponsLoading, refetch: refetchCoupons },
   } = useGetCouponsQuery();
 
   const {
     mutation: { mutateAsync: deleteCoupon, isPending: isCouponDeletePending },
   } = useDeleteCouponMutation();
 
+  const { query: { data: totalCommission, isLoading: isTotalCommissionLoading } } = useGetTotalCommissionGenerated();
+
   const isSetCouponVisible = useToggle();
   const isDeleteConfirmationVisible = useToggle();
 
-  const router = useRouter()
+  const router = useRouter();
+
+  const isLoading = isCouponsLoading || isTotalCommissionLoading;
 
   const couponTableHeaders: Header[] = useMemo(() => {
     return [
@@ -75,6 +81,11 @@ export default function Page() {
       },
     ];
   }, []);
+
+  const mobileCouponHeaders = useMemo(() => {
+    return couponTableHeaders.filter((header) => header.query !== 'actions');
+  }, [couponTableHeaders]);
+
 
   function clearActiveCoupon() {
     setActiveCoupon(null);
@@ -168,7 +179,10 @@ export default function Page() {
       commission: `₦${coupon.commission.toLocaleString()}`,
       used: coupon.times_used,
       status: (
-        <UiSwith onChange={() => toggleActiveStatus(coupon.id, !coupon.is_active)} value={coupon.is_active} />
+        <UiSwith
+          onChange={() => toggleActiveStatus(coupon.id, !coupon.is_active)}
+          value={coupon.is_active}
+        />
       ),
       actions: (
         <UiDropDown
@@ -178,8 +192,27 @@ export default function Page() {
           side="bottom"
         />
       ),
+      bottomNode: (
+        <div className="flex justify-center items-center gap-8 pt-6 border-t">
+          <Link href={`./coupons/${coupon.id}`}>
+            <UiIcon icon="Eye" size="24" />
+          </Link>
+          <button onClick={() => {
+            setActiveCoupon(coupon);
+            isSetCouponVisible.on();
+          }} className={`stroke-tertiary-700`}>
+            <UiIcon icon="Edit" size="24" />
+          </button>
+          <button onClick={() => {
+            setActiveCoupon(coupon);
+            isDeleteConfirmationVisible.on();
+          }} className=" gap-2 stroke-tertiary-700">
+            <UiIcon icon="Trash" size="24" />
+          </button>
+        </div>
+      ),
     }));
-  }, [coupons, couponsDropdownOptions, refetchCoupons]);
+  }, [coupons, couponsDropdownOptions, isDeleteConfirmationVisible, isSetCouponVisible, refetchCoupons]);
 
   if (isLoading) {
     return <UiLoader />;
@@ -204,7 +237,7 @@ export default function Page() {
         />
         <AnalyticsCard
           title="Commission generated"
-          figure={`₦${coupons?.length || 0}`}
+          figure={`₦${Math.ceil(totalCommission || 0).toLocaleString()}`}
         />
       </div>
       <div className="md:bg-white md:p-4 rounded-[8px]">
@@ -223,7 +256,7 @@ export default function Page() {
               <div className="sm:hidden">
                 <UiMobileDataList
                   data={couponsTableNodes}
-                  headers={couponTableHeaders}
+                  headers={mobileCouponHeaders}
                 />
               </div>
             </div>

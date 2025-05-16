@@ -16,6 +16,7 @@ import Product from '@/types/Product';
 
 import { createClient } from '@/utils/supabase/supabaseClient';
 import CouponUsageData from '@/types/CouponUsageData';
+import CouponPayOutHistory from '@/types/CouponPayOutHistory';
 
 //--
 
@@ -215,7 +216,7 @@ class SupabaseService {
     return data as Coupon;
   }
 
-  updateCoupon(couponId: number, data: Coupon) {
+  updateCoupon(couponId: number, data: Partial<Coupon>) {
     return this.update(SupabaseTables.DISCOUNT_CODES, couponId, data)
   }
 
@@ -231,8 +232,16 @@ class SupabaseService {
     return data as CouponUsageData[]
   }
 
-  getCoupnUsage(filters?:{ column: string; value: any }[]) {
-    return this.selectPaginated(SupabaseTables.DISCOUNT_CODE_USAGE, { filters })
+  getCoupnUsage(limit: number, start?: number, end?: number,  filters?:{ column: string; value: any }[],) {
+    return this.selectPaginated<CouponUsageData>(SupabaseTables.DISCOUNT_CODE_USAGE, { filters, limit, start, end, getCount: true, })
+  }
+
+  getCoupnPayOutHistory(limit: number, start?: number, end?: number,  filters?:{ column: string; value: any }[],) {
+    return this.selectPaginated<CouponPayOutHistory>(SupabaseTables.DISCOUNT_CODE_PAYOUT_HISTORY, { filters, limit, start, end, getCount: true, })
+  }
+
+  addCouponPaymentHistory(payOutData: CouponPayOutHistory) {
+    return this.insert(SupabaseTables.DISCOUNT_CODE_PAYOUT_HISTORY, payOutData)
   }
 
   async getMonthlyCommission(couponId: number) {
@@ -263,6 +272,14 @@ class SupabaseService {
     const { data, error} = await createClient().rpc('get_total_pay_in');
 
     if (error) throw error;
+
+    return data as number
+  }
+
+  async getTotalCommissionGenerated() {
+    const { data, error } = await createClient().rpc('sum_commission');
+
+    if(error) throw error;
 
     return data as number
   }

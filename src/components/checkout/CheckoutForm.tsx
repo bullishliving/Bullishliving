@@ -321,7 +321,7 @@ export default function CheckoutForm() {
           </main>
           <div className="sticky top-28">
             <CartSummary
-              deliveryFee={deliveryFee}
+              deliveryFee={selectedState ? deliveryFee : undefined}
               label="Proceed to Pay"
               loading={loading.value}
               discountPercent={discountPercentage}

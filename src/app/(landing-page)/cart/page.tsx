@@ -75,7 +75,7 @@ export default function Page() {
           ₦
           {(
             item.product_discounted_price ?? item.product_price
-          ).toLocaleString()}
+          )?.toLocaleString()}
         </p>
       ),
       action: (

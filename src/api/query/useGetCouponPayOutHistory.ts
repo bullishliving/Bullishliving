@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Api } from "../supabaseService";
 
-export default function useGetCouponUsage(props: {
+export default function useGetCouponPayOutHistory(props: {
   page: number;
   limit: number;
   total: number;
@@ -17,8 +17,8 @@ export default function useGetCouponUsage(props: {
   const end = Math.min(start + limit - 1, total - 1);
 
   const query = useQuery({
-    queryKey: ['couponUsage', filters, limit, page, total],
-    queryFn: () => Api.getCoupnUsage(limit, start, end, filters),
+    queryKey: ['couponPayoutHistory', filters, limit, page, total],
+    queryFn: () => Api.getCoupnPayOutHistory(limit, start, end, filters),
     placeholderData: (previousData) => previousData,
   })
 

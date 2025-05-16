@@ -7,5 +7,6 @@ export enum SupabaseTables {
   DISCOUNT_CODES = 'discount_codes',
   BANNERS = 'banners',
   AVAILABLE_PRODUCTS= 'available_products',
-  DISCOUNT_CODE_USAGE = 'discount_codes_usage'
+  DISCOUNT_CODE_USAGE = 'discount_codes_usage',
+  DISCOUNT_CODE_PAYOUT_HISTORY = 'discount_code_payout_history'
 }
