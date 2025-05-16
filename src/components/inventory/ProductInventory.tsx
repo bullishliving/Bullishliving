@@ -119,7 +119,7 @@ export default function ProductInventory() {
     } catch (error) {
       console.log(error);
       showToast('Error updating out of stock', 'error');
-    throw new Error(`An error occured ${error}`)
+      throw new Error(`An error occured ${error}`)
     }
   }
 

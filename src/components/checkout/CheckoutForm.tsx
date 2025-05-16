@@ -117,7 +117,7 @@ export default function CheckoutForm() {
   async function getCoupon() {
     try {
       isCouponLoading.on()
-      const { amount } =  await Api.getCoupon(discountCode);
+      const { amount } = await Api.getCouponViaName(discountCode);
       setDiscountPercentage(Number(amount))
       setStoredDiscountCode(discountCode);
       showToast('discount applied', 'success')
@@ -321,7 +321,7 @@ export default function CheckoutForm() {
           </main>
           <div className="sticky top-28">
             <CartSummary
-              deliveryFee={deliveryFee}
+              deliveryFee={selectedState ? deliveryFee : undefined}
               label="Proceed to Pay"
               loading={loading.value}
               discountPercent={discountPercentage}

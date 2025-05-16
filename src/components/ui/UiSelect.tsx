@@ -59,7 +59,7 @@ export default function UiSelect({
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredOptions = options.filter((option) =>
-    option.label.toLowerCase().includes(searchQuery.toLocaleLowerCase())
+    option.label.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const displayText = useMemo(() => {

@@ -15,6 +15,8 @@ import Partner from '@/types/Partner';
 import Product from '@/types/Product';
 
 import { createClient } from '@/utils/supabase/supabaseClient';
+import CouponUsageData from '@/types/CouponUsageData';
+import CouponPayOutHistory from '@/types/CouponPayOutHistory';
 
 //--
 
@@ -104,6 +106,10 @@ class SupabaseService {
 
   toggleIsFeatured(id: number, data: boolean) {
     return this.update(SupabaseTables.PRODUCTS, id, {is_top_product: data})
+  }
+
+  toggleCouponStatus(id: number, data: boolean) {
+    return this.update(SupabaseTables.DISCOUNT_CODES, id, { is_active: data })
   }
 
   updateCostPrice(id: number, field: keyof Pick<Product, 'price' | 'discounted_price'>,  price: string) {
@@ -198,7 +204,11 @@ class SupabaseService {
     return this.select<Coupon>(SupabaseTables.DISCOUNT_CODES)
   }
 
-  async getCoupon(couponName: string) {
+  getCoupon(couponId: number) {
+    return this.selectRow<Coupon>(SupabaseTables.DISCOUNT_CODES, couponId)
+  }
+
+  async getCouponViaName(couponName: string) {
     const { data, error } = await createClient().from(SupabaseTables.DISCOUNT_CODES).select('*').eq('name', couponName).single();
 
     if (error) throw error;
@@ -206,12 +216,40 @@ class SupabaseService {
     return data as Coupon;
   }
 
-  updateCoupon(couponId: number, data: Coupon) {
+  updateCoupon(couponId: number, data: Partial<Coupon>) {
     return this.update(SupabaseTables.DISCOUNT_CODES, couponId, data)
   }
 
   deleteCoupon(couponId: number) {
     return this.delete(SupabaseTables.DISCOUNT_CODES, couponId)
+  }
+
+  async getCouponUsageData(couponId: number) {
+    const { data, error } = await createClient().from(SupabaseTables.DISCOUNT_CODE_USAGE).select('*').eq('discount_code_id', couponId);
+
+    if(error) throw error;
+
+    return data as CouponUsageData[]
+  }
+
+  getCoupnUsage(limit: number, start?: number, end?: number,  filters?:{ column: string; value: any }[],) {
+    return this.selectPaginated<CouponUsageData>(SupabaseTables.DISCOUNT_CODE_USAGE, { filters, limit, start, end, getCount: true, })
+  }
+
+  getCoupnPayOutHistory(limit: number, start?: number, end?: number,  filters?:{ column: string; value: any }[],) {
+    return this.selectPaginated<CouponPayOutHistory>(SupabaseTables.DISCOUNT_CODE_PAYOUT_HISTORY, { filters, limit, start, end, getCount: true, })
+  }
+
+  addCouponPaymentHistory(payOutData: CouponPayOutHistory) {
+    return this.insert(SupabaseTables.DISCOUNT_CODE_PAYOUT_HISTORY, payOutData)
+  }
+
+  async getMonthlyCommission(couponId: number) {
+    const { data, error } = await createClient().rpc('get_current_month_commission', { code_id: couponId});
+
+    if (error) throw error;
+
+    return data as number;
   }
 
   addBanner(data: Banner) {
@@ -234,6 +272,14 @@ class SupabaseService {
     const { data, error} = await createClient().rpc('get_total_pay_in');
 
     if (error) throw error;
+
+    return data as number
+  }
+
+  async getTotalCommissionGenerated() {
+    const { data, error } = await createClient().rpc('sum_commission');
+
+    if(error) throw error;
 
     return data as number
   }

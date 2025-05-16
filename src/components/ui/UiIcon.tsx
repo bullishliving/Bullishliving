@@ -19,6 +19,7 @@ import DropDownMenu from '@/assets/svg/drop-down-menu.svg';
 import Edit from '@/assets/svg/edit.svg';
 import Email from '@/assets/svg/email.svg';
 import EmailDark from '@/assets/svg/email-dark.svg';
+import Eye from '@/assets/svg/eye.svg';
 import Filter from '@/assets/svg/filter.svg';
 import Hamburger from '@/assets/svg/hamburger.svg';
 import Instagram from '@/assets/svg/instagram.svg';
@@ -67,6 +68,7 @@ const icons = {
   Edit,
   Email,
   EmailDark,
+  Eye,
   Filter,
   Hamburger,
   Instagram,

@@ -34,9 +34,7 @@ export default function useGetOrdersQuery(props: {
       filters,
       toDate,
       fromDate,
-      
     ),
-
     placeholderData: (previousData) => previousData,
 
     refetchOnMount: fromDate || toDate ? 'always' : false

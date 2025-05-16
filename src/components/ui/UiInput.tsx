@@ -113,7 +113,7 @@ export default function UiInput({
           </div>
         ) : (
           <input
-            className={`hide-number-spinners flex-1 outline-none  placeholder:text-sm placeholder:font-normal text-base font-semibold h-full bg-transparent ${variant} ${variant === 'light' ? 'text-secondary-500' : 'text-white'} ${prefixNode ? 'pl-0' : ''}  ${placeholderStyle}`}
+            className={`hide-number-spinners flex-1  outline-none  placeholder:text-sm placeholder:font-normal text-base font-semibold h-full bg-transparent ${variant} ${variant === 'light' ? 'text-secondary-500' : 'text-white'} ${prefixNode ? 'pl-0' : ''}  ${placeholderStyle}`}
             placeholder={placeholder}
             type={inputType}
             value={value || ''}

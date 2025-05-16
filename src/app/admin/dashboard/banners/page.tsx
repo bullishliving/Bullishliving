@@ -98,7 +98,7 @@ export default function Page() {
         className="w-12 h-8 rounded-lg object-cover"
       />
     ),
-    link: banner.link,
+    link: banner.link || '---',
     actions: (
       <UiDropDown
         options={couponsDropdownOptions}
