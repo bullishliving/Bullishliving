@@ -5,6 +5,7 @@ import nodemailer from 'nodemailer';
 
 import { OrderCreatedTemplate } from '@/components/EmailTemplate/OrderCreatedTemplate';
 import { PartnershipRequestTemplate } from '@/components/EmailTemplate/PartnershipTemplate';
+import { CouponUsageTemplate } from '@/components/EmailTemplate/CouponUsageTemplate';
 
 import CartItem from '@/types/CartItem';
 
@@ -26,6 +27,12 @@ export interface PartnershipDetails {
   socialLinks: string[];
   role: string;
   reason: string;
+}
+
+interface CouponUsageDetails {
+  email: string;
+  commission: string
+  discountCode: string;
 }
 
 const transporter = nodemailer.createTransport({
@@ -61,6 +68,17 @@ export async function sendPartnershipDetails({ email, name, phone, reason, role,
     to:'Info@bullishliving.com',
     subject: 'New Partnership request',
     replyTo: email,
+    html: template
+  })
+}
+
+export async function sendCouponUsageMail({ commission, email, discountCode }:CouponUsageDetails) {
+  const template = await render(CouponUsageTemplate({commission, discountCode}));
+
+  return await transporter.sendMail({
+    from: '"Bullishliving" <Info@bullishliving.com>',
+    to: email,
+    subject: 'Your Discount code was used',
     html: template
   })
 }

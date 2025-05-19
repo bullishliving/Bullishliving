@@ -120,7 +120,9 @@ export const OrderCreatedTemplate = ({
               }}
               href="https://www.bullishliving.com/"
             >
-              <Text style={global.heading}>Bullishliving.com</Text>
+              <Text style={{ ...global.heading, color: '#CD9900' }}>
+                Bullishliving.com
+              </Text>
             </Link>
           </Row>
         </Section>
