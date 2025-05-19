@@ -1,14 +1,14 @@
+import { useMemo } from 'react';
 
 import CartItem from '@/types/CartItem';
 
 import UiButton from '../ui/UiButton';
 import UiIcon from '../ui/UiIcon';
-import { useMemo } from 'react';
 
 interface Props {
   onAction?: VoidFunction;
   label: string;
-  cartItems: CartItem[]
+  cartItems: CartItem[];
   loading?: boolean;
   deliveryFee?: number;
   discountPercent?: number;
@@ -59,7 +59,7 @@ export default function CartSummary({ onAction, loading, cartItems, label, deliv
 
   const isAnyItemDiscounted = useMemo(()=> {
     return cartItems.some((item) => !!item.product_discounted_price)
-  }, [cartItems])
+  }, [cartItems]);
 
   return (
     <aside className="md:col-span-1 md:border md:border-[#1212121F] rounded-[8px] h-fit md:p-4 pb-6 font-montserrat">

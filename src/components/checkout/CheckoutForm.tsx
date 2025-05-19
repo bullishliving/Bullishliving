@@ -28,13 +28,16 @@ import UiForm from '../ui/UiForm';
 import showToast from '../ui/UiToast';
 import UiButton from '../ui/UiButton';
 
+//--
 
 export default function CheckoutForm() {
   const [selectedState, setSelectedState] = useState<string>('');
   const [deliveryFee, setDeliveryFee] = useState<number>(0);
   const [discountCode, setDiscountCode] = useState('');
   const [storedDiscountCode, setStoredDiscountCode] = useState('');
+  const [couponAssigneeEmail, setCouponAssigneeEmail] = useState<string | null>(null);
   const [discountPercentage, setDiscountPercentage] = useState<number>(0);
+  const [commissionPercentage, setCommissionPercentage] = useState<number>(0);
   
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -46,10 +49,7 @@ export default function CheckoutForm() {
   const { cartItems, buyNowItem, refreshBuyNow, refreshCartItems } = useCartStore();
 
   const itemsToProcess = isBuyNow ? ([buyNowItem || {}] as CartItem[]) : cartItems;
-
-  console.log(itemsToProcess);
   
-    
   const formData = useObjectState({
     email: '',
     firstName: '',
@@ -66,7 +66,7 @@ export default function CheckoutForm() {
     setDiscountCode(value)
   };
 
-  const { pay } = usePayment(itemsToProcess, {
+  const { pay, } = usePayment(itemsToProcess, {
     email: formData.value.email,
     first_name: formData.value.firstName,
     last_name: formData.value.firstName,
@@ -99,7 +99,7 @@ export default function CheckoutForm() {
     }
   }
   
-  async function sendMail() {
+  async function sendOrderDetailsMail() {
    await fetch('/api/mail/order-creation', {
      method: 'POST',
      headers: { 'Content-Type': 'application/json' },
@@ -114,12 +114,26 @@ export default function CheckoutForm() {
    });    
   }
 
+  async function sendInfluencerDiscountUsageMail(commission: number) {
+    await fetch('/api/mail/discount-code-usage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        assignee_mail: couponAssigneeEmail,
+        commission,
+        discountCode: storedDiscountCode,
+      }),
+    });
+  }
+
   async function getCoupon() {
     try {
       isCouponLoading.on()
-      const { amount } = await Api.getCouponViaName(discountCode);
+      const { amount, assignee_email, commission_percentage } = await Api.getCouponViaName(discountCode);
       setDiscountPercentage(Number(amount))
+      setCommissionPercentage(commission_percentage);
       setStoredDiscountCode(discountCode);
+      setCouponAssigneeEmail(assignee_email)
       showToast('discount applied', 'success')
       setDiscountCode('')
     } catch (error) {
@@ -168,7 +182,13 @@ export default function CheckoutForm() {
         }).then(() => {
           Api.reduceStock(cartItems);
 
-          sendMail();
+          sendOrderDetailsMail();
+
+          if (couponAssigneeEmail){
+            const commision =
+              paystackConfig.orderAmount * (commissionPercentage / 100);
+            sendInfluencerDiscountUsageMail(commision);
+          }
 
           showToast('order created!', 'success');
 

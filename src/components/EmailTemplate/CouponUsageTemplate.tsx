@@ -15,26 +15,15 @@ import {
 import type * as React from 'react';
 
 interface Props {
-  name: string;
-  email: string;
-  phone: string;
-  socialLinks: string[];
-  role: string;
-  reason: string;
+  commission: string;
+  discountCode: string;
 }
 
-export const PartnershipRequestTemplate = ({
-  name,
-  email,
-  phone,
-  socialLinks,
-  role,
-  reason,
-}: Props) => (
+export const CouponUsageTemplate = ({ commission, discountCode }: Props) => (
   <Html>
     <Head />
     <Body style={main}>
-      <Preview>New partnership request received from {name}</Preview>
+      <Preview>Your discount code was used!</Preview>
       <Container style={container}>
         <Hr style={global.hr} />
         <Section style={message}>
@@ -45,50 +34,26 @@ export const PartnershipRequestTemplate = ({
             alt="logo"
             style={{ margin: 'auto' }}
           />
-          <Heading style={global.heading}>New Partnership Request</Heading>
-          <Text style={global.text}>
-            You have received a new partnership request.
-          </Text>
+          <Heading style={global.heading}>Your discount code was used</Heading>
+
           <Text style={{ ...global.text, marginTop: 24 }}>
-            <strong>Name:</strong> {name}
-            <br />
-            <strong>Email:</strong> {email}
-            <br />
-            <strong>Phone:</strong> {phone}
-            <br />
-            <strong>Role:</strong> {role}
+            Great news! Your discount <b>{discountCode}</b> code was just used
+            on our store 🎉 You have earned a commission of ₦
+            {Number(commission).toLocaleString()} from this order. This amount has been
+            successfully recorded in your dashboard, and you’ll receive a
+            detailed payout summary at the end of the payout cycle. Thank you
+            for being an awesome part of our creator community!
           </Text>
         </Section>
 
         <Hr style={global.hr} />
-
-        <Section style={global.defaultPadding}>
-          <Text style={adressTitle}>Social Media Links:</Text>
-          <ul style={{ paddingLeft: 16 }}>
-            {socialLinks.map((link, i) => (
-              <li key={i}>
-                <Link href={link} style={{ color: '#0070f3', fontSize: 14 }}>
-                  {link}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Section>
-
-        <Hr style={global.hr} />
-
-        <Section style={global.defaultPadding}>
-          <Text style={adressTitle}>Reason for Partnering:</Text>
-          <Text style={{ ...global.text, fontSize: 14 }}>{reason}</Text>
-        </Section>
-
-        <Hr style={global.hr} />
-
         <Section style={paddingY}>
           <Row>
             <Link
+              style={{
+                color: 'black',
+              }}
               href="https://www.bullishliving.com/"
-              style={{ color: 'black' }}
             >
               <Text style={{ ...global.heading, color: '#CD9900' }}>
                 Bullishliving.com
@@ -96,13 +61,11 @@ export const PartnershipRequestTemplate = ({
             </Link>
           </Row>
         </Section>
-
         <Hr style={{ ...global.hr, marginTop: '12px' }} />
-
         <Section style={paddingY}>
           <Row>
             <Text style={{ ...footer.text, paddingTop: 30, paddingBottom: 30 }}>
-              Please reach out if you need more info about this request.
+              Please contact us if you have any questions.
             </Text>
           </Row>
           <Row>
@@ -116,7 +79,7 @@ export const PartnershipRequestTemplate = ({
   </Html>
 );
 
-// Same styles as your original OrderCreatedTemplate
+
 const paddingX = {
   paddingLeft: '40px',
   paddingRight: '40px',
@@ -145,6 +108,7 @@ const global = {
     lineHeight: '1.3',
     fontWeight: '700',
     textAlign: 'center',
+    color: '#CD9900',
     letterSpacing: '-1px',
   } as React.CSSProperties,
   text: {
@@ -187,13 +151,11 @@ const message = {
   textAlign: 'center',
 } as React.CSSProperties;
 
-const adressTitle = {
-  ...paragraph,
-  fontSize: '15px',
-  fontWeight: 'bold',
-};
-
 const footer = {
+  policy: {
+    width: '166px',
+    margin: 'auto',
+  },
   text: {
     margin: '0',
     color: '#AFAFAF',
@@ -201,3 +163,4 @@ const footer = {
     textAlign: 'center',
   } as React.CSSProperties,
 };
+ 

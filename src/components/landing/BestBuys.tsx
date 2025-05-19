@@ -29,7 +29,7 @@ export default async function BestBuys() {
           <div className="flex justify-between mb-8 md:mb-10">
             <div>
               {' '}
-              <h3 className="font-obitron md:text-left font-black text-[34px] leading-[44px] md:text-[40px] md:leading-[52px] text-secondary-500">
+              <h3 className="font-obitron md:text-left  font-black text-[34px] leading-[44px] md:text-[40px] md:leading-[52px] text-secondary-500">
                 Must haves
               </h3>
               <p className="font-obitron font-black text-sm text-primary-500 mt-2 md:text-left">
