@@ -7,7 +7,7 @@ export default function useObjectState<T = Record<string, string>>(
   data = {} as T
 ) {
   const [value, setValue] = useState(data);
-
+  
   function set(params: OnChangeParams) {
     setValue((val) => ({
       ...val,

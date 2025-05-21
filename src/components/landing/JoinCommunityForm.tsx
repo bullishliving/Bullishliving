@@ -14,7 +14,6 @@ export default function JoinCommunityForm() {
   const formData = useObjectState({
     name: '',
     email: '',
-    phone: '',
   });
 
   const loading = useToggle();
@@ -59,15 +58,6 @@ export default function JoinCommunityForm() {
               value={formData.value.email}
               placeholder="Enter your email address"
               error={errors.email}
-              variant="transparent"
-            />
-            <UiInput
-              name="phone"
-              type="phone"
-              onChange={formData.set}
-              value={formData.value.phone}
-              placeholder="Enter your email address"
-              error={errors.phone}
               variant="transparent"
             />
             <UiButton variant="white" loading={loading.value}>

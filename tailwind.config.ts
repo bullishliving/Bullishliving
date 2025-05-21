@@ -39,7 +39,7 @@ export default {
         },
         danger: {
           400: '#E93423',
-          500: '#B41B0D',
+          500: '#B41B0D', 
         },
         orange: {
           50: '#FFEDD9',
@@ -48,7 +48,8 @@ export default {
           600: '#fb4e04d5',
         },
         warning: {
-          50: '#FFFAEB',
+          50: '#FFFAEB', 
+          400: '#FF3B30',
           500: '#B54708'
         },
         success: {
