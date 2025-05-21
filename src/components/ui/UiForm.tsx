@@ -35,9 +35,11 @@ export default function UiForm({
         {}
       );
     }
+    console.log(errors);
+    
     return errors;
   }
-
+  
   return (
     <Formik
       initialValues={formData}

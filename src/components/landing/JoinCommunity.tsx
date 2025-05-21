@@ -3,7 +3,6 @@
 import AnimatedTitle from '../animations/AnimatedTitle';
 import FadeIn from '../animations/FadeIn';
 import JoinCommunityForm from './JoinCommunityForm';
-// import Socials from './Socials';
 
 // ---
 
@@ -30,7 +29,6 @@ export default function JoinCommunity() {
         </FadeIn>
         <div className="community-bg-image flex justify-center items-center rounded-2xl h-[432px] md:h-[537px] px-4 py-[30px] mt-10"></div>
         <JoinCommunityForm />
-        {/* <Socials /> */}
       </div>
     </section>
   );

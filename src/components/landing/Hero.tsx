@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -9,10 +11,33 @@ import HeroImg from '@/assets/images/active-image.jpg';
 import AnimatedTitle from '../animations/AnimatedTitle';
 import FadeIn from '../animations/FadeIn';
 import UiIcon from '../ui/UiIcon';
+import MysteryDiscountModal from './MysteryDiscountModal';
 
 // ---
 
 export default function Hero() {
+  const [isDiscountModalVisible, setIsDiscountModalVisible] = useState(false);
+
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const hasDisplayed = sessionStorage.getItem('hasDiscountCodeDisplayed');
+
+    if (!hasDisplayed) {
+      timerRef.current = setTimeout(() => {
+        setIsDiscountModalVisible(true);
+        sessionStorage.setItem('hasDiscountCodeDisplayed', 'true');
+      }, 7000);
+    }
+
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
+
+
   return (
     <section className="bg-secondary-500 p-4 md:px-6 2xl:px-8 pb-10 md:pb-20 pt-[80px] md:pt-[125px]">
       <div className="text-white max-w-[1280px] mx-auto h-full">
@@ -61,6 +86,10 @@ export default function Hero() {
           </FadeIn>
         </div>
       </div>
+      <MysteryDiscountModal
+        isOpen={isDiscountModalVisible}
+        onClose={() => setIsDiscountModalVisible(false)}
+      />
     </section>
   );
 }

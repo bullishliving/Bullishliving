@@ -26,12 +26,12 @@ export default function UiModal({
       {isOpen && (
         <div>
           <div
-            className="fixed w-full h-full inset-0 top-0 left-0 p-96 flex items-center justify-center z-40 bg-[#05051166] backdrop-blur-sm"
+            className="fixed w-full h-full inset-0 top-0 left-0 p-96 flex items-center justify-center z-[60] bg-[#05051166] backdrop-blur-sm"
             data-testid="overlay"
             onClick={onClose}
           />
           <div
-            className={`bg-white fixed bottom-0 md:top-1/2 left-0 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-50 rounded-[8px] h-fit w-full  md:w-[567px]`}
+            className={`bg-white fixed bottom-0 md:top-1/2 left-0 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-[70] rounded-[8px] h-fit w-full  md:w-[567px]`}
           >
             <header className="flex items-center justify-between sticky top-0 left-0 w-full z-50 py-4 px-6 border-b border-grey-400">
               {startNode}

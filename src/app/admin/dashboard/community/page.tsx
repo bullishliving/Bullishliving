@@ -73,10 +73,6 @@ export default function Page() {
         title: 'Email',
       },
       {
-        query: 'phoneNumber',
-        title: 'Phone Number',
-      },
-      {
         query: 'date',
         title: 'Date',
       },
@@ -90,7 +86,6 @@ export default function Page() {
         id: `${member.id}`,
         name: <div className='h-14 flex items-center'>{member.name}</div>,
         email: member.email,
-        phoneNumber: member.phone,
         date: formatDate(member.created_at, 'DD/MM/YYYY'),
       })),
     [membersData?.data]

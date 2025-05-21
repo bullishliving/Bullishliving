@@ -308,7 +308,7 @@ class SupabaseService {
     return data as T[];
   }
 
-  private async selectRow<T>(table: SupabaseTables, id: number) {
+  async selectRow<T>(table: SupabaseTables, id: number) {
     const query = createClient().from(table).select('*').eq('id', id)
     .single();
 
